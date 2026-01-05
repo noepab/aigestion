@@ -1,0 +1,22 @@
+{
+  "name": "@nexus-v1/frontend-shared",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "dependencies": {
+    "@sentry/react": "^10.29.0",
+    "@sentry/tracing": "^7.114.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/morgan": "^1.9.10",
+    "@types/react": "^18.3.12",
+    "@types/react-window": "^2.0.0",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/ws": "^8.18.1"
+  }
+}

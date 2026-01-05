@@ -1,0 +1,55 @@
+﻿apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: alejandro-app-pdb
+  namespace: NEXUS V1
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: alejandro-app
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: evaluation-pdb
+  namespace: NEXUS V1
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: evaluation
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mongodb-pdb
+  namespace: NEXUS V1
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: mongodb
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: rabbitmq-pdb
+  namespace: NEXUS V1
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: rabbitmq
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis-pdb
+  namespace: NEXUS V1
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: redis
+

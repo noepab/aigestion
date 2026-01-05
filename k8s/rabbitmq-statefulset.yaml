@@ -1,0 +1,182 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  namespace: NEXUS V1
+  labels:
+    app: rabbitmq
+spec:
+  ports:
+    - port: 5672
+      targetPort: 5672
+      name: amqp
+    - port: 15672
+      targetPort: 15672
+      name: management
+  clusterIP: None
+  selector:
+    app: rabbitmq
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  namespace: NEXUS V1
+spec:
+  serviceName: rabbitmq-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management-alpine
+          ports:
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 15672
+              name: management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: RABBITMQ_DEFAULT_PASS
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+            - name: rabbitmq-config
+              mountPath: /etc/rabbitmq
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '1Gi'
+              cpu: '500m'
+          livenessProbe:
+            exec:
+              command:
+                - rabbitmq-diagnostics
+                - -q
+                - ping
+            initialDelaySeconds: 90
+            periodSeconds: 30
+            timeoutSeconds: 15
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command:
+                - rabbitmq-diagnostics
+                - -q
+                - check_port_connectivity
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 30
+            failureThreshold: 5
+      volumes:
+        - name: rabbitmq-config
+          configMap:
+            name: rabbitmq-config
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-data
+      spec:
+        accessModes: ['ReadWriteOnce']
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  namespace: NEXUS V1
+data:
+  rabbitmq.conf: |
+    # Network Configuration
+    listeners.tcp.default = 5672
+    management.tcp.port = 15672
+
+    # Memory Configuration
+    vm_memory_high_watermark.relative = 0.6
+    vm_memory_high_watermark_paging_ratio = 0.75
+
+    # Disk Configuration
+    disk_free_limit.absolute = 2GB
+
+    # Connection Configuration
+    heartbeat = 60
+    frame_max = 131072
+    channel_max = 2047
+
+    # Queue Configuration
+    queue_master_locator = min-masters
+
+    # Management Plugin
+    # management.load_definitions = /etc/rabbitmq/definitions.json
+
+  definitions.json: |
+    {
+      "queues": [
+        {
+          "name": "evaluation.tasks",
+          "vhost": "/",
+          "durable": true,
+          "auto_delete": false,
+          "arguments": {
+            "x-message-ttl": 86400000,
+            "x-max-length": 10000
+          }
+        },
+        {
+          "name": "container.events",
+          "vhost": "/",
+          "durable": true,
+          "auto_delete": false
+        },
+        {
+          "name": "notifications",
+          "vhost": "/",
+          "durable": true,
+          "auto_delete": false
+        }
+      ],
+      "exchanges": [
+        {
+          "name": "events",
+          "vhost": "/",
+          "type": "topic",
+          "durable": true,
+          "auto_delete": false
+        }
+      ],
+      "bindings": [
+        {
+          "source": "events",
+          "vhost": "/",
+          "destination": "container.events",
+          "destination_type": "queue",
+          "routing_key": "container.*"
+        },
+        {
+          "source": "events",
+          "vhost": "/",
+          "destination": "notifications",
+          "destination_type": "queue",
+          "routing_key": "notification.*"
+        }
+      ]
+    }
+
+

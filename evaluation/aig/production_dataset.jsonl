@@ -1,0 +1,20 @@
+{"query": "¿Cómo puedo agregar un nuevo usuario al sistema AIG?", "context": "AIG es un sistema de autogestión empresarial con gestión de usuarios, proyectos y productos."}
+{"query": "Explica el proceso de autenticación en AIG", "context": "El sistema utiliza JWT tokens para autenticación segura de usuarios."}
+{"query": "¿Qué funcionalidades ofrece el módulo de productos de AIG?", "context": "AIG incluye gestión de productos con categorías, precios, stock e imágenes."}
+{"query": "¿Cómo generar un reporte de ventas en AIG?", "context": "El sistema permite generar reportes personalizados de ventas y análisis de datos."}
+{"query": "Describe el flujo de trabajo para crear un nuevo proyecto en AIG", "context": "AIG gestiona proyectos con equipos, tareas, deadlines y seguimiento de progreso."}
+{"query": "¿Cómo integrar Gemini AI con AIG para generar contenido?", "context": "AIG utiliza Google Gemini API para generación de texto e imágenes mediante el endpoint /api/ai/generate."}
+{"query": "Explica la arquitectura de microservicios de AIG", "context": "AIG usa Docker Compose con contenedores separados para MongoDB, Redis, RabbitMQ y el servidor Node.js."}
+{"query": "¿Qué medidas de seguridad implementa AIG?", "context": "El sistema incluye Helmet, rate limiting, sanitización de MongoDB, protección XSS y HPP."}
+{"query": "¿Cómo configurar las variables de entorno en AIG?", "context": "AIG requiere configuración de GEMINI_API_KEY, MONGODB_URI, JWT_SECRET y otras variables en .env."}
+{"query": "Describe el sistema de roles y permisos en AIG", "context": "AIG implementa control de acceso basado en roles (RBAC) con usuarios, administradores y permisos granulares."}
+{"query": "¿Cómo funciona el sistema de caché en AIG con Redis?", "context": "AIG utiliza Redis para cachear respuestas frecuentes y mejorar el rendimiento de la aplicación."}
+{"query": "Explica el proceso de deployment de AIG usando Docker", "context": "AIG se despliega con docker-compose que orquesta todos los servicios necesarios (MongoDB, Redis, RabbitMQ, app)."}
+{"query": "¿Qué es el sistema de colas en AIG y para qué se usa?", "context": "AIG usa RabbitMQ para manejar tareas asíncronas como evaluación de IA, notificaciones y procesamiento de contenedores."}
+{"query": "¿Cómo monitorear el health status de los servicios de AIG?", "context": "AIG expone endpoints /health para verificar el estado del servidor, MongoDB, Redis y RabbitMQ."}
+{"query": "Describe el flujo de evaluación automática de calidad AI en AIG", "context": "AIG implementa evaluación continua de respuestas AI usando GitHub Actions con métricas de coherencia, fluidez y relevancia."}
+{"query": "¿Cómo funciona el rate limiting en AIG?", "context": "AIG implementa rate limiting para prevenir abuso de la API con límites configurables por IP."}
+{"query": "Explica el sistema de logging y debugging en AIG", "context": "AIG usa middleware de logging para rastrear requests HTTP, errores y eventos del sistema."}
+{"query": "¿Qué endpoints ofrece la API de generación 3D en AIG?", "context": "AIG incluye endpoints para generación de modelos 3D desde imágenes o texto usando servicios de IA."}
+{"query": "¿Cómo gestionar las imágenes generadas por Gemini en AIG?", "context": "AIG puede generar imágenes usando Gemini Imagen 4.0 y almacenarlas como base64 o en el filesystem."}
+{"query": "Describe el proceso de backup y restauración de MongoDB en AIG", "context": "AIG permite hacer backup de la base de datos MongoDB usando mongodump y restaurar con mongorestore desde contenedor."}

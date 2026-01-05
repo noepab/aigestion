@@ -1,0 +1,163 @@
+{
+  "model": "gpt-4o",
+  "total_evaluated": 8,
+  "average_scores": {
+    "coherence": 2.5,
+    "fluency": 3.12,
+    "relevance": 2.5
+  },
+  "detailed_results": [
+    {
+      "query": "¿Cuál es la capital de Francia?",
+      "response": "La capital de Francia es París. Es una de las ciudades más importantes de Europa, conocida por su arte, cultura, gastronomía y monumentos icónicos como la Torre Eiffel, el Museo del Louvre y la Catedral de Notre-Dame. París también es el centro político, económico y cultural de Francia.",
+      "context": "Francia es un país europeo con una rica historia cultural.",
+      "metrics": {
+        "coherence": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "fluency": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "relevance": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        }
+      }
+    },
+    {
+      "query": "Explica cómo funciona la fotosíntesis en plantas",
+      "response": "La fotosíntesis es el proceso mediante el cual las plantas convierten la luz solar en energía química. En este proceso, las plantas absorben dióxido de carbono (CO2) del aire y agua (H2O) del suelo. Usando la energía de la luz solar capturada por la clorofila en sus hojas, las plantas producen glucosa (azúcar) y liberan oxígeno como subproducto. La ecuación simplificada es: 6CO2 + 6H2O + luz solar → C6H12O6 + 6O2.",
+      "context": "Las plantas utilizan la luz solar para producir energía.",
+      "metrics": {
+        "coherence": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "fluency": {
+          "score": 5,
+          "reasoning": "The response demonstrates excellent fluency. It is grammatically correct, uses proper syntax, and employs precise and professional word choice. The explanation flows naturally and is clear, concise, and well-structured, making it easy to understand."
+        },
+        "relevance": {
+          "score": 5,
+          "reasoning": "The response directly addresses the query by explaining how photosynthesis works in plants. It uses the provided context about plants utilizing sunlight to produce energy and expands on it by detailing the process, including the role of CO2, H2O, and sunlight, as well as the production of glucose and oxygen. The explanation is focused, accurate, and free of off-topic information."
+        }
+      }
+    },
+    {
+      "query": "¿Qué es la inteligencia artificial?",
+      "response": "La inteligencia artificial (IA) es una rama de la informática que se dedica a crear sistemas y programas capaces de realizar tareas que normalmente requieren inteligencia humana. Esto incluye el aprendizaje, el razonamiento, la resolución de problemas, la percepción, el procesamiento del lenguaje natural y la toma de decisiones. La IA utiliza algoritmos de aprendizaje automático, redes neuronales y otras técnicas para permitir que las máquinas mejoren su rendimiento con la experiencia.",
+      "context": "La IA es un campo de la informática que busca crear sistemas inteligentes.",
+      "metrics": {
+        "coherence": {
+          "score": 5,
+          "reasoning": "The response is perfectly coherent, with logical consistency and a clear flow of ideas. It builds naturally from the query and context, explaining what artificial intelligence is, its capabilities, and the techniques it uses. There are no internal contradictions, and the explanation is readable and well-structured."
+        },
+        "fluency": {
+          "score": 5,
+          "reasoning": "The response demonstrates excellent fluency with correct grammar and syntax, natural language flow, appropriate word choice, and professional writing quality. It provides a clear and concise explanation of the concept of artificial intelligence, using technical terms accurately and effectively."
+        },
+        "relevance": {
+          "score": 5,
+          "reasoning": "The response directly addresses the query by providing a clear and detailed explanation of what artificial intelligence is. It aligns well with the provided context, expanding on the definition with relevant details about tasks and techniques associated with AI. The response remains focused on the question and avoids any off-topic information."
+        }
+      }
+    },
+    {
+      "query": "Describe los beneficios de la dieta mediterránea",
+      "response": "La dieta mediterránea ofrece numerosos beneficios para la salud. Está asociada con la reducción del riesgo de enfermedades cardiovasculares, diabetes tipo 2 y ciertos tipos de cáncer. Sus beneficios provienen del alto consumo de frutas, verduras, legumbres, frutos secos, pescado y aceite de oliva, que son ricos en antioxidantes, ácidos grasos omega-3 y fibra. También ayuda a mantener un peso saludable, mejorar la salud cerebral y reducir la inflamación.",
+      "context": "La dieta mediterránea incluye frutas, verduras, pescado y aceite de oliva.",
+      "metrics": {
+        "coherence": {
+          "score": 5,
+          "reasoning": "The response is logically consistent, flows naturally, and provides a clear progression of ideas. It expands on the context by detailing the specific health benefits of the Mediterranean diet and the reasons behind them, without any internal contradictions. The language is clear and easy to read, making the response highly coherent."
+        },
+        "fluency": {
+          "score": 5,
+          "reasoning": "The response demonstrates excellent fluency with correct grammar and syntax, natural language flow, appropriate word choice, and professional writing quality. It is clear, concise, and well-structured, effectively addressing the query without any errors or awkward phrasing."
+        },
+        "relevance": {
+          "score": 5,
+          "reasoning": "The response is highly relevant as it directly addresses the query by describing the benefits of the Mediterranean diet. It appropriately uses the provided context, elaborating on the health benefits of the key components mentioned (fruits, vegetables, fish, and olive oil) while staying focused on the question. There is no off-topic information, and the response is comprehensive and well-aligned with the query."
+        }
+      }
+    },
+    {
+      "query": "¿Cuántos planetas hay en el sistema solar?",
+      "response": "Actualmente hay 8 planetas en el sistema solar. En orden desde el Sol son: Mercurio, Venus, Tierra, Marte, Júpiter, Saturno, Urano y Neptuno. Plutón fue reclasificado como 'planeta enano' en 2006 por la Unión Astronómica Internacional. Los primeros cuatro planetas (Mercurio a Marte) son planetas rocosos, mientras que los últimos cuatro (Júpiter a Neptuno) son gigantes gaseosos o de hielo.",
+      "context": "El sistema solar contiene varios cuerpos celestes orbitando el Sol.",
+      "metrics": {
+        "coherence": {
+          "score": 5,
+          "reasoning": "The response is logically consistent and flows naturally. It provides a clear and accurate answer to the query, listing the planets in order and explaining the reclassification of Pluto. There are no internal contradictions, and the ideas progress logically from the number of planets to their classification. The language is clear and readable."
+        },
+        "fluency": {
+          "score": 5,
+          "reasoning": "The response is grammatically correct, uses proper syntax, and flows naturally. Word choice is appropriate and professional, with clear and concise explanations. It provides accurate information in a structured and logical manner, making it highly fluent."
+        },
+        "relevance": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        }
+      }
+    },
+    {
+      "query": "Explica la teoría de la relatividad de Einstein",
+      "response": "La teoría de la relatividad de Einstein consta de dos partes: la relatividad especial (1905) y la relatividad general (1915). La relatividad especial establece que las leyes de la física son las mismas para todos los observadores en movimiento uniforme y que la velocidad de la luz es constante. De aquí surge la famosa ecuación E=mc². La relatividad general explica la gravedad como la curvatura del espacio-tiempo causada por la masa y la energía, revolucionando nuestra comprensión del universo.",
+      "context": "Einstein revolucionó la física moderna con sus teorías.",
+      "metrics": {
+        "coherence": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "fluency": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "relevance": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        }
+      }
+    },
+    {
+      "query": "¿Qué es el cambio climático y cuáles son sus causas?",
+      "response": "El cambio climático se refiere al cambio a largo plazo en las temperaturas y los patrones climáticos de la Tierra. La principal causa es el aumento de gases de efecto invernadero en la atmósfera, principalmente dióxido de carbono (CO2), producido por la quema de combustibles fósiles, la deforestación y las actividades industriales. Esto provoca el calentamiento global, que resulta en eventos climáticos extremos, derretimiento de glaciares, aumento del nivel del mar y cambios en los ecosistemas.",
+      "context": "El clima de la Tierra está experimentando cambios significativos.",
+      "metrics": {
+        "coherence": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "fluency": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        },
+        "relevance": {
+          "score": 0,
+          "reasoning": "Evaluation error: 429 Client Error: Too Many Requests for url: https://models.inference.ai.azure.com/chat/completions"
+        }
+      }
+    },
+    {
+      "query": "Describe el proceso de preparación de café espresso",
+      "response": "La preparación de café espresso requiere moler granos de café en una textura fina, similar a la sal de mesa. Se coloca aproximadamente 18-20 gramos de café molido en el portafiltro y se compacta uniformemente con un tamper. El agua caliente (aproximadamente 90-96°C) se fuerza a través del café molido a alta presión (9 bares) durante 25-30 segundos, extrayendo un shot de 25-30 ml de espresso con una crema dorada en la superficie. La calidad depende de la frescura del café, la molienda correcta y la técnica adecuada.",
+      "context": "El café espresso requiere una técnica específica de preparación.",
+      "metrics": {
+        "coherence": {
+          "score": 5,
+          "reasoning": "The response is logically consistent and flows naturally. It provides a clear and step-by-step explanation of the espresso preparation process, with no internal contradictions. The progression of ideas is smooth, starting from grinding the coffee to extracting the espresso shot, and it includes relevant details like temperature, pressure, and timing. The language is concise and easy to read, making the overall response highly coherent."
+        },
+        "fluency": {
+          "score": 5,
+          "reasoning": "The response demonstrates excellent fluency. It is grammatically correct, uses appropriate syntax, and flows naturally. The word choice is precise and professional, effectively conveying the process of preparing espresso in a clear and detailed manner. There are no errors or awkward phrasing, and the explanation is concise yet comprehensive."
+        },
+        "relevance": {
+          "score": 5,
+          "reasoning": "The response is highly relevant as it directly and comprehensively addresses the query about the process of preparing espresso. It uses the provided context about the specific technique required and details the steps, including grinding, tamping, water temperature, pressure, and extraction time. The response is focused, clear, and free from off-topic information."
+        }
+      }
+    }
+  ]
+}

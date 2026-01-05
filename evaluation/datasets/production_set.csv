@@ -1,0 +1,11 @@
+id,input,ground_truth
+prod-001,"def calculate_fibonacci(n): return [0] if n <= 0 else [1] if n == 1 else [i for i in range(n)]",1
+prod-002,"x = 5",0
+prod-003,"def process_data(data): processed = []; for item in data: if item > 0: processed.append(item * 2); return processed",1
+prod-004,"a = 10",0
+prod-005,"class DataProcessor: def __init__(self): self.cache = {}; def process(self, key, value): if key not in self.cache: self.cache[key] = self._compute(value); return self.cache[key]; def _compute(self, val): return val * 2",1
+prod-006,"b = 20",0
+prod-007,"async def fetch_and_process(url): response = await http_client.get(url); data = await response.json(); return [item['value'] for item in data if item['active']]",1
+prod-008,"import os",0
+prod-009,"def validate_email(email): import re; pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'; return bool(re.match(pattern, email))",1
+prod-010,"y = x + 1",0

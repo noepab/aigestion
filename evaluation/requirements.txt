@@ -1,0 +1,11 @@
+# Minimal dependencies for evaluation (pure stdlib implementation used)
+# Add packages here if you extend the framework (e.g. scikit-learn)
+
+# Optional adapters / integrations
+requests>=2.28.0
+# OpenAI Python client (for OpenAIAdapter)
+openai>=1.0.0
+# Google Generative AI (for GeminiAdapter)
+google-generativeai>=0.3.0
+# Anthropic client (for AnthropicAdapter)
+anthropic>=0.64.0

@@ -1,0 +1,6 @@
+Loading env from: C:\Users\Alejandro\AIGestion\backend\.env
+[dotenv@17.2.3] injecting env (70) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+Importing @google/generative-ai...
+✅ API Key present (39 chars)
+Key preview: AIzaSyAAxA...ezVo
+Sending request to Gemini...

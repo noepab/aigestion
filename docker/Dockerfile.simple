@@ -1,0 +1,25 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package.json package-lock.json* ./
+COPY server/package.json server/package-lock.json* ./server/
+
+# Instalar dependencias
+RUN npm install
+RUN cd server && npm install
+
+# Copiar código fuente
+COPY . .
+
+# Build backend
+RUN cd server && npm run build || echo "Build may have warnings"
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+EXPOSE 3000
+
+# Iniciar servidor
+CMD ["node", "server/dist/server.js"]

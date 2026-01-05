@@ -1,0 +1,11 @@
+groups:
+  - name: disk_alerts
+    rules:
+      - alert: HighDiskUsage
+        expr: sum(container_fs_usage_bytes{name!=""}) / sum(container_fs_limit_bytes{name!=""}) > 0.9
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk usage is high on {{ $labels.instance }}"
+          description: "Disk usage has been above 90% for more than 2 minutes."

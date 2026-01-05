@@ -1,0 +1,7 @@
+{
+  "api_key": "AIzaSyAAxAjBY1pH0dBYNFjdfMDygJVwi6KezVo",
+  "model": "gemini-1.5-pro",
+  "temperature": 0.3,
+  "max_tokens": 100,
+  "cache": true
+}

@@ -1,0 +1,142 @@
+{
+  "templates": [
+    {
+      "id": "feature",
+      "name": "New Feature",
+      "type": "feature",
+      "priority": "medium",
+      "description": "New feature implementation",
+      "tags": ["feature", "development"],
+      "estimatedHours": 16
+    },
+    {
+      "id": "bugfix",
+      "name": "Bug Fix",
+      "type": "bugfix",
+      "priority": "high",
+      "description": "Bug report and fix",
+      "tags": ["bugfix", "urgent"],
+      "estimatedHours": 4
+    },
+    {
+      "id": "optimization",
+      "name": "Performance Optimization",
+      "type": "optimization",
+      "priority": "medium",
+      "description": "Performance improvement",
+      "tags": ["optimization", "performance"],
+      "estimatedHours": 12
+    },
+    {
+      "id": "docs",
+      "name": "Documentation",
+      "type": "documentation",
+      "priority": "low",
+      "description": "Documentation update or creation",
+      "tags": ["documentation", "docs"],
+      "estimatedHours": 2
+    },
+    {
+      "id": "refactoring",
+      "name": "Code Refactoring",
+      "type": "refactoring",
+      "priority": "low",
+      "description": "Code cleanup and refactoring",
+      "tags": ["refactoring", "quality"],
+      "estimatedHours": 8
+    },
+    {
+      "id": "testing",
+      "name": "Testing & QA",
+      "type": "testing",
+      "priority": "high",
+      "description": "Test coverage and QA",
+      "tags": ["testing", "qa"],
+      "estimatedHours": 6
+    },
+    {
+      "id": "devops",
+      "name": "DevOps/Infrastructure",
+      "type": "devops",
+      "priority": "high",
+      "description": "Infrastructure and deployment",
+      "tags": ["devops", "infrastructure"],
+      "estimatedHours": 8
+    },
+    {
+      "id": "research",
+      "name": "Research/Investigation",
+      "type": "research",
+      "priority": "medium",
+      "description": "Research and investigation",
+      "tags": ["research", "investigation"],
+      "estimatedHours": 4
+    },
+    {
+      "id": "maintenance",
+      "name": "Maintenance",
+      "type": "maintenance",
+      "priority": "low",
+      "description": "Routine maintenance work",
+      "tags": ["maintenance", "upkeep"],
+      "estimatedHours": 2
+    }
+  ],
+  "sprintPlans": [
+    {
+      "id": "sprint_default",
+      "name": "Default Sprint Plan",
+      "duration": 14,
+      "maxTasks": 15,
+      "focusAreas": [
+        "Unblock stalled work",
+        "Complete high priority items",
+        "Technical debt reduction"
+      ]
+    },
+    {
+      "id": "sprint_high_velocity",
+      "name": "High Velocity Sprint",
+      "duration": 14,
+      "maxTasks": 20,
+      "focusAreas": ["Feature delivery", "Bug fixes", "Quick wins"]
+    }
+  ],
+  "reportTemplates": [
+    {
+      "id": "daily",
+      "name": "Daily Report",
+      "includes": [
+        "tasks_completed_today",
+        "current_blockers",
+        "upcoming_deadlines",
+        "health_status"
+      ]
+    },
+    {
+      "id": "weekly",
+      "name": "Weekly Report",
+      "includes": [
+        "weekly_summary",
+        "velocity",
+        "completed_tasks",
+        "blockers",
+        "upcoming_sprint",
+        "recommendations"
+      ]
+    },
+    {
+      "id": "monthly",
+      "name": "Monthly Report",
+      "includes": [
+        "month_summary",
+        "monthly_velocity",
+        "completed_tasks",
+        "blockers",
+        "quarterly_planning",
+        "health_metrics",
+        "recommendations"
+      ]
+    }
+  ]
+}

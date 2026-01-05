@@ -1,0 +1,82 @@
+[
+  {
+    "query": "¿Cuál es el clima en Madrid?",
+    "response": "El clima en Madrid es soleado con una temperatura máxima de 24°C. ¿Quieres saber el pronóstico para algún otro día o lugar?",
+    "jaccard": 0.22764227642276424,
+    "levenshtein": 0.1544715447154471,
+    "bleu": 0.0,
+    "rougeL": 0.23529411764705882
+  },
+  {
+    "query": "¿Qué tiempo hará mañana en Barcelona?",
+    "response": "Mañana en Barcelona habrá lluvia con una temperatura máxima de 30°C. ¿Quieres saber el pronóstico para otro lugar?",
+    "jaccard": 0.31304347826086953,
+    "levenshtein": 0.20175438596491224,
+    "bleu": 0.0,
+    "rougeL": 0.27586206896551724
+  },
+  {
+    "query": "¿Está lloviendo en Sevilla ahora?",
+    "response": "Sí, está lloviendo ahora en Sevilla. ¿Quieres saber algo más sobre el clima?",
+    "jaccard": 0.4155844155844156,
+    "levenshtein": 0.39473684210526316,
+    "bleu": 0.0,
+    "rougeL": 0.4210526315789473
+  },
+  {
+    "query": "¿Cómo estará el clima en Valencia el fin de semana?",
+    "response": "El clima en Valencia para el fin de semana será tormentoso con una temperatura máxima de 14°C. ¿Quieres que te ayude con algo más sobre el clima o alguna otra información?",
+    "jaccard": 0.29824561403508776,
+    "levenshtein": 0.19883040935672514,
+    "bleu": 0.1133292558144251,
+    "rougeL": 0.34782608695652173
+  },
+  {
+    "query": "¿Cuál es la temperatura máxima esperada en Bilbao hoy?",
+    "response": "La temperatura máxima esperada en Bilbao hoy es de 29°C. ¿Te gustaría saber algo más sobre el clima?",
+    "jaccard": 0.54,
+    "levenshtein": 0.35,
+    "bleu": 0.2534743707366162,
+    "rougeL": 0.4848484848484849
+  },
+  {
+    "query": "¿Habrá tormenta en Zaragoza esta noche?",
+    "response": "Sí, habrá tormenta en Zaragoza esta noche. ¿Quieres que te ayude con algo más?",
+    "jaccard": 0.4810126582278481,
+    "levenshtein": 0.47435897435897434,
+    "bleu": 0.2240750868020436,
+    "rougeL": 0.5714285714285715
+  },
+  {
+    "query": "¿Qué clima se espera en Málaga para el lunes?",
+    "response": "El clima en Málaga para el lunes se espera tormentoso, con una temperatura máxima de 15°C. ¿Quieres que te ayude con algo más?",
+    "jaccard": 0.3464566929133859,
+    "levenshtein": 0.24603174603174605,
+    "bleu": 0.16562574029564234,
+    "rougeL": 0.37837837837837834
+  },
+  {
+    "query": "¿Está nublado en Granada?",
+    "response": "En Granada está lluvioso, por lo que parece que no está nublado, sino que está lloviendo. ¿Quieres saber algo más sobre el clima?",
+    "jaccard": 0.1937984496124031,
+    "levenshtein": 0.15503875968992253,
+    "bleu": 0.0,
+    "rougeL": 0.14285714285714285
+  },
+  {
+    "query": "¿Cuál es el pronóstico para Alicante mañana?",
+    "response": "El pronóstico para Alicante mañana indica que estará lluvioso con una temperatura máxima de 26°C. ¿Quieres saber algo más?",
+    "jaccard": 0.360655737704918,
+    "levenshtein": 0.20491803278688525,
+    "bleu": 0.12021577610863723,
+    "rougeL": 0.4117647058823529
+  },
+  {
+    "query": "¿Va a hacer sol en Santander esta semana?",
+    "response": "Esta semana en Santander no va a hacer sol, el clima será lluvioso con una temperatura máxima de 28°C. ¿Quieres que te informe el pronóstico para algún día en específico?",
+    "jaccard": 0.23391812865497075,
+    "levenshtein": 0.18823529411764706,
+    "bleu": 0.0,
+    "rougeL": 0.2272727272727273
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "api_key": "sk-your-openai-api-key-here",
+  "model": "gpt-3.5-turbo",
+  "temperature": 0.3,
+  "max_tokens": 100,
+  "cache": true
+}

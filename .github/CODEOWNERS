@@ -1,0 +1,13 @@
+# Global owners
+* @Alejandro
+
+# Frontend
+/frontend/ @Alejandro
+
+# Backend / AI Engine
+/aig-ia-engine/ @Alejandro
+/swarm/ @Alejandro
+
+# Infrastructure & CI
+/.github/ @Alejandro
+/docker/ @Alejandro

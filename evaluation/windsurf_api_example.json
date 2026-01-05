@@ -1,0 +1,8 @@
+{
+  "url": "REPLACE_WITH_WINDSURF_API_URL",
+  "input_field": "input",
+  "output_field": "prediction",
+  "headers": {
+    "Authorization": "Bearer REPLACE_WITH_YOUR_TOKEN"
+  }
+}

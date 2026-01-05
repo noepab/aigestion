@@ -1,0 +1,2 @@
+# Configuración para el workflow de FAQ Suggestions
+cron_schedule: "0 6 * * 1" # Por defecto: cada lunes a las 6am

@@ -1,0 +1,500 @@
+
+> nexus-v1-dashboard-backend@1.0.0 build
+> tsc
+
+src/__tests__/controllers/auth.controller.test.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/__tests__/controllers/auth.controller.test.ts(4,27): error TS6133: 'getMe' is declared but its value is never read.
+src/__tests__/controllers/auth.controller.test.ts(6,1): error TS6133: 'logger' is declared but its value is never read.
+src/__tests__/controllers/auth.controller.test.ts(29,7): error TS2322: Type 'Mock<any, any, any>' is not assignable to type 'number'.
+src/__tests__/controllers/auth.controller.test.ts(37,31): error TS2353: Object literal may only specify known properties, and 'email' does not exist in type 'ReadableStream<Uint8Array<ArrayBuffer>>'.
+src/__tests__/controllers/auth.controller.test.ts(47,31): error TS2353: Object literal may only specify known properties, and 'email' does not exist in type 'ReadableStream<Uint8Array<ArrayBuffer>>'.
+src/__tests__/controllers/auth.controller.test.ts(59,23): error TS2740: Type '{ email: string; password: string; name: string; }' is missing the following properties from type 'ReadableStream<Uint8Array<ArrayBuffer>>': locked, cancel, getReader, pipeThrough, and 2 more.
+src/__tests__/controllers/auth.controller.test.ts(91,31): error TS2353: Object literal may only specify known properties, and 'email' does not exist in type 'ReadableStream<Uint8Array<ArrayBuffer>>'.
+src/__tests__/controllers/auth.controller.test.ts(108,31): error TS2353: Object literal may only specify known properties, and 'email' does not exist in type 'ReadableStream<Uint8Array<ArrayBuffer>>'.
+src/__tests__/controllers/auth.controller.test.ts(132,31): error TS2353: Object literal may only specify known properties, and 'email' does not exist in type 'ReadableStream<Uint8Array<ArrayBuffer>>'.
+src/__tests__/controllers/auth.controller.test.ts(132,96): error TS2740: Type '{}' is missing the following properties from type 'Headers': append, delete, get, getSetCookie, and 7 more.
+src/app.ts(34,14): error TS7006: Parameter 'origin' implicitly has an 'any' type.
+src/app.ts(34,22): error TS7006: Parameter 'callback' implicitly has an 'any' type.
+src/app.ts(59,12): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/app.ts(67,24): error TS7006: Parameter '_res' implicitly has an 'any' type.
+src/app.ts(67,30): error TS7006: Parameter 'buf' implicitly has an 'any' type.
+src/common/response-builder.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/common/response-builder.ts(60,72): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/common/response-builder.ts(63,7): error TS2339: Property 'setHeader' does not exist on type 'Response'.
+src/common/response-builder.ts(84,76): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/common/response-builder.ts(87,6): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/config/inversify.config.ts(2,27): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/controllers/ai.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/ai.controller.ts(21,8): error TS2315: Type 'Request' is not generic.
+src/controllers/ai.controller.ts(28,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(50,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(53,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(60,33): error TS2315: Type 'Request' is not generic.
+src/controllers/ai.controller.ts(65,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(71,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(74,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(82,9): error TS2315: Type 'Request' is not generic.
+src/controllers/ai.controller.ts(91,8): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/ai.controller.ts(98,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/analytics.controller.ts(16,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(39,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(41,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(50,23): error TS2339: Property 'query' does not exist on type 'Request'.
+src/controllers/analytics.controller.ts(61,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(66,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(89,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(91,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(110,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(112,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(146,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/analytics.controller.ts(152,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/analytics.controller.ts(178,9): error TS2551: Property 'header' does not exist on type 'Response'. Did you mean 'headers'?
+src/controllers/analytics.controller.ts(179,9): error TS2339: Property 'attachment' does not exist on type 'Response'.
+src/controllers/analytics.controller.ts(180,9): error TS2339: Property 'send' does not exist on type 'Response'.
+src/controllers/analytics.controller.ts(182,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/auth.controller.ts(11,13): error TS2339: Property 'email' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/auth.controller.ts(11,20): error TS2339: Property 'password' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/auth.controller.ts(11,30): error TS2339: Property 'name' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/auth.controller.ts(15,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(25,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(57,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(66,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(75,13): error TS2339: Property 'email' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/auth.controller.ts(75,20): error TS2339: Property 'password' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/auth.controller.ts(79,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(89,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(99,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(120,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(135,16): error TS2339: Property 'ip' does not exist on type 'Request'.
+src/controllers/auth.controller.ts(136,18): error TS7052: Element implicitly has an 'any' type because type 'Headers' has no index signature. Did you mean to call '_req.headers.get'?
+src/controllers/auth.controller.ts(154,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(163,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(173,14): error TS2339: Property 'user' does not exist on type 'Request'.
+src/controllers/auth.controller.ts(174,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(180,42): error TS2339: Property 'user' does not exist on type 'Request'.
+src/controllers/auth.controller.ts(183,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(190,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/auth.controller.ts(196,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/docker.controller.ts(18,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(40,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(46,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(53,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(63,24): error TS2339: Property 'params' does not exist on type 'Request'.
+src/controllers/docker.controller.ts(67,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(70,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(80,24): error TS2339: Property 'params' does not exist on type 'Request'.
+src/controllers/docker.controller.ts(83,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(86,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(96,24): error TS2339: Property 'params' does not exist on type 'Request'.
+src/controllers/docker.controller.ts(99,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(102,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(112,24): error TS2339: Property 'params' does not exist on type 'Request'.
+src/controllers/docker.controller.ts(115,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(118,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(143,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(146,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(170,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(173,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/docker.controller.ts(197,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/docker.controller.ts(200,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/flags.controller.ts(2,1): error TS6192: All imports in import declaration are unused.
+src/controllers/flags.controller.ts(9,12): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/flags.controller.ts(14,24): error TS2339: Property 'params' does not exist on type 'Request'.
+src/controllers/flags.controller.ts(15,11): error TS2339: Property 'value' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/flags.controller.ts(19,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/flags.controller.ts(28,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/flags.controller.ts(33,7): error TS2339: Property 'cookie' does not exist on type 'Response'.
+src/controllers/flags.controller.ts(42,12): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/git.controller.ts(12,32): error TS2339: Property 'query' does not exist on type 'Request'.
+src/controllers/git.controller.ts(32,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(38,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(50,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/git.controller.ts(67,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(70,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(99,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/git.controller.ts(102,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/health.controller.ts(3,1): error TS6192: All imports in import declaration are unused.
+src/controllers/health.controller.ts(410,7): error TS2339: Property 'set' does not exist on type 'Response'.
+src/controllers/health.controller.ts(411,7): error TS2339: Property 'set' does not exist on type 'Response'.
+src/controllers/health.controller.ts(412,7): error TS2339: Property 'set' does not exist on type 'Response'.
+src/controllers/health.controller.ts(413,7): error TS2339: Property 'set' does not exist on type 'Response'.
+src/controllers/health.controller.ts(415,7): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/logs.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/logs.controller.ts(33,32): error TS2339: Property 'query' does not exist on type 'Request'.
+src/controllers/logs.controller.ts(34,23): error TS2339: Property 'query' does not exist on type 'Request'.
+src/controllers/logs.controller.ts(35,24): error TS2339: Property 'query' does not exist on type 'Request'.
+src/controllers/logs.controller.ts(43,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/logs.controller.ts(46,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/logs.controller.ts(56,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/logs.controller.ts(59,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/social.controller.ts(16,15): error TS2339: Property 'message' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(16,24): error TS2339: Property 'link' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(21,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(34,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(38,10): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(51,18): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(66,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(69,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(76,15): error TS2339: Property 'recipientId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(76,28): error TS2339: Property 'text' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(79,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(81,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(88,15): error TS2339: Property 'text' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(91,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(93,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(100,15): error TS2339: Property 'videoUrl' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(100,25): error TS2339: Property 'title' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(103,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(105,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/social.controller.ts(112,15): error TS2339: Property 'text' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/controllers/social.controller.ts(115,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/social.controller.ts(117,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/stripe.webhook.controller.ts(2,57): error TS2307: Cannot find module 'inversify-express-utils' or its corresponding type declarations.
+src/controllers/stripe.webhook.controller.ts(3,24): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/controllers/stripe.webhook.controller.ts(15,17): error TS7052: Element implicitly has an 'any' type because type 'Headers' has no index signature. Did you mean to call 'req.headers.get'?
+src/controllers/stripe.webhook.controller.ts(18,18): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/stripe.webhook.controller.ts(27,20): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/stripe.webhook.controller.ts(34,18): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/stripe.webhook.controller.ts(54,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/stripe.webhook.controller.ts(57,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/stripe.webhook.controller.ts(79,7): error TS2322: Type 'Status' is not assignable to type '"active" | "past_due" | "canceled" | "incomplete" | "trialing" | undefined'.
+  Type '"incomplete_expired"' is not assignable to type '"active" | "past_due" | "canceled" | "incomplete" | "trialing" | undefined'.
+src/controllers/system.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/controllers/system.controller.ts(17,16): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(25,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(28,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/system.controller.ts(41,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(47,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/system.controller.ts(62,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(69,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/system.controller.ts(80,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(82,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/controllers/system.controller.ts(101,14): error TS2554: Expected 0 arguments, but got 1.
+src/controllers/system.controller.ts(103,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/docs/swagger.ts(1,1): error TS6133: 'Express' is declared but its value is never read.
+src/docs/swagger.ts(7,29): error TS2694: Namespace '"swagger-jsdoc"' has no exported member 'Options'.
+src/docs/swagger.ts(51,35): error TS2709: Cannot use namespace 'Express' as a type.
+src/docs/swagger.ts(65,30): error TS7006: Parameter '_req' implicitly has an 'any' type.
+src/docs/swagger.ts(65,36): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/features/remote-access/remote-access.controller.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/features/remote-access/remote-access.controller.ts(13,15): error TS2339: Property 'fromUserId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(13,27): error TS2339: Property 'toUserId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(13,37): error TS2339: Property 'permissions' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(17,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(47,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(53,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(63,33): error TS2339: Property 'params' does not exist on type 'Request'.
+src/features/remote-access/remote-access.controller.ts(64,15): error TS2339: Property 'approve' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(64,24): error TS2339: Property 'userId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(68,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(77,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(104,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(112,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(119,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(129,30): error TS2339: Property 'params' does not exist on type 'Request'.
+src/features/remote-access/remote-access.controller.ts(135,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(141,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(151,33): error TS2339: Property 'params' does not exist on type 'Request'.
+src/features/remote-access/remote-access.controller.ts(152,15): error TS2339: Property 'userId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/features/remote-access/remote-access.controller.ts(156,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(165,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(179,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/remote-access.controller.ts(185,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/features/remote-access/services/webrtc.service.ts(2,16): error TS6133: 'Instance' is declared but its value is never read.
+src/features/remote-access/services/webrtc.service.ts(2,26): error TS6133: 'SignalData' is declared but its value is never read.
+src/features/remote-access/services/webrtc.service.ts(6,9): error TS2709: Cannot use namespace 'Instance' as a type.
+src/features/remote-access/services/webrtc.service.ts(18,80): error TS2709: Cannot use namespace 'Instance' as a type.
+src/features/remote-access/services/webrtc.service.ts(45,30): error TS2709: Cannot use namespace 'SignalData' as a type.
+src/features/remote-access/services/webrtc.service.ts(96,43): error TS2709: Cannot use namespace 'SignalData' as a type.
+src/middleware/adminOnly.middleware.ts(2,1): error TS6192: All imports in import declaration are unused.
+src/middleware/adminOnly.middleware.ts(9,62): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/adminOnly.middleware.ts(14,19): error TS2339: Property 'path' does not exist on type 'Request'.
+src/middleware/adminOnly.middleware.ts(19,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/auth.middleware.ts(20,66): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/auth.middleware.ts(24,19): error TS2339: Property 'authorization' does not exist on type 'Headers'.
+src/middleware/auth.middleware.ts(24,48): error TS2339: Property 'authorization' does not exist on type 'Headers'.
+src/middleware/auth.middleware.ts(25,25): error TS2339: Property 'authorization' does not exist on type 'Headers'.
+src/middleware/auth.middleware.ts(28,16): error TS2339: Property 'cookies' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(28,31): error TS2339: Property 'cookies' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(29,17): error TS2339: Property 'cookies' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(34,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(57,32): error TS7052: Element implicitly has an 'any' type because type 'Headers' has no index signature. Did you mean to call 'req.headers.get'?
+src/middleware/auth.middleware.ts(68,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(77,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(86,12): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(97,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(106,9): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(115,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(125,46): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/auth.middleware.ts(126,14): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(126,42): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/auth.middleware.ts(127,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/auth.middleware.ts(129,32): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/cache.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/cache.middleware.ts(10,52): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/cache.middleware.ts(17,28): error TS2339: Property 'baseUrl' does not exist on type 'Request'.
+src/middleware/cache.middleware.ts(17,42): error TS2339: Property 'path' does not exist on type 'Request'.
+src/middleware/cache.middleware.ts(24,13): error TS2339: Property 'setHeader' does not exist on type 'Response'.
+src/middleware/cache.middleware.ts(25,18): error TS2554: Expected 0 arguments, but got 1.
+src/middleware/cache.middleware.ts(32,7): error TS2322: Type '(body: any) => any' is not assignable to type '() => Promise<any>'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+src/middleware/cache.middleware.ts(32,40): error TS2315: Type 'Response' is not generic.
+src/middleware/cache.middleware.ts(37,17): error TS2339: Property 'statusCode' does not exist on type 'Response'.
+src/middleware/cache.middleware.ts(43,40): error TS2554: Expected 1 arguments, but got 2.
+src/middleware/cache.middleware.ts(46,11): error TS2339: Property 'setHeader' does not exist on type 'Response'.
+src/middleware/error.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/error.middleware.ts(6,69): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/error.middleware.ts(7,53): error TS2339: Property 'originalUrl' does not exist on type 'Request'.
+src/middleware/error.middleware.ts(8,7): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/errorHandler.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/errorHandler.ts(6,77): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/errorHandler.ts(29,7): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/featureFlag.middleware.ts(2,1): error TS6192: All imports in import declaration are unused.
+src/middleware/featureFlag.middleware.ts(19,75): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/featureFlag.middleware.ts(20,7): error TS2339: Property 'flags' does not exist on type 'Request'.
+src/middleware/flagAnalytics.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/flagAnalytics.middleware.ts(9,67): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/flagAnalytics.middleware.ts(12,36): error TS2339: Property 'path' does not exist on type 'Request'.
+src/middleware/notFound.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/notFound.middleware.ts(4,68): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/notFound.middleware.ts(5,46): error TS2339: Property 'originalUrl' does not exist on type 'Request'.
+src/middleware/notFound.middleware.ts(6,37): error TS2339: Property 'originalUrl' does not exist on type 'Request'.
+src/middleware/notFound.middleware.ts(7,7): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/rateLimiter.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/rateLimiter.ts(61,38): error TS2339: Property 'ip' does not exist on type 'Request'.
+src/middleware/rateLimiter.ts(142,71): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/rateLimiter.ts(159,14): error TS2339: Property 'headersSent' does not exist on type 'Response'.
+src/middleware/requestId.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/requestId.middleware.ts(8,72): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/requestId.middleware.ts(9,22): error TS7052: Element implicitly has an 'any' type because type 'Headers' has no index signature. Did you mean to call 'req.headers.get'?
+src/middleware/requestId.middleware.ts(12,7): error TS2339: Property 'setHeader' does not exist on type 'Response'.
+src/middleware/subscription.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/subscription.middleware.ts(6,52): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/subscription.middleware.ts(8,16): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/subscription.middleware.ts(9,21): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/subscription.middleware.ts(12,44): error TS2339: Property 'user' does not exist on type 'Request'.
+src/middleware/subscription.middleware.ts(15,20): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/subscription.middleware.ts(23,21): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/subscription.middleware.ts(39,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/middleware/validation.middleware.ts(1,1): error TS6192: All imports in import declaration are unused.
+src/middleware/validation.middleware.ts(15,47): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/middleware/validation.middleware.ts(18,13): error TS2540: Cannot assign to 'body' because it is a read-only property.
+src/middleware/validation.middleware.ts(21,13): error TS2339: Property 'query' does not exist on type 'Request'.
+src/middleware/validation.middleware.ts(21,45): error TS2339: Property 'query' does not exist on type 'Request'.
+src/middleware/validation.middleware.ts(24,13): error TS2339: Property 'params' does not exist on type 'Request'.
+src/middleware/validation.middleware.ts(24,47): error TS2339: Property 'params' does not exist on type 'Request'.
+src/routes/api-v1.routes.ts(1,10): error TS6133: 'NextFunction' is declared but its value is never read.
+src/routes/api-v1.routes.ts(1,24): error TS6133: 'Request' is declared but its value is never read.
+src/routes/api-v1.routes.ts(1,33): error TS6133: 'Response' is declared but its value is never read.
+src/routes/api-v1.routes.ts(38,55): error TS6133: 'req' is declared but its value is never read.
+src/routes/api-v1.routes.ts(40,25): error TS2304: Cannot find name 'container'.
+src/routes/api-v1.routes.ts(40,65): error TS2304: Cannot find name 'TYPES'.
+src/routes/api-v1.routes.ts(42,14): error TS2554: Expected 0 arguments, but got 1.
+src/routes/api-v1.routes.ts(45,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(70,28): error TS2339: Property 'params' does not exist on type 'Request'.
+src/routes/api-v1.routes.ts(71,28): error TS2304: Cannot find name 'container'.
+src/routes/api-v1.routes.ts(71,42): error TS2304: Cannot find name 'HistoryService'.
+src/routes/api-v1.routes.ts(71,58): error TS2304: Cannot find name 'TYPES'.
+src/routes/api-v1.routes.ts(73,14): error TS2554: Expected 0 arguments, but got 1.
+src/routes/api-v1.routes.ts(76,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(115,14): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(130,71): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/routes/api-v1.routes.ts(132,28): error TS2339: Property 'params' does not exist on type 'Request'.
+src/routes/api-v1.routes.ts(136,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(148,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(154,63): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/routes/api-v1.routes.ts(156,42): error TS2339: Property 'query' does not exist on type 'Request'.
+src/routes/api-v1.routes.ts(164,10): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(183,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(202,64): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/routes/api-v1.routes.ts(204,13): error TS2339: Property 'email' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/api-v1.routes.ts(204,20): error TS2339: Property 'name' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/api-v1.routes.ts(209,11): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/api-v1.routes.ts(226,9): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/billing.routes.ts(3,10): error TS2305: Module '"../middleware/auth.middleware"' has no exported member 'requireAuth'.
+src/routes/billing.routes.ts(12,46): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/routes/billing.routes.ts(12,51): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/routes/billing.routes.ts(33,14): error TS2339: Property 'FRONTEND_URL' does not exist on type '{ NODE_ENV: "development" | "production" | "test"; PORT: number; CORS_ORIGIN: string[] | "*"; RATE_LIMIT_WINDOW_MS: number; RATE_LIMIT_MAX: number; AUTH_RATE_LIMIT_WINDOW_MS: number; ... 88 more ...; TAVILY_API_KEY?: string | undefined; }'.
+src/routes/billing.routes.ts(34,14): error TS2339: Property 'FRONTEND_URL' does not exist on type '{ NODE_ENV: "development" | "production" | "test"; PORT: number; CORS_ORIGIN: string[] | "*"; RATE_LIMIT_WINDOW_MS: number; RATE_LIMIT_MAX: number; AUTH_RATE_LIMIT_WINDOW_MS: number; ... 88 more ...; TAVILY_API_KEY?: string | undefined; }'.
+src/routes/billing.routes.ts(44,44): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/routes/billing.routes.ts(44,49): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/routes/billing.routes.ts(53,14): error TS2339: Property 'FRONTEND_URL' does not exist on type '{ NODE_ENV: "development" | "production" | "test"; PORT: number; CORS_ORIGIN: string[] | "*"; RATE_LIMIT_WINDOW_MS: number; RATE_LIMIT_MAX: number; AUTH_RATE_LIMIT_WINDOW_MS: number; ... 88 more ...; TAVILY_API_KEY?: string | undefined; }'.
+src/routes/stripe.routes.ts(1,18): error TS6133: 'Request' is declared but its value is never read.
+src/routes/stripe.routes.ts(1,27): error TS6133: 'Response' is declared but its value is never read.
+src/routes/stripe.routes.ts(19,13): error TS2339: Property 'priceId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/stripe.routes.ts(19,22): error TS2339: Property 'successUrl' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/stripe.routes.ts(19,34): error TS2339: Property 'cancelUrl' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/stripe.routes.ts(19,45): error TS2339: Property 'userId' does not exist on type 'ReadableStream<Uint8Array<ArrayBuffer>> | null'.
+src/routes/stripe.routes.ts(24,10): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/stripe.routes.ts(45,10): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/stripe.routes.ts(56,21): error TS2554: Expected 0 arguments, but got 1.
+src/routes/stripe.routes.ts(59,16): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/stripe.routes.ts(67,15): error TS7052: Element implicitly has an 'any' type because type 'Headers' has no index signature. Did you mean to call 'req.headers.get'?
+src/routes/stripe.routes.ts(71,16): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/stripe.routes.ts(112,21): error TS2554: Expected 0 arguments, but got 1.
+src/routes/stripe.routes.ts(115,16): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/youtube.routes.ts(1,18): error TS6133: 'Request' is declared but its value is never read.
+src/routes/youtube.routes.ts(1,27): error TS6133: 'Response' is declared but its value is never read.
+src/routes/youtube.routes.ts(27,10): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/youtube.routes.ts(54,9): error TS2554: Expected 0 arguments, but got 1.
+src/routes/youtube.routes.ts(57,18): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/routes/youtube.routes.ts(61,16): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/server.ts(4,1): error TS6133: 'fs' is declared but its value is never read.
+src/server.ts(11,1): error TS6133: 'connectToDatabase' is declared but its value is never read.
+src/server.ts(21,1): error TS6133: 'GoogleSecretManagerService' is declared but its value is never read.
+src/server.ts(168,41): error TS2304: Cannot find name 'CredentialManagerService'.
+src/server.ts(169,13): error TS6133: 'alertingService' is declared but its value is never read.
+src/server.ts(170,45): error TS2304: Cannot find name 'TelegramService'.
+src/server.ts(172,43): error TS7006: Parameter 'report' implicitly has an 'any' type.
+src/server.ts(173,40): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/server.ts(175,74): error TS7006: Parameter 'f' implicitly has an 'any' type.
+src/server.ts(181,16): error TS7006: Parameter 'err' implicitly has an 'any' type.
+src/server.ts(206,17): error TS2304: Cannot find name 'db'.
+src/server.ts(206,24): error TS2304: Cannot find name 'db'.
+src/server.ts(207,22): error TS2304: Cannot find name 'db'.
+src/services/ai.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/ai.service.ts(2,20): error TS2307: Cannot find module 'openai' or its corresponding type declarations.
+src/services/ai.service.ts(21,46): error TS6138: Property 'stripeService' is declared but its value is never read.
+src/services/ai.service.ts(26,25): error TS2339: Property 'OPENAI_API_KEY' does not exist on type '{ NODE_ENV: "development" | "production" | "test"; PORT: number; CORS_ORIGIN: string[] | "*"; RATE_LIMIT_WINDOW_MS: number; RATE_LIMIT_MAX: number; AUTH_RATE_LIMIT_WINDOW_MS: number; ... 88 more ...; TAVILY_API_KEY?: string | undefined; }'.
+src/services/ai.service.ts(86,21): error TS6133: 'toolCalls' is declared but its value is never read.
+src/services/ai.service.ts(182,50): error TS6133: 'useContext' is declared but its value is never read.
+src/services/alerting.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/analytics.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/auth.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/credential-manager.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/credential-manager.service.ts(19,55): error TS6138: Property 'secretManager' is declared but its value is never read.
+src/services/docker.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/email.service.ts(8,35): error TS2694: Namespace '"nodemailer"' has no exported member 'Transporter'.
+src/services/google/secret-manager.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/google/vertex-ai.service.ts(1,20): error TS6133: 'GenerativeModel' is declared but its value is never read.
+src/services/google/vertex-ai.service.ts(5,21): error TS2709: Cannot use namespace 'VertexAI' as a type.
+src/services/google/vertex-ai.service.ts(6,18): error TS2709: Cannot use namespace 'GenerativeModel' as a type.
+src/services/health/database-health.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/health/system-health.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/history.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/search.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/system-metrics.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/utils/email.service.ts(1,22): error TS6133: 'Transporter' is declared but its value is never read.
+src/utils/email.service.ts(24,24): error TS2709: Cannot use namespace 'Transporter' as a type.
+src/utils/errors.ts(52,1): error TS6192: All imports in import declaration are unused.
+src/utils/errors.ts(55,46): error TS2709: Cannot use namespace 'NextFunction' as a type.
+src/utils/featureFlags.ts(1,1): error TS6133: 'Request' is declared but its value is never read.
+src/utils/featureFlags.ts(22,19): error TS2339: Property 'cookies' does not exist on type 'Request'.
+src/utils/gemini-analysis.service.ts(1,10): error TS6133: 'GenerativeModel' is declared but its value is never read.
+src/utils/gemini-analysis.service.ts(42,27): error TS2709: Cannot use namespace 'GoogleGenerativeAI' as a type.
+src/utils/gemini-analysis.service.ts(43,27): error TS2709: Cannot use namespace 'GenerativeModel' as a type.
+src/utils/gemini-analysis.service.ts(71,23): error TS2709: Cannot use namespace 'GenerativeModel' as a type.
+src/utils/logger.ts(3,1): error TS6192: All imports in import declaration are unused.
+src/utils/logger.ts(51,65): error TS2709: Cannot use namespace 'NextFunction' as a type.

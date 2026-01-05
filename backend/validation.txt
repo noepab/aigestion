@@ -1,0 +1,9 @@
+­ƒöÁ [DEBUG] server.ts starting...
+[dotenv@17.2.3] injecting env (7) from ..\.env -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (66) from .env -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+ÔØî Environment validation failed:
+
+  - JWT_SECRET: JWT_SECRET must be at least 32 characters for security
+
+Please check your .env file and ensure all required variables are set correctly.
+

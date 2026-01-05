@@ -1,0 +1,11 @@
+groups:
+  - name: latency_alerts
+    rules:
+      - alert: HighRequestLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[2m])) by (le, instance)) > 0.5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High request latency on {{ $labels.instance }}"
+          description: "95th percentile request latency has been above 0.5 seconds for more than 2 minutes."

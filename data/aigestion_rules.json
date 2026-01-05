@@ -1,0 +1,28 @@
+﻿{
+  "_comment": "Reglas de clima para NEXUS V1. Define rango de temperatura y condiciones válidas.",
+  "example": {
+    "clima": {
+      "max_temp_range": [
+        15,
+        30
+      ],
+      "valid_conditions": [
+        "soleado",
+        "nublado"
+      ]
+    }
+  },
+  "clima": {
+    "max_temp_range": [
+      10,
+      40
+    ],
+    "valid_conditions": [
+      "soleado",
+      "nublado",
+      "lluvioso",
+      "tormentoso"
+    ]
+  }
+}
+

@@ -1,0 +1,72 @@
+node_modules
+dist
+.git
+.gitignore
+.github
+.vscode
+.env
+.env.*
+*.log
+
+# Excluir archivos grandes innecesarios
+k8s
+monitoring
+scripts
+proyectos
+venv
+__pycache__
+*.pyc
+.pytest_cache
+
+# Test files
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+__tests__
+tests
+coverage
+test-results
+playwright-report
+
+# Evaluation results
+evaluation/results
+evaluation/__pycache__
+evaluation/*.egg-info
+evaluation/venv
+evaluation/.pytest_cache
+
+# Development files
+.prettierrc
+.eslintrc*
+
+# Documentation
+docs
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.tsbuildinfo
+temp
+tmp
+
+# Gemini CLI (no necesario en imagen)
+gemini-cli
+
+# IDE
+.idea
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Build artifacts (will be created during build)
+server/dist

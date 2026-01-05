@@ -1,0 +1,5 @@
+{
+  "admin": ["audit", "retrain", "config", "view_logs"],
+  "user": ["query", "feedback", "view_metrics"],
+  "guest": ["query"]
+}

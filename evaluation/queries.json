@@ -1,0 +1,12 @@
+[
+  {"query": "¿Cuál es el clima en Madrid?"},
+  {"query": "¿Qué tiempo hará mañana en Barcelona?"},
+  {"query": "¿Está lloviendo en Sevilla ahora?"},
+  {"query": "¿Cómo estará el clima en Valencia el fin de semana?"},
+  {"query": "¿Cuál es la temperatura máxima esperada en Bilbao hoy?"},
+  {"query": "¿Habrá tormenta en Zaragoza esta noche?"},
+  {"query": "¿Qué clima se espera en Málaga para el lunes?"},
+  {"query": "¿Está nublado en Granada?"},
+  {"query": "¿Cuál es el pronóstico para Alicante mañana?"},
+  {"query": "¿Va a hacer sol en Santander esta semana?"}
+]

@@ -1,0 +1,21 @@
+﻿
+> landing-host@0.1.0 build C:\Users\Alejandro\NEXUS V1\frontend\apps\landing-host
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[vite:css] @import must precede all other statements (besides @charset or empty @layer)
+7  |  /* App.css - Premium Dark Mode Landing Page */
+8  |  /* Import Google Font */
+9  |  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700;900&display=swap');
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10 |  
+11 |  :root {
+[32mÔ£ô[39m 44 modules transformed.
+rendering chunks...
+[2mdist/[22m[32mindex.html                     [39m[1m[2m  0.54 kB[22m[1m[22m
+[2mdist/[22m[35massets/css/index-eYQ3jb-L.css  [39m[1m[2m 25.99 kB[22m[1m[22m
+[2mdist/[22m[36massets/js/index-eQa2o0iJ.js    [39m[1m[2m 27.17 kB[22m[1m[22m
+[2mdist/[22m[36massets/js/react-CcPfSL5Y.js    [39m[1m[2m140.14 kB[22m[1m[22m
+[32mÔ£ô built in 2.69s[39m
+

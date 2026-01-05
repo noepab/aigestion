@@ -1,0 +1,38 @@
+# Multi-stage build for NEXUS V1 Frontend (Root SPA)
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat ca-certificates \
+  && corepack enable \
+  && corepack prepare pnpm@9 --activate
+WORKDIR /app
+
+FROM base AS deps
+# Workspace manifests for pnpm
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+# Frontend workspace manifest
+COPY frontend/package.json ./frontend/package.json
+
+# Install dependencies for the frontend root (and its dependencies)
+RUN pnpm install --filter nexus-v1-frontend-monorepo... --frozen-lockfile
+
+FROM base AS builder
+WORKDIR /app
+COPY . .
+# Reuse node_modules from deps
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
+
+# Build the UI using the updated script
+RUN pnpm --filter nexus-v1-frontend-monorepo run build:ui
+
+FROM nginx:1.25-alpine AS runner
+WORKDIR /usr/share/nginx/html
+# Copy static build output from frontend/dist
+COPY --from=builder /app/frontend/dist .
+# Custom nginx config
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost/health || exit 1
+
+# Nginx entrypoint
+CMD ["nginx", "-g", "daemon off;"]

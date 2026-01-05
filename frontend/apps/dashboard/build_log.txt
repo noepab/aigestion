@@ -1,0 +1,10 @@
+﻿
+> NEXUS V1-frontend@0.2.0 build C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard
+> tsc -b && vite build
+
+src/components/ui/VirtualList.tsx(1,32): error TS2307: Cannot find module '@tanstack/react-virtual' or its corresponding type declarations.
+src/components/ui/VirtualList.tsx(45,50): error TS7006: Parameter 'virtualItem' implicitly has an 'any' type.
+src/pages/dashboards/GodAdminDashboardV2.tsx(21,56): error TS6133: 'error' is declared but its value is never read.
+src/pages/dashboards/OperatorDashboardV2.tsx(28,9): error TS6133: 'analytics' is declared but its value is never read.
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.
+

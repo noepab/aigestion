@@ -1,0 +1,7 @@
+{
+  "api_key": "sk-ant-your-anthropic-api-key-here",
+  "model": "claude-3-sonnet-20240229",
+  "temperature": 0.3,
+  "max_tokens": 100,
+  "cache": true
+}

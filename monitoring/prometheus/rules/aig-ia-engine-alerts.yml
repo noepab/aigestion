@@ -1,0 +1,91 @@
+﻿groups:
+  - name: NEXUS V1-ia-engine-alerts
+    rules:
+      # High Latency Alert
+      - alert: IAEngineHighLatency
+        expr: histogram_quantile(0.95, sum(rate(NEXUS V1_ia_inference_latency_seconds_bucket[5m])) by (le)) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine high inference latency"
+          description: "P95 inference latency is {{ $value | printf \"%.3f\" }}s (threshold: 0.5s)"
+
+      # Very High Latency Alert
+      - alert: IAEngineCriticalLatency
+        expr: histogram_quantile(0.95, sum(rate(NEXUS V1_ia_inference_latency_seconds_bucket[5m])) by (le)) > 1.0
+        for: 1m
+        labels:
+          severity: critical
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine critical inference latency"
+          description: "P95 inference latency is {{ $value | printf \"%.3f\" }}s (threshold: 1.0s)"
+
+      # High Error Rate
+      - alert: IAEngineHighErrorRate
+        expr: sum(rate(NEXUS V1_ia_errors_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine high error rate"
+          description: "Error rate is {{ $value | printf \"%.2f\" }} errors/second"
+
+      # Service Down
+      - alert: IAEngineDown
+        expr: up{job="NEXUS V1-ia-engine"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine is down"
+          description: "The NEXUS V1 IA Engine service has been down for more than 1 minute"
+
+      # High CPU Usage
+      - alert: IAEngineHighCPU
+        expr: NEXUS V1_ia_cpu_utilization_percent > 90
+        for: 5m
+        labels:
+          severity: warning
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine high CPU usage"
+          description: "CPU usage is {{ $value | printf \"%.1f\" }}%"
+
+      # High Memory Usage
+      - alert: IAEngineHighMemory
+        expr: NEXUS V1_ia_memory_utilization_percent > 90
+        for: 5m
+        labels:
+          severity: warning
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine high memory usage"
+          description: "Memory usage is {{ $value | printf \"%.1f\" }}%"
+
+      # Training Job Failed
+      - alert: IAEngineTrainingFailed
+        expr: increase(NEXUS V1_ia_training_jobs_total{status="failed"}[1h]) > 0
+        for: 0m
+        labels:
+          severity: warning
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine training job failed"
+          description: "A training job has failed in the last hour"
+
+      # Low Prediction Confidence
+      - alert: IAEngineLowConfidence
+        expr: histogram_quantile(0.5, sum(rate(NEXUS V1_ia_prediction_confidence_bucket[15m])) by (le)) < 0.5
+        for: 10m
+        labels:
+          severity: info
+          service: NEXUS V1-ia-engine
+        annotations:
+          summary: "IA Engine low prediction confidence"
+          description: "Median prediction confidence is {{ $value | printf \"%.2f\" }} (below 0.5)"
+

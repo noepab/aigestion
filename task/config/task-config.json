@@ -1,0 +1,98 @@
+﻿{
+  "system": {
+    "version": "1.0.0",
+    "name": "NEXUS V1 Task Management System",
+    "description": "Advanced automated task management and planning system",
+    "created": "2025-12-07",
+    "lastUpdated": "2025-12-07"
+  },
+  "storage": {
+    "taskFile": "data/tasks.json",
+    "archiveFile": "data/tasks-archive.json",
+    "cacheFile": "data/.cache/tasks-cache.json",
+    "analyticsFile": "data/analytics.json",
+    "maxBackups": 10
+  },
+  "taskTypes": [
+    "feature",
+    "bugfix",
+    "optimization",
+    "documentation",
+    "research",
+    "devops",
+    "infrastructure",
+    "testing",
+    "refactoring",
+    "maintenance"
+  ],
+  "priorities": {
+    "critical": 5,
+    "high": 4,
+    "medium": 3,
+    "low": 2,
+    "minimal": 1
+  },
+  "statuses": [
+    "backlog",
+    "todo",
+    "in_progress",
+    "blocked",
+    "review",
+    "testing",
+    "done",
+    "cancelled"
+  ],
+  "sprints": {
+    "shortTerm": {
+      "name": "Sprint (1-2 weeks)",
+      "duration": 14,
+      "maxTasks": 15
+    },
+    "mediumTerm": {
+      "name": "Quarter (3 months)",
+      "duration": 90,
+      "maxTasks": 50
+    },
+    "longTerm": {
+      "name": "Roadmap (6-12 months)",
+      "duration": 365,
+      "maxTasks": 100
+    }
+  },
+  "automation": {
+    "enableAutoBackup": true,
+    "backupInterval": 3600,
+    "enableAutoAnalytics": true,
+    "analyticsInterval": 7200,
+    "enableGitSync": true,
+    "gitSyncInterval": 86400
+  },
+  "reporting": {
+    "enableDailyReport": true,
+    "enableWeeklyReport": true,
+    "enableMonthlyReport": true,
+    "reportFormat": "markdown",
+    "includeMetrics": true,
+    "includeForecast": true
+  },
+  "notifications": {
+    "enableSlack": false,
+    "enableEmail": false,
+    "enableConsole": true,
+    "onTaskCreated": true,
+    "onTaskCompleted": true,
+    "onBlocked": true,
+    "onDeadlineApproaching": true
+  },
+  "metrics": {
+    "trackVelocity": true,
+    "trackBurndown": true,
+    "trackCycleTime": true,
+    "trackLeadTime": true,
+    "trackOnTimeCompletion": true
+  },
+  "teamSize": 1,
+  "workingHoursPerDay": 8,
+  "workingDaysPerWeek": 5
+}
+

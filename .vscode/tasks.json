@@ -1,0 +1,349 @@
+﻿{
+  // ╔═══════════════════════════════════════════════════════════════╗
+  // ║  ⚡ NEXUS V1 - Tasks NIVEL DIOS ⚡                                  ║
+  // ╚═══════════════════════════════════════════════════════════════╝
+  "version": "2.0.0",
+  "tasks": [
+    // ═══════════════════════════════════════════════════════════════
+    // 🚀 DESARROLLO
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🚀 Dev: All (Turbo)",
+      "type": "shell",
+      "command": "pnpm run dev",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🖥️ Dev: Backend Only",
+      "type": "shell",
+      "command": "pnpm run dev:backend",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🎨 Dev: Frontend Only",
+      "type": "shell",
+      "command": "pnpm run dev:frontend",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Dev: Storybook",
+      "type": "shell",
+      "command": "pnpm run storybook",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🔨 BUILD
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🔨 Build: All",
+      "type": "shell",
+      "command": "pnpm run build",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "🔨 Build: Backend",
+      "type": "shell",
+      "command": "pnpm --filter NEXUS V1-dashboard-backend run build",
+      "group": "build",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "🔨 Build: Frontend",
+      "type": "shell",
+      "command": "pnpm --filter landingpage run build",
+      "group": "build",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "🔨 Build: Storybook",
+      "type": "shell",
+      "command": "pnpm run build-storybook",
+      "group": "build",
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🧪 TESTING
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🧪 Test: All",
+      "type": "shell",
+      "command": "pnpm run test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Test: Backend (Jest)",
+      "type": "shell",
+      "command": "pnpm --filter NEXUS V1-dashboard-backend run test",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Test: Backend (Watch)",
+      "type": "shell",
+      "command": "pnpm --filter NEXUS V1-dashboard-backend run test -- --watch",
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Test: Backend (Coverage)",
+      "type": "shell",
+      "command": "pnpm --filter NEXUS V1-dashboard-backend run test -- --coverage",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐍 Test: Python (Pytest)",
+      "type": "shell",
+      "command": ".venv\\Scripts\\python.exe -m pytest -v",
+      "windows": {
+        "command": ".venv\\Scripts\\python.exe -m pytest -v"
+      },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🌐 Test: E2E (Cypress)",
+      "type": "shell",
+      "command": "pnpm run cy:run",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🌐 Test: E2E (Cypress Open)",
+      "type": "shell",
+      "command": "pnpm run cy:open",
+      "group": "test",
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🔍 LINTING
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🔍 Lint: All",
+      "type": "shell",
+      "command": "pnpm run lint",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "🔍 Lint: Backend",
+      "type": "shell",
+      "command": "pnpm --filter NEXUS V1-dashboard-backend run lint",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "🔍 Lint: Fix All",
+      "type": "shell",
+      "command": "pnpm run lint -- --fix",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🐋 DOCKER
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🐋 Docker: Up (Dev)",
+      "type": "shell",
+      "command": "docker-compose up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐋 Docker: Up (Prod)",
+      "type": "shell",
+      "command": "docker-compose -f docker-compose.prod.yml up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐋 Docker: Down",
+      "type": "shell",
+      "command": "docker-compose down",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐋 Docker: Build",
+      "type": "shell",
+      "command": "docker-compose build",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐋 Docker: Logs",
+      "type": "shell",
+      "command": "docker-compose logs -f",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 📦 DEPENDENCY MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "📦 Install: All Dependencies",
+      "type": "shell",
+      "command": "pnpm install",
+      "problemMatcher": []
+    },
+    {
+      "label": "📦 Install: Clean Install",
+      "type": "shell",
+      "command": "pnpm install --frozen-lockfile",
+      "problemMatcher": []
+    },
+    {
+      "label": "📦 Update: All Dependencies",
+      "type": "shell",
+      "command": "pnpm update --interactive --latest",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐍 Python: Install Dependencies",
+      "type": "shell",
+      "command": ".venv\\Scripts\\pip.exe install -r src/requirements.txt",
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 📚 DOCUMENTATION
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "📚 Docs: Organize",
+      "type": "shell",
+      "command": "pnpm run docs:organize",
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Docs: Generate Index",
+      "type": "shell",
+      "command": "pnpm run docs:index",
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Docs: Dev Server",
+      "type": "shell",
+      "command": "pnpm run docs:dev",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Docs: Build",
+      "type": "shell",
+      "command": "pnpm run docs:build",
+      "problemMatcher": []
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🔧 UTILITIES
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🔧 Clean: Turbo Cache",
+      "type": "shell",
+      "command": "npx turbo daemon stop && Remove-Item -Recurse -Force .turbo, node_modules/.cache -ErrorAction SilentlyContinue",
+      "windows": {
+        "command": "npx turbo daemon stop; Remove-Item -Recurse -Force .turbo, node_modules/.cache -ErrorAction SilentlyContinue"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Clean: All Build Artifacts",
+      "type": "shell",
+      "command": "Remove-Item -Recurse -Force dist, build, .next, .turbo, coverage -ErrorAction SilentlyContinue",
+      "windows": {
+        "command": "Remove-Item -Recurse -Force dist, build, .next, .turbo, coverage -ErrorAction SilentlyContinue"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Clean: Node Modules",
+      "type": "shell",
+      "command": "Remove-Item -Recurse -Force node_modules, server/node_modules, frontend/node_modules -ErrorAction SilentlyContinue",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Reset: Full Clean + Install",
+      "type": "shell",
+      "command": "Remove-Item -Recurse -Force node_modules, .turbo, dist, build -ErrorAction SilentlyContinue; pnpm install",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 TypeCheck: All",
+      "type": "shell",
+      "command": "pnpm exec tsc --noEmit",
+      "problemMatcher": ["$tsc"]
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🚀 RELEASE
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "🚀 Release: Semantic",
+      "type": "shell",
+      "command": "pnpm run release",
+      "problemMatcher": []
+    },
+    {
+      "label": "📝 Commit: Conventional",
+      "type": "shell",
+      "command": "pnpm run commit",
+      "problemMatcher": []
+    }
+    ,
+    // ═══════════════════════════════════════════════════════════════
+    // ⚡ FAST STARTUP
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "label": "⚡ Fast: Minimal (Landing)",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/fast-startup.ps1 -Minimal -Install",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚡ Fast: FE+BE",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/fast-startup.ps1 -Frontend -Backend -Install",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
+

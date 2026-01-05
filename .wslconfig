@@ -1,0 +1,69 @@
+# Configuración de WSL2 para Mini PC
+# Optimizada para recursos limitados
+
+[wsl2]
+# Limitar memoria RAM a 2GB (ajustar según tu Mini PC)
+# Si tienes 4GB total, usa 2GB
+# Si tienes 8GB total, puedes usar 3-4GB
+memory=2GB
+
+# Limitar procesadores a 2 cores
+# Ajustar según tus cores disponibles
+processors=2
+
+# Limitar archivo de swap a 1GB
+swap=1GB
+
+# Ubicación del swap (opcional)
+# swapFile=C:\\temp\\wsl-swap.vhdx
+
+# Deshabilitar nested virtualization (ahorra recursos)
+nestedVirtualization=false
+
+# Deshabilitar GUI apps si no las usas
+guiApplications=false
+
+# Limitar tamaño del disco virtual a 20GB
+# (El archivo .vhdx puede crecer hasta este tamaño)
+# Nota: Esto se configura por distribución, no aquí
+
+# Configuración de red
+# localhostForwarding=true
+
+# Configuración de kernel (opcional, para optimización)
+# kernelCommandLine =
+
+# INSTRUCCIONES:
+# 1. Guarda este archivo como: %USERPROFILE%\.wslconfig
+#    (Ejemplo: C:\Users\TuUsuario\.wslconfig)
+#
+# 2. Reinicia WSL para aplicar cambios:
+#    wsl --shutdown
+#    (Espera 8 segundos y vuelve a abrir WSL)
+#
+# 3. Verifica la configuración:
+#    wsl --status
+#
+# 4. Verifica uso de recursos:
+#    En PowerShell: Get-Process vmmem
+#    En WSL: free -h
+
+# NOTAS IMPORTANTES:
+# - Estos límites son para WSL2 completo, no solo Docker
+# - Docker Desktop usa WSL2 como backend
+# - Ajusta según tus necesidades y recursos disponibles
+# - Si experimentas lentitud, aumenta ligeramente los límites
+# - Si el sistema se queda sin memoria, reduce los límites
+
+# RECURSOS RECOMENDADOS POR TAMAÑO DE RAM:
+# 4GB RAM total  → memory=2GB, swap=1GB
+# 8GB RAM total  → memory=4GB, swap=2GB
+# 16GB RAM total → memory=8GB, swap=4GB
+
+# MONITOREO:
+# Ver uso de memoria de WSL:
+# PowerShell: Get-Process vmmem | Select-Object WorkingSet64
+#
+# Ver uso dentro de WSL:
+# free -h
+# htop (si está instalado)

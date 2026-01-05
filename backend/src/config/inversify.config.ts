@@ -1,0 +1,48 @@
+import 'reflect-metadata';
+import { Container } from 'inversify';
+import { HistoryService } from '../services/history.service';
+import { AlertingService } from '../services/alerting.service';
+import { SystemMetricsService } from '../services/system-metrics.service';
+import { TelegramService } from '../services/telegram.service';
+import { GoogleSecretManagerService } from '../services/google/secret-manager.service';
+import { CredentialManagerService } from '../services/credential-manager.service';
+import { AIService } from '../services/ai.service';
+import { AnalyticsService } from '../services/analytics.service';
+import { AuthService } from '../services/auth.service';
+import { DockerService } from '../services/docker.service';
+import { EmailService } from '../services/email.service';
+import { InstagramService } from '../services/instagram.service';
+import { LinkedInService } from '../services/linkedin.service';
+import { RagService } from '../services/rag.service';
+import { StripeService } from '../services/stripe.service';
+import { TikTokService } from '../services/tiktok.service';
+import { XService } from '../services/x.service';
+import { SearchService } from '../services/search.service';
+import { GoogleDriveService } from '../services/google/google-drive.service';
+import { BackupService } from '../services/backup.service';
+import { TYPES } from '../types';
+
+const container = new Container();
+
+container.bind<HistoryService>(TYPES.HistoryService).to(HistoryService).inSingletonScope();
+container.bind<TelegramService>(TYPES.TelegramService).to(TelegramService).inSingletonScope();
+container.bind<SystemMetricsService>(TYPES.SystemMetricsService).to(SystemMetricsService).inSingletonScope();
+container.bind<AlertingService>(TYPES.AlertingService).to(AlertingService).inSingletonScope();
+container.bind<GoogleSecretManagerService>(TYPES.GoogleSecretManagerService).to(GoogleSecretManagerService).inSingletonScope();
+container.bind<CredentialManagerService>(TYPES.CredentialManagerService).to(CredentialManagerService).inSingletonScope();
+container.bind<AIService>(TYPES.AIService).to(AIService).inSingletonScope();
+container.bind<AnalyticsService>(TYPES.AnalyticsService).to(AnalyticsService).inSingletonScope();
+container.bind<AuthService>(TYPES.AuthService).to(AuthService).inSingletonScope();
+container.bind<DockerService>(TYPES.DockerService).to(DockerService).inSingletonScope();
+container.bind<EmailService>(TYPES.EmailService).to(EmailService).inSingletonScope();
+container.bind<InstagramService>(TYPES.InstagramService).to(InstagramService).inSingletonScope();
+container.bind<LinkedInService>(TYPES.LinkedInService).to(LinkedInService).inSingletonScope();
+container.bind<RagService>(TYPES.RagService).to(RagService).inSingletonScope();
+container.bind<StripeService>(TYPES.StripeService).to(StripeService).inSingletonScope();
+container.bind<TikTokService>(TYPES.TikTokService).to(TikTokService).inSingletonScope();
+container.bind<XService>(TYPES.XService).to(XService).inSingletonScope();
+container.bind<SearchService>(TYPES.SearchService).to(SearchService).inSingletonScope();
+container.bind<GoogleDriveService>(GoogleDriveService).toSelf().inSingletonScope();
+container.bind<BackupService>(BackupService).toSelf().inSingletonScope();
+
+export { container, TYPES };

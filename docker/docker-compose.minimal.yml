@@ -1,0 +1,80 @@
+﻿version: '3.8'
+
+# Docker Compose Optimizado para Mini PC (Cloud Ready)
+# Uses built images (self-contained) instead of volume mounts for code.
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    container_name: NEXUS V1-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_TYPE=sqlite
+      - DB_PATH=/app/data/NEXUS V1.db
+      # Add other necessary env vars here or via .env file
+      - JWT_SECRET=${JWT_SECRET:-change_this_secret_in_prod}
+    volumes:
+      - NEXUS V1-data:/app/data
+      - NEXUS V1-logs:/app/logs
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'      # Max 50% of 1 core
+          memory: 512M     # Max 512MB RAM
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Unified Frontend (Landing + Dashboard)
+  nginx:
+    build:
+      context: ..
+      dockerfile: Dockerfile.static
+    container_name: NEXUS V1-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    # No volume mounts for code - it's baked in!
+    # Only mount SSL if needed
+    # volumes:
+    #   - ./nginx/ssl:/etc/nginx/ssl:ro
+    restart: unless-stopped
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# Persistent Volumes
+volumes:
+  NEXUS V1-data:
+    name: NEXUS V1_data
+  NEXUS V1-logs:
+    name: NEXUS V1_logs
+
+networks:
+  default:
+    driver: bridge

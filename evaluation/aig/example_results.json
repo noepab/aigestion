@@ -1,0 +1,66 @@
+{
+  "metrics": {
+    "coherence": 4.375,
+    "fluency": 4.625,
+    "relevance": 4.75,
+    "coherence.coherence": 4.375,
+    "fluency.fluency": 4.625,
+    "relevance.relevance": 4.75
+  },
+  "rows": [
+    {
+      "query": "¿Cuál es la capital de Francia?",
+      "context": "Francia es un país europeo con una rica historia cultural.",
+      "response": "La capital de Francia es París, una ciudad conocida por su arquitectura, arte y cultura.",
+      "latency": 1.234,
+      "status": "success",
+      "coherence": 5.0,
+      "coherence_reason": "La respuesta es perfectamente coherente, fluye de manera natural y proporciona información relevante de forma clara y organizada.",
+      "fluency": 5.0,
+      "fluency_reason": "La gramática y sintaxis son impecables. El uso del vocabulario es apropiado y la estructura de la oración es correcta.",
+      "relevance": 5.0,
+      "relevance_reason": "La respuesta aborda directamente la pregunta planteada, proporcionando información precisa y adicional contextual sobre París."
+    },
+    {
+      "query": "Explica cómo funciona la fotosíntesis en plantas",
+      "context": "Las plantas utilizan la luz solar para producir energía.",
+      "response": "La fotosíntesis es el proceso mediante el cual las plantas convierten la luz solar, agua y dióxido de carbono en glucosa y oxígeno.",
+      "latency": 1.567,
+      "status": "success",
+      "coherence": 5.0,
+      "coherence_reason": "Explicación clara y lógica del proceso de fotosíntesis con una estructura coherente.",
+      "fluency": 5.0,
+      "fluency_reason": "Redacción fluida con vocabulario científico apropiado y sintaxis correcta.",
+      "relevance": 5.0,
+      "relevance_reason": "Responde directamente la pregunta explicando el proceso de fotosíntesis de manera concisa."
+    },
+    {
+      "query": "¿Qué es la inteligencia artificial?",
+      "context": "La IA es un campo de la informática que busca crear sistemas inteligentes.",
+      "response": "La inteligencia artificial (IA) es una rama de la informática que se enfoca en crear máquinas y software capaces de realizar tareas que normalmente requieren inteligencia humana, como el aprendizaje, razonamiento y resolución de problemas.",
+      "latency": 1.892,
+      "status": "success",
+      "coherence": 4.0,
+      "coherence_reason": "Respuesta coherente y bien estructurada que define IA y menciona sus capacidades principales.",
+      "fluency": 5.0,
+      "fluency_reason": "Excelente fluidez con uso apropiado de terminología técnica y gramática perfecta.",
+      "relevance": 5.0,
+      "relevance_reason": "Proporciona una definición completa y relevante de inteligencia artificial."
+    },
+    {
+      "query": "Describe los beneficios de la dieta mediterránea",
+      "context": "La dieta mediterránea incluye frutas, verduras, pescado y aceite de oliva.",
+      "response": "La dieta mediterránea ofrece múltiples beneficios para la salud, incluyendo reducción del riesgo cardiovascular, mejora de la salud cerebral, control del peso y longevidad.",
+      "latency": 1.456,
+      "status": "success",
+      "coherence": 4.0,
+      "coherence_reason": "Lista coherente de beneficios, aunque podría expandir ligeramente cada punto.",
+      "fluency": 4.0,
+      "fluency_reason": "Buen uso del lenguaje con estructura de lista efectiva.",
+      "relevance": 4.0,
+      "relevance_reason": "Identifica correctamente los beneficios clave de la dieta mediterránea."
+    }
+  ],
+  "studio_url": null,
+  "traces": {}
+}

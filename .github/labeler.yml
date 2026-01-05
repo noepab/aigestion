@@ -1,0 +1,25 @@
+# Labels based on changed files
+
+"frontend":
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/**/*'
+
+"backend":
+  - changed-files:
+      - any-glob-to-any-file: 'aig-ia-engine/**/*'
+      - any-glob-to-any-file: 'swarm/**/*'
+
+"ci":
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+
+"documentation":
+  - changed-files:
+      - any-glob-to-any-file: '**/*.md'
+      - any-glob-to-any-file: 'docs/**/*'
+
+"docker":
+  - changed-files:
+      - any-glob-to-any-file: 'docker/**/*'
+      - any-glob-to-any-file: '**/Dockerfile'
+      - any-glob-to-any-file: '**/docker-compose.yml'

@@ -1,0 +1,212 @@
+import { injectable, inject } from 'inversify';
+import OpenAI from 'openai';
+import { env } from '../config/env.schema';
+import { Readable } from 'stream';
+import { TYPES } from '../types';
+import { StripeService } from './stripe.service';
+import { AnalyticsService } from './analytics.service';
+import { SearchService } from './search.service';
+
+export interface AIStreamParams {
+    prompt: string;
+    history?: { role: 'user' | 'assistant' | 'system'; content: string }[];
+    userId: string;
+}
+
+@injectable()
+export class AIService {
+    private openai: OpenAI;
+
+    constructor(
+        @inject(TYPES.StripeService) private stripeService: StripeService,
+        @inject(TYPES.AnalyticsService) private analyticsService: AnalyticsService,
+        @inject(TYPES.SearchService) private searchService: SearchService
+    ) {
+        this.openai = new OpenAI({
+            apiKey: env.OPENAI_API_KEY,
+        });
+    }
+
+    private getTools(): OpenAI.Chat.Completions.ChatCompletionTool[] {
+        return [
+            {
+                type: 'function',
+                function: {
+                    name: 'get_revenue_analytics',
+                    description: 'Get monthly revenue data for the dashboard.',
+                    parameters: { type: 'object', properties: {} },
+                },
+            },
+            {
+                type: 'function',
+                function: {
+                    name: 'get_user_growth',
+                    description: 'Get user growth trends for the last 14 days.',
+                    parameters: { type: 'object', properties: {} },
+                },
+            },
+            {
+                type: 'function',
+                function: {
+                    name: 'search_web',
+                    description: 'Search the web for real-time information, news, or technical documentation.',
+                    parameters: {
+                        type: 'object',
+                        properties: {
+                            query: { type: 'string', description: 'The search query.' },
+                        },
+                        required: ['query'],
+                    },
+                },
+            }
+        ];
+    }
+
+    public async streamChat(params: AIStreamParams): Promise<Readable> {
+        const stream = new Readable({ read() { } });
+
+        const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+            {
+                role: 'system',
+                content: `You are Nexus AI, an advanced agent.
+        When asked about revenue or users, use the provided tools.
+        If a tool gives you data, summarize it briefly and the UI will render it.
+        Current User ID: ${params.userId}`,
+            },
+            ...(params.history || []).map((msg) => ({
+                role: msg.role as 'user' | 'assistant' | 'system',
+                content: msg.content,
+            })),
+            { role: 'user', content: params.prompt },
+        ];
+
+        try {
+            const runner = async () => {
+                let currentMessages = [...messages];
+                let toolCalls: any[] = [];
+                let finished = false;
+
+                while (!finished) {
+                    const completion = await this.openai.chat.completions.create({
+                        model: 'gpt-4-turbo-preview',
+                        messages: currentMessages,
+                        tools: this.getTools(),
+                        tool_choice: 'auto',
+                        stream: true,
+                    });
+
+                    let fullContent = '';
+                    let tempToolCalls: any = {};
+
+                    for await (const chunk of completion) {
+                        const delta = chunk.choices[0]?.delta;
+                        const content = delta?.content;
+                        const calls = delta?.tool_calls;
+
+                        if (content) {
+                            fullContent += content;
+                            stream.push(`data: ${JSON.stringify({ type: 'text', content })}\n\n`);
+                        }
+
+                        if (calls) {
+                            for (const call of calls) {
+                                if (!tempToolCalls[call.index!]) {
+                                    tempToolCalls[call.index!] = { id: call.id, name: '', arguments: '' };
+                                }
+                                if (call.function?.name) tempToolCalls[call.index!].name += call.function.name;
+                                if (call.function?.arguments) tempToolCalls[call.index!].arguments += call.function.arguments;
+                            }
+                        }
+                    }
+
+                    const finalToolCalls = Object.values(tempToolCalls).map((tc: any) => ({
+                        id: tc.id,
+                        type: 'function',
+                        function: { name: tc.name, arguments: tc.arguments }
+                    }));
+
+                    if (finalToolCalls.length > 0) {
+                        currentMessages.push({
+                            role: 'assistant',
+                            content: fullContent || null,
+                            tool_calls: finalToolCalls as any
+                        });
+
+                        for (const tc of finalToolCalls) {
+                            let result = '';
+                            if (tc.function.name === 'get_revenue_analytics') {
+                                const data = await this.analyticsService.getDashboardData();
+                                result = JSON.stringify(data.revenue);
+                                // Push a special A2UI signal to the frontend
+                                stream.push(`data: ${JSON.stringify({ type: 'a2ui', component: 'chart', props: { title: 'Revenue Overview', type: 'area', data: data.revenue } })}\n\n`);
+                            } else if (tc.function.name === 'get_user_growth') {
+                                const data = await this.analyticsService.getDashboardData();
+                                result = JSON.stringify(data.users);
+                                stream.push(`data: ${JSON.stringify({ type: 'a2ui', component: 'chart', props: { title: 'User Growth', type: 'bar', data: data.users } })}\n\n`);
+                            } else if (tc.function.name === 'search_web') {
+                                const args = JSON.parse(tc.function.arguments);
+                                const results = await this.searchService.search(args.query);
+                                result = JSON.stringify(results);
+                                // Optional: push a special A2UI signal for search results if preferred,
+                                // but standard text summary usually suffices for general search.
+                            }
+
+                            currentMessages.push({
+                                role: 'tool',
+                                tool_call_id: tc.id,
+                                content: result
+                            } as any);
+                        }
+                        // Loop again to let LLM summarize the tool results
+                    } else {
+                        finished = true;
+                    }
+                }
+
+                stream.push('data: [DONE]\n\n');
+                stream.push(null);
+            };
+
+            runner();
+
+        } catch (error) {
+            stream.emit('error', error);
+        }
+
+        return stream;
+    }
+
+    /**
+     * Generate content (Legacy/Single-shot)
+     */
+    public async generateContent(prompt: string, useContext?: boolean): Promise<string> {
+        const completion = await this.openai.chat.completions.create({
+            model: 'gpt-4-turbo-preview',
+            messages: [
+                { role: 'system', content: 'You are a helpful AI assistant.' },
+                { role: 'user', content: prompt }
+            ],
+        });
+        return completion.choices[0]?.message?.content || '';
+    }
+
+    /**
+     * Chat (Legacy/Non-streaming)
+     */
+    public async chat(history: any[], message: string): Promise<string> {
+        const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+            { role: 'system', content: 'You are a helpful AI assistant.' },
+            ...(history || []).map((msg) => ({
+                role: msg.role as 'user' | 'assistant' | 'system',
+                content: msg.content,
+            })),
+            { role: 'user', content: message },
+        ];
+
+        const completion = await this.openai.chat.completions.create({
+            model: 'gpt-4-turbo-preview',
+            messages,
+        });
+        return completion.choices[0]?.message?.content || '';
+    }
+}

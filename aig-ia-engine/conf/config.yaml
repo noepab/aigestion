@@ -1,0 +1,12 @@
+﻿defaults:
+  - _self_
+  - model: default
+  - data: default
+
+hydra:
+  run:
+    dir: ./outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+
+project_name: NEXUS V1-ia-engine
+version: 0.1.0
+

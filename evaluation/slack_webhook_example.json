@@ -1,0 +1,12 @@
+{
+  "slack_webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+  "channel": "#evaluations",
+  "mention_on_failure": "@dev-team",
+  "alert_thresholds": {
+    "accuracy": 0.5,
+    "precision": 0.4,
+    "recall": 0.4,
+    "f1": 0.45
+  },
+  "notify_on": ["degradation", "threshold_violation", "pipeline_failure"]
+}

@@ -1,0 +1,9 @@
+﻿
+> NEXUS V1-frontend@0.2.0 build C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard
+> tsc -b && vite build
+
+src/components/effects/ParticleBackground.tsx(19,13): error TS7030: Not all code paths return a value.
+C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard:
+ÔÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILÔÇë NEXUS V1-frontend@0.2.0 build: `tsc -b && vite build`
+Exit status 1
+

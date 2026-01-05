@@ -1,0 +1,47 @@
+﻿# Prometheus configuration for NEXUS V1 project
+# -------------------------------------------------
+# This file defines global settings, rule files, and scrape jobs.
+# It follows best‑practice recommendations: concise intervals, external labels,
+# and a dedicated job for node‑exporter metrics.
+
+global:
+  # How often to scrape targets by default
+  scrape_interval: 15s
+  # How often to evaluate rules
+  evaluation_interval: 15s
+  # Optional external labels for identifying this Prometheus instance
+  external_labels:
+    monitor: "NEXUS V1-monitor"
+
+# Alerting/recording rule files – place your .yml rule definitions here
+rule_files:
+  - "/etc/prometheus/rules/*.yml"
+
+scrape_configs:
+  # Self‑scrape – Prometheus scrapes its own metrics
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Backend service (FastAPI) exposing /metrics on port 3000
+  - job_name: "NEXUS V1-backend"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["app:3000"]
+
+  # IA Engine service exposing /metrics on port 8000
+  - job_name: "NEXUS V1-ia-engine"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["ia-engine:8000"]
+
+  # cAdvisor for container and host metrics (works better on Windows)
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+
+  # Node exporter
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+

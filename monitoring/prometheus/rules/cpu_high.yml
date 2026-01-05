@@ -1,0 +1,11 @@
+groups:
+  - name: cpu_alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: sum(rate(container_cpu_usage_seconds_total{name!=""}[2m])) by (name) / sum(machine_cpu_cores) > 0.8
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CPU usage is high on {{ $labels.instance }}"
+          description: "CPU usage has been above 80% for more than 2 minutes."

@@ -1,0 +1,10 @@
+﻿This is a test file for NEXUS V1 migration.
+Here is some content:
+The project is called NEXUS V1.
+Variable name: NEXUS V1Instance.
+Class name: NEXUS V1Controller.
+Path: /var/log/NEXUS V1/error.log
+Upper: NEXUS V1
+Lower: NEXUS V1
+Mixed: NEXUS V1
+

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "input": "def add(a, b): return a + b",
+    "ground_truth": 1,
+    "prediction": 1
+  },
+  {
+    "id": "2",
+    "input": "def sub(a, b): return a - b",
+    "ground_truth": 0,
+    "prediction": 0
+  },
+  {
+    "id": "3",
+    "input": "def mul(a, b): return a * b",
+    "ground_truth": 1,
+    "prediction": 0
+  }
+]

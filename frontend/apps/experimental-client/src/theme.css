@@ -1,0 +1,25 @@
+﻿/*
+  Variables de tema claro y oscuro para NEXUS V1
+*/
+:root {
+  --color-bg: #f8f9fa;
+  --color-text: #222;
+  --color-primary: #1976d2;
+  --color-secondary: #f50057;
+}
+
+[data-theme='dark'] {
+  --color-bg: #181a1b;
+  --color-text: #f8f9fa;
+  --color-primary: #90caf9;
+  --color-secondary: #ff4081;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+

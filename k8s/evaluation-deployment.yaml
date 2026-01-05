@@ -1,0 +1,110 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: evaluation-service
+  namespace: NEXUS V1
+  labels:
+    app: evaluation
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app: evaluation
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evaluation
+  namespace: NEXUS V1
+  labels:
+    app: evaluation
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: evaluation
+  template:
+    metadata:
+      labels:
+        app: evaluation
+    spec:
+      containers:
+        - name: evaluation
+          image: NEXUS V1-evaluation:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: PYTHONUNBUFFERED
+              value: '1'
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: RABBITMQ_URI
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: MONGODB_URI
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: GEMINI_API_KEY
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: evaluation-results
+              mountPath: /app/results
+      volumes:
+        - name: evaluation-results
+          persistentVolumeClaim:
+            claimName: evaluation-results-pvc
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: evaluation-results-pvc
+  namespace: NEXUS V1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+
+

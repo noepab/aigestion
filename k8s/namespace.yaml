@@ -1,0 +1,9 @@
+﻿apiVersion: v1
+kind: Namespace
+metadata:
+  name: NEXUS V1
+  labels:
+    name: NEXUS V1
+    environment: production
+
+

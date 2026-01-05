@@ -1,0 +1,17 @@
+­ƒöÁ [DEBUG] server.ts starting...
+[dotenv@17.2.3] injecting env (6) from ..\.env -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (67) from .env -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+C:\Users\Alejandro\AIGestion\backend\src\services\alerting.service.ts:16
+    @inject(TYPES.SystemMetricsService) private metricsService: SystemMetricsService,
+                  ^
+TypeError: Cannot read properties of undefined (reading 'SystemMetricsService')
+    at Object.<anonymous> (C:\Users\Alejandro\AIGestion\backend\src\services\alerting.service.ts:16:19)
+    at Module._compile (node:internal/modules/cjs/loader:1760:14)
+    at Module.m._compile (C:\Users\Alejandro\AIGestion\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1892:10
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\Alejandro\AIGestion\backend\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1480:32)
+    at Module._load (node:internal/modules/cjs/loader:1299:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1503:12)

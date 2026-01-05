@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "redhat.vscode-yaml",
+    "trunk.io",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "ms-azuretools.vscode-docker",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "wix.vscode-import-cost",
+    "wallabyjs.console-ninja",
+    "aaron-bond.better-comments",
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ]
+}

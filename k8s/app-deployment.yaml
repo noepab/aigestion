@@ -1,0 +1,167 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: NEXUS V1
+  labels:
+    app: alejandro-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: backend
+    - port: 5173
+      targetPort: 5173
+      protocol: TCP
+      name: frontend
+  selector:
+    app: alejandro-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alejandro-app
+  namespace: NEXUS V1
+  labels:
+    app: alejandro-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: alejandro-app
+  template:
+    metadata:
+      labels:
+        app: alejandro-app
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+        prometheus.io/path: '/metrics'
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - alejandro-app
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: app
+          image: NEXUS V1-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+              name: backend
+            - containerPort: 5173
+              name: frontend
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: NODE_ENV
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: LOG_LEVEL
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: API_PORT
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: MONGODB_URI
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: RABBITMQ_URI
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: REDIS_PORT
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: REDIS_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: JWT_SECRET
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: GEMINI_API_KEY
+            - name: WINDSURF_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: NEXUS V1-secrets
+                  key: WINDSURF_API_TOKEN
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: OTEL_SERVICE_NAME
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: NEXUS V1-config
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '250m'
+            limits:
+              memory: '2Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+      volumes:
+        - name: app-logs
+          emptyDir: {}
+      imagePullSecrets:
+        - name: ghcr-secret
+
+

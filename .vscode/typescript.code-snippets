@@ -1,0 +1,27 @@
+{
+	"Nexus Service": {
+		"prefix": "nservice",
+		"body": [
+			"import { injectable } from 'inversify';",
+			"",
+			"@injectable()",
+			"export class ${1:ServiceName} {",
+			"\tconstructor() {",
+			"\t\t${0}",
+			"\t}",
+			"}"
+		],
+		"description": "Create a new Nexus Inversify service"
+	},
+	"Nexus Test": {
+		"prefix": "ntest",
+		"body": [
+			"describe('${1:Component}', () => {",
+			"\tit('should ${2:work}', () => {",
+			"\t\t${0}",
+			"\t});",
+			"});"
+		],
+		"description": "Create a new Nexus test suite"
+	}
+}

@@ -1,0 +1,73 @@
+{
+  "semantic": [
+    {
+      "query": "¿Cuál es el clima en Madrid?",
+      "response": "El clima en Madrid es soleado con una temperatura máxima de 24°C. ¿Quieres saber el pronóstico para algún otro día o lugar?",
+      "semantic_similarity": 0.8504225015640259
+    },
+    {
+      "query": "¿Qué tiempo hará mañana en Barcelona?",
+      "response": "Mañana en Barcelona habrá lluvia con una temperatura máxima de 30°C. ¿Quieres saber el pronóstico para otro lugar?",
+      "semantic_similarity": 0.7832230925559998
+    },
+    {
+      "query": "¿Está lloviendo en Sevilla ahora?",
+      "response": "Sí, está lloviendo ahora en Sevilla. ¿Quieres saber algo más sobre el clima?",
+      "semantic_similarity": 0.8977748155593872
+    },
+    {
+      "query": "¿Cómo estará el clima en Valencia el fin de semana?",
+      "response": "El clima en Valencia para el fin de semana será tormentoso con una temperatura máxima de 14°C. ¿Quieres que te ayude con algo más sobre el clima o alguna otra información?",
+      "semantic_similarity": 0.8915541768074036
+    },
+    {
+      "query": "¿Cuál es la temperatura máxima esperada en Bilbao hoy?",
+      "response": "La temperatura máxima esperada en Bilbao hoy es de 29°C. ¿Te gustaría saber algo más sobre el clima?",
+      "semantic_similarity": 0.9385288953781128
+    },
+    {
+      "query": "¿Habrá tormenta en Zaragoza esta noche?",
+      "response": "Sí, habrá tormenta en Zaragoza esta noche. ¿Quieres que te ayude con algo más?",
+      "semantic_similarity": 0.8730450868606567
+    },
+    {
+      "query": "¿Qué clima se espera en Málaga para el lunes?",
+      "response": "El clima en Málaga para el lunes se espera tormentoso, con una temperatura máxima de 15°C. ¿Quieres que te ayude con algo más?",
+      "semantic_similarity": 0.88331139087677
+    },
+    {
+      "query": "¿Está nublado en Granada?",
+      "response": "En Granada está lluvioso, por lo que parece que no está nublado, sino que está lloviendo. ¿Quieres saber algo más sobre el clima?",
+      "semantic_similarity": 0.7566575407981873
+    },
+    {
+      "query": "¿Cuál es el pronóstico para Alicante mañana?",
+      "response": "El pronóstico para Alicante mañana indica que estará lluvioso con una temperatura máxima de 26°C. ¿Quieres saber algo más?",
+      "semantic_similarity": 0.7273135185241699
+    },
+    {
+      "query": "¿Va a hacer sol en Santander esta semana?",
+      "response": "Esta semana en Santander no va a hacer sol, el clima será lluvioso con una temperatura máxima de 28°C. ¿Quieres que te informe el pronóstico para algún día en específico?",
+      "semantic_similarity": 0.8157273530960083
+    }
+  ],
+  "bleu": {
+    "bleu": 0.10374915291818969,
+    "precisions": [
+      0.25738396624472576,
+      0.13215859030837004,
+      0.07834101382488479,
+      0.043478260869565216
+    ],
+    "brevity_penalty": 1.0,
+    "length_ratio": 2.9625,
+    "translation_length": 237,
+    "reference_length": 80
+  },
+  "rouge": {
+    "rouge1": 0.4144561180229878,
+    "rouge2": 0.2977401223093074,
+    "rougeL": 0.3466926511674262,
+    "rougeLsum": 0.34902575272386493
+  }
+}

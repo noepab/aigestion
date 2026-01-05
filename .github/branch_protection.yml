@@ -1,0 +1,13 @@
+# .github/branch_protection.yml
+
+# This file serves as documentation for required branch protection rules.
+# Actual branch protection must be configured in the repository settings
+# (Settings → Branches → Branch protection rules).
+# The following rules are recommended for the main branch:
+# - Require status checks to pass before merging (lint, test, build)
+# - Require pull request reviews before merging (at least 1 approving review)
+# - Require signed commits
+# - Require linear history
+# - Restrict who can push to the branch
+
+# This placeholder file can be used by automation tools to enforce settings via the GitHub API.

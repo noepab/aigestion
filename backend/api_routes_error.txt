@@ -1,0 +1,21 @@
+src/cache/redis.ts(58,23): error TS2345: Argument of type 'string | {}' is not assignable to parameter of type 'string'.
+  Type '{}' is not assignable to type 'string'.
+src/config/inversify.config.ts(2,27): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/ai.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/ai.service.ts(2,20): error TS2307: Cannot find module 'openai' or its corresponding type declarations.
+src/services/ai.service.ts(21,9): error TS1206: Decorators are not valid here.
+src/services/ai.service.ts(22,9): error TS1206: Decorators are not valid here.
+src/services/ai.service.ts(23,9): error TS1206: Decorators are not valid here.
+src/services/ai.service.ts(26,25): error TS2339: Property 'OPENAI_API_KEY' does not exist on type '{ NODE_ENV?: "development" | "production" | "test"; PORT?: number; CORS_ORIGIN?: string[] | "*"; RATE_LIMIT_WINDOW_MS?: number; RATE_LIMIT_MAX?: number; AUTH_RATE_LIMIT_WINDOW_MS?: number; ... 88 more ...; TAVILY_API_KEY?: string; }'.
+src/services/alerting.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/alerting.service.ts(16,5): error TS1206: Decorators are not valid here.
+src/services/alerting.service.ts(17,5): error TS1206: Decorators are not valid here.
+src/services/analytics.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/auth.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/credential-manager.service.ts(1,36): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/credential-manager.service.ts(19,5): error TS1206: Decorators are not valid here.
+src/services/docker.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/google/secret-manager.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/history.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/search.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.
+src/services/system-metrics.service.ts(1,28): error TS2307: Cannot find module 'inversify' or its corresponding type declarations.

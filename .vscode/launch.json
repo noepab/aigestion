@@ -1,0 +1,207 @@
+{
+  // ╔═══════════════════════════════════════════════════════════════╗
+  // ║  ⚡ NEXUS V1 - Launch Configurations NIVEL DIOS ⚡                  ║
+  // ╚═══════════════════════════════════════════════════════════════╝
+  "version": "0.2.0",
+  "configurations": [
+    // ═══════════════════════════════════════════════════════════════
+    // 🖥️ BACKEND - Node.js/Express
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "🚀 Backend: Debug",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "NEXUS V1-dashboard-backend",
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "express:*"
+      },
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "🔧 Backend: Attach",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "name": "📦 Backend: Current File",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}/server",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // 🎨 FRONTEND - Vite/React
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "🎨 Frontend: Chrome Debug",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "🎨 Frontend: Edge Debug",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend"
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // 🐍 PYTHON - AI Engine
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "🐍 Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "🤖 Python: NEXUS V1 Help Bot",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/NEXUS V1_help_bot.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "🌐 Python: NEXUS V1 Help Web",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/NEXUS V1_help_web.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "🧪 Python: Pytest",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "-v",
+        "-s",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // 🧪 TESTING - Jest
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "🧪 Jest: Current File",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+        "${relativeFile}",
+        "--runInBand",
+        "--watchAll=false"
+      ],
+      "cwd": "${workspaceFolder}/server",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "🧪 Jest: All Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--coverage"
+      ],
+      "cwd": "${workspaceFolder}/server",
+      "console": "integratedTerminal"
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // 📚 STORYBOOK
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "📚 Storybook: Debug",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:6006",
+      "webRoot": "${workspaceFolder}"
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // 🌐 CYPRESS E2E
+    // ═══════════════════════════════════════════════════════════════
+    {
+      "name": "🌐 Cypress: Open",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/cypress",
+      "args": [
+        "open"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  // ═══════════════════════════════════════════════════════════════
+  // 🔗 COMPOUND CONFIGURATIONS (Run multiple at once)
+  // ═══════════════════════════════════════════════════════════════
+  "compounds": [
+    {
+      "name": "🚀 Full Stack: Backend + Frontend",
+      "configurations": [
+        "🚀 Backend: Debug",
+        "🎨 Frontend: Chrome Debug"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "🧪 Full Test Suite",
+      "configurations": [
+        "🧪 Jest: All Tests",
+        "🧪 Python: Pytest"
+      ],
+      "stopAll": true
+    }
+  ]
+}

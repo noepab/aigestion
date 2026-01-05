@@ -1,0 +1,11 @@
+groups:
+  - name: memory_alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: sum(container_memory_usage_bytes{name!=""}) / sum(machine_memory_bytes) > 0.9
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Memory usage is high on {{ $labels.instance }}"
+          description: "Memory usage has been above 90% for more than 2 minutes."

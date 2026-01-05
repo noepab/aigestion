@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Gradient principal -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#1a365d"/>
+    </linearGradient>
+    <!-- Glow cyan -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <!-- Sombra -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Fondo hexagonal -->
+  <polygon points="256,20 472,140 472,372 256,492 40,372 40,140" fill="url(#bgGrad)" rx="20"/>
+  
+  <!-- Borde luminoso -->
+  <polygon points="256,35 455,145 455,367 256,477 57,367 57,145" fill="none" stroke="url(#accentGrad)" stroke-width="3" opacity="0.6"/>
+  
+  <!-- Monograma "A" estilizado -->
+  <g filter="url(#glow)">
+    <path d="M256 120 L340 380 L310 380 L290 320 L222 320 L202 380 L172 380 L256 120 Z M256 180 L232 290 L280 290 L256 180 Z" fill="url(#accentGrad)"/>
+  </g>
+  
+  <!-- Línea horizontal decorativa -->
+  <rect x="180" y="340" width="152" height="4" rx="2" fill="url(#accentGrad)" opacity="0.8"/>
+</svg>

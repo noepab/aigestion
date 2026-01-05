@@ -1,0 +1,29 @@
+­ƒöÁ [DEBUG] server.ts starting...
+[dotenv@17.2.3] injecting env (6) from ..\.env -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.3] injecting env (67) from .env -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+Error: Cannot find module 'inversify'
+Require stack:
+- C:\Users\Alejandro\AIGestion\backend\src\config\inversify.config.ts
+- C:\Users\Alejandro\AIGestion\backend\src\routes\api-v1.routes.ts
+- C:\Users\Alejandro\AIGestion\backend\src\routes\index.ts
+- C:\Users\Alejandro\AIGestion\backend\src\app.ts
+- C:\Users\Alejandro\AIGestion\backend\src\server.ts
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1420:15)
+    at Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (C:\Users\Alejandro\AIGestion\backend\node_modules\@cspotcode\source-map-support\source-map-support.js:811:30)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1058:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1063:22)
+    at Module._load (node:internal/modules/cjs/loader:1226:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1503:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (C:\Users\Alejandro\AIGestion\backend\src\config\inversify.config.ts:2:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\Alejandro\\AIGestion\\backend\\src\\config\\inversify.config.ts',
+    'C:\\Users\\Alejandro\\AIGestion\\backend\\src\\routes\\api-v1.routes.ts',
+    'C:\\Users\\Alejandro\\AIGestion\\backend\\src\\routes\\index.ts',
+    'C:\\Users\\Alejandro\\AIGestion\\backend\\src\\app.ts',
+    'C:\\Users\\Alejandro\\AIGestion\\backend\\src\\server.ts'
+  ]
+}

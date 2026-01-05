@@ -1,0 +1,30 @@
+{
+  "2025-ww": {
+    "Performance": {
+      "DevDependencies": 1,
+      "DirectoryCount": 48,
+      "Dependencies": 0
+    },
+    "Security": {
+      "High": null,
+      "ExposedSecrets": 12,
+      "SensitiveFilesExposed": 0,
+      "Medium": null,
+      "RootVulnerabilities": null,
+      "Critical": null,
+      "Low": null
+    },
+    "Quality": {
+      "TypeScriptFiles": 5,
+      "RecentCommits": 10,
+      "TotalFiles": 8,
+      "DocumentationCoverage": 3,
+      "JavaScriptFiles": 3
+    },
+    "Compliance": {
+      "Branch": "main",
+      "DirtyFiles": 26,
+      "LastCommit": "74e6e8206"
+    }
+  }
+}

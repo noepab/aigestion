@@ -1,0 +1,10 @@
+{"id": "test-001", "input": "function testCase() { const result = [1, 2, 3].map(x => x * 2); assert(result.length === 3); }", "ground_truth": 1}
+{"id": "test-002", "input": "let data = [];", "ground_truth": 0}
+{"id": "test-003", "input": "function complexLogic(arr) { return arr.filter(x => x > 0).map(x => x * 2).reduce((a, b) => a + b, 0); }", "ground_truth": 1}
+{"id": "test-004", "input": "var i = 0;", "ground_truth": 0}
+{"id": "test-005", "input": "const pipeline = (data) => data.filter(x => x.active).map(x => ({ ...x, processed: true })).sort((a, b) => a.timestamp - b.timestamp);", "ground_truth": 1}
+{"id": "test-006", "input": "console.log('test');", "ground_truth": 0}
+{"id": "test-007", "input": "export async function processData(dataset) { const results = []; for (const item of dataset) { results.push(await analyze(item)); } return results; }", "ground_truth": 1}
+{"id": "test-008", "input": "const x = 5;", "ground_truth": 0}
+{"id": "test-009", "input": "function recursiveSum(arr) { if (!arr.length) return 0; return arr[0] + recursiveSum(arr.slice(1)); }", "ground_truth": 1}
+{"id": "test-010", "input": "import { helper } from './utils';", "ground_truth": 0}

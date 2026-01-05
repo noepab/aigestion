@@ -1,0 +1,11 @@
+[
+  {
+    "index": 5,
+    "metric": "levenshtein",
+    "value": 0.47435897435897434,
+    "mean": 0.25683759891275226,
+    "std": 0.10477140552636327,
+    "query": "¿Habrá tormenta en Zaragoza esta noche?",
+    "response": "Sí, habrá tormenta en Zaragoza esta noche. ¿Quieres que te ayude con algo más?"
+  }
+]

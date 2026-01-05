@@ -1,0 +1,164 @@
+﻿apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongodb-backup
+  namespace: NEXUS V1
+  labels:
+    app: mongodb-backup
+    component: backup
+spec:
+  schedule: "0 2 * * *"  # Diario a las 2 AM UTC
+  successfulJobsHistoryLimit: 7  # Mantener últimos 7 backups exitosos
+  failedJobsHistoryLimit: 3      # Mantener últimos 3 fallos para debugging
+  concurrencyPolicy: Forbid      # No permitir backups simultáneos
+  jobTemplate:
+    spec:
+      backoffLimit: 3  # Reintentar hasta 3 veces en caso de fallo
+      activeDeadlineSeconds: 3600  # Timeout de 1 hora
+      template:
+        metadata:
+          labels:
+            app: mongodb-backup
+            component: backup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: mongodb-backup
+              image: mongo:7-jammy
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  set -e
+
+                  BACKUP_DIR="/backup/$(date +%Y%m%d_%H%M%S)"
+                  echo "🚀 Iniciando backup de MongoDB..."
+                  echo "📁 Directorio: $BACKUP_DIR"
+
+                  # Crear directorio de backup
+                  mkdir -p "$BACKUP_DIR"
+
+                  # Ejecutar mongodump
+                  mongodump \
+                    --uri="mongodb://admin:${MONGO_ROOT_PASSWORD}@mongodb-service:27017/admin?authSource=admin" \
+                    --out="$BACKUP_DIR" \
+                    --gzip \
+                    --oplog
+
+                  # Verificar que el backup se creó
+                  if [ -d "$BACKUP_DIR" ]; then
+                    SIZE=$(du -sh "$BACKUP_DIR" | cut -f1)
+                    echo "✅ Backup completado exitosamente: $SIZE"
+
+                    # Crear metadata file
+                    cat > "$BACKUP_DIR/metadata.json" <<EOF
+                  {
+                    "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+                    "size": "$SIZE",
+                    "databases": $(mongosh --quiet --uri="mongodb://admin:${MONGO_ROOT_PASSWORD}@mongodb-service:27017/admin" --eval 'JSON.stringify(db.adminCommand("listDatabases").databases.map(d => d.name))'),
+                    "host": "mongodb-service",
+                    "status": "success"
+                  }
+                  EOF
+
+                    # Limpieza de backups antiguos (mantener últimos 30 días)
+                    echo "🧹 Limpiando backups antiguos (>30 días)..."
+                    find /backup -type d -name "20*" -mtime +30 -exec rm -rf {} \; 2>/dev/null || true
+
+                    echo "✨ Proceso completado"
+                  else
+                    echo "❌ Error: Directorio de backup no fue creado"
+                    exit 1
+                  fi
+              env:
+                - name: MONGO_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: alejandro-secrets
+                      key: MONGO_ROOT_PASSWORD
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backup
+              resources:
+                requests:
+                  memory: '256Mi'
+                  cpu: '100m'
+                limits:
+                  memory: '1Gi'
+                  cpu: '500m'
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: mongodb-backup-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-backup-pvc
+  namespace: NEXUS V1
+  labels:
+    app: mongodb-backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi  # Ajustar según necesidades (30 días × ~3GB/día)
+  # storageClassName: standard  # Descomentar y ajustar según tu cluster
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-restore-script
+  namespace: NEXUS V1
+  labels:
+    app: mongodb-backup
+    component: restore
+data:
+  restore.sh: |
+    #!/bin/bash
+    # Script de restore de MongoDB
+    # Uso: kubectl exec -it mongodb-backup-pod -- /scripts/restore.sh YYYYMMDD_HHMMSS
+
+    set -e
+
+    if [ -z "$1" ]; then
+      echo "❌ Error: Especifica el timestamp del backup a restaurar"
+      echo "Backups disponibles:"
+      ls -1 /backup | grep -E "^[0-9]{8}_[0-9]{6}$"
+      exit 1
+    fi
+
+    BACKUP_DIR="/backup/$1"
+
+    if [ ! -d "$BACKUP_DIR" ]; then
+      echo "❌ Error: Backup no encontrado: $BACKUP_DIR"
+      exit 1
+    fi
+
+    echo "🚀 Iniciando restore desde: $BACKUP_DIR"
+
+    # Verificar metadata
+    if [ -f "$BACKUP_DIR/metadata.json" ]; then
+      echo "📋 Metadata del backup:"
+      cat "$BACKUP_DIR/metadata.json"
+    fi
+
+    # Confirmar restore (requiere variable de entorno)
+    if [ "$CONFIRM_RESTORE" != "yes" ]; then
+      echo "⚠️ ADVERTENCIA: Esto sobrescribirá la base de datos actual"
+      echo "Para confirmar, ejecuta:"
+      echo "CONFIRM_RESTORE=yes /scripts/restore.sh $1"
+      exit 1
+    fi
+
+    # Ejecutar mongorestore
+    mongorestore \
+      --uri="mongodb://admin:${MONGO_ROOT_PASSWORD}@mongodb-service:27017/admin?authSource=admin" \
+      --gzip \
+      --oplogReplay \
+      --drop \
+      "$BACKUP_DIR"
+
+    echo "✅ Restore completado exitosamente"
+

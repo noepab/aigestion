@@ -1,0 +1,11 @@
+id,input,ground_truth
+001,"function add(a, b) { return a + b; }",1
+002,"var x = 5",0
+003,"const calculateSum = (array) => { return array.reduce((sum, val) => sum + val, 0); }",1
+004,"let y = 10; let z = y + 5;",0
+005,"async function fetchData() { const response = await fetch('/api/data'); return response.json(); }",1
+006,"x = 1",0
+007,"function* generator() { yield 1; yield 2; yield 3; }",1
+008,"a = b + c",0
+009,"class Calculator { constructor() { this.value = 0; } add(num) { this.value += num; } }",1
+010,"if (true) { console.log('hi'); }",0

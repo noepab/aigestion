@@ -1,0 +1,8 @@
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+
+# tipos: feat, fix, chore, docs, style, refactor, perf, test
+# ejemplo: feat(backend): add redis caching to analytics

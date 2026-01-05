@@ -1,0 +1,42 @@
+[
+  {
+    "query": "¿Cuál es el clima en Madrid?",
+    "response": "El clima en Madrid es soleado con una temperatura máxima de 29°C."
+  },
+  {
+    "query": "¿Qué tiempo hará mañana en Barcelona?",
+    "response": "Mañana en Barcelona estará nublado con una temperatura máxima de 19°C."
+  },
+  {
+    "query": "¿Está lloviendo en Sevilla ahora?",
+    "response": "Sí, está lloviendo en Sevilla ahora."
+  },
+  {
+    "query": "¿Cómo estará el clima en Valencia el fin de semana?",
+    "response": "El clima en Valencia el fin de semana estará nublado con una temperatura máxima de 20°C."
+  },
+  {
+    "query": "¿Cuál es la temperatura máxima esperada en Bilbao hoy?",
+    "response": "La temperatura máxima esperada en Bilbao hoy es de 18°C."
+  },
+  {
+    "query": "¿Habrá tormenta en Zaragoza esta noche?",
+    "response": "Sí, habrá tormenta en Zaragoza esta noche."
+  },
+  {
+    "query": "¿Qué clima se espera en Málaga para el lunes?",
+    "response": "Para el lunes en Málaga se espera un clima soleado con una temperatura máxima de 24°C."
+  },
+  {
+    "query": "¿Está nublado en Granada?",
+    "response": "No, en Granada está soleado."
+  },
+  {
+    "query": "¿Cuál es el pronóstico para Alicante mañana?",
+    "response": "El pronóstico para Alicante mañana es nublado, con una temperatura máxima de 19°C."
+  },
+  {
+    "query": "¿Va a hacer sol en Santander esta semana?",
+    "response": "No, en Santander no va a hacer sol esta semana, se esperan tormentas con una temperatura máxima de 13°C."
+  }
+]

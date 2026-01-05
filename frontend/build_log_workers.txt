@@ -1,0 +1,18 @@
+﻿
+> NEXUS V1-frontend@0.2.0 build C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard
+> tsc -b && vite build
+
+src/pages/dashboards/OperatorDashboard.tsx(181,37): error TS6133: 'index' is declared but its value is never read.
+src/pages/dashboards/OperatorDashboard.tsx(446,14): error TS2304: Cannot find name 'TarjetaAlertas'.
+src/workers/dataProcessor.worker.ts(34,9): error TS2322: Type '(data: number[]) => Promise<{ mean: number; median: number | undefined; stdDev: number; }>' is not assignable to type '(data: number[]) => Promise<{ mean: number; median: number; stdDev: number; }>'.
+  Type 'Promise<{ mean: number; median: number | undefined; stdDev: number; }>' is not assignable to type 'Promise<{ mean: number; median: number; stdDev: number; }>'.
+    Type '{ mean: number; median: number | undefined; stdDev: number; }' is not assignable to type '{ mean: number; median: number; stdDev: number; }'.
+      Types of property 'median' are incompatible.
+        Type 'number | undefined' is not assignable to type 'number'.
+          Type 'undefined' is not assignable to type 'number'.
+src/workers/dataProcessor.worker.ts(42,61): error TS2532: Object is possibly 'undefined'.
+src/workers/dataProcessor.worker.ts(42,79): error TS2532: Object is possibly 'undefined'.
+C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard:
+ÔÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILÔÇë NEXUS V1-frontend@0.2.0 build: `tsc -b && vite build`
+Exit status 1
+

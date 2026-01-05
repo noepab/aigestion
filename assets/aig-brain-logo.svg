@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g font-family="Orbitron, Arial, sans-serif" font-weight="bold" font-size="44" text-anchor="middle">
+    <text x="64" y="68" fill="#00c3ff" stroke="#fff" stroke-width="2.5" dy="0.35em">AIG</text>
+  </g>
+  <g>
+    <ellipse cx="64" cy="96" rx="36" ry="20" fill="#00c3ff" opacity="0.18"/>
+    <ellipse cx="64" cy="68" rx="44" ry="32" fill="#00c3ff" opacity="0.12"/>
+    <ellipse cx="64" cy="68" rx="56" ry="40" fill="#fff" opacity="0.06"/>
+  </g>
+  <g>
+    <circle cx="40" cy="56" r="5" fill="#00c3ff"/>
+    <circle cx="88" cy="80" r="5" fill="#00c3ff"/>
+    <circle cx="56" cy="88" r="5" fill="#00c3ff"/>
+    <circle cx="76" cy="48" r="5" fill="#00c3ff"/>
+    <circle cx="64" cy="68" r="7" fill="#ffff1c"/>
+    <line x1="40" y1="56" x2="64" y2="68" stroke="#00c3ff" stroke-width="2.2"/>
+    <line x1="88" y1="80" x2="64" y2="68" stroke="#00c3ff" stroke-width="2.2"/>
+    <line x1="56" y1="88" x2="64" y2="68" stroke="#00c3ff" stroke-width="2.2"/>
+    <line x1="76" y1="48" x2="64" y2="68" stroke="#00c3ff" stroke-width="2.2"/>
+  </g>
+</svg>

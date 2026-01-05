@@ -1,0 +1,26 @@
+﻿
+> NEXUS V1-frontend@0.2.0 build C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard
+> tsc -b && vite build
+
+src/components/effects/ParticleBackground.tsx(19,13): error TS7030: Not all code paths return a value.
+src/components/RoleSwitcher.tsx(29,85): error TS18048: 'currentRole' is possibly 'undefined'.
+src/components/RoleSwitcher.tsx(31,36): error TS18048: 'currentRole' is possibly 'undefined'.
+src/components/RoleSwitcher.tsx(33,72): error TS18048: 'currentRole' is possibly 'undefined'.
+src/components/RoleSwitcher.tsx(34,49): error TS18048: 'currentRole' is possibly 'undefined'.
+src/main.tsx(40,13): error TS2322: Type '"bottom-right"' is not assignable to type 'DevtoolsPosition | undefined'.
+src/pages/dashboards/OperatorDashboard.tsx(169,15): error TS2345: Argument of type '(prev: { tiempo: string; nivel: string; mensaje: string; fuente: string; }[]) => { tiempo: string; nivel: string | undefined; mensaje: string | undefined; fuente: string | undefined; }[]' is not assignable to parameter of type 'SetStateAction<{ tiempo: string; nivel: string; mensaje: string; fuente: string; }[]>'.
+  Type '(prev: { tiempo: string; nivel: string; mensaje: string; fuente: string; }[]) => { tiempo: string; nivel: string | undefined; mensaje: string | undefined; fuente: string | undefined; }[]' is not assignable to type '(prevState: { tiempo: string; nivel: string; mensaje: string; fuente: string; }[]) => { tiempo: string; nivel: string; mensaje: string; fuente: string; }[]'.
+    Type '{ tiempo: string; nivel: string | undefined; mensaje: string | undefined; fuente: string | undefined; }[]' is not assignable to type '{ tiempo: string; nivel: string; mensaje: string; fuente: string; }[]'.
+      Type '{ tiempo: string; nivel: string | undefined; mensaje: string | undefined; fuente: string | undefined; }' is not assignable to type '{ tiempo: string; nivel: string; mensaje: string; fuente: string; }'.
+        Types of property 'nivel' are incompatible.
+          Type 'string | undefined' is not assignable to type 'string'.
+            Type 'undefined' is not assignable to type 'string'.
+src/workers/particle.worker.ts(61,7): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/workers/particle.worker.ts(61,14): error TS18048: 'colors' is possibly 'undefined'.
+src/workers/particle.worker.ts(61,48): error TS18048: 'colors' is possibly 'undefined'.
+../../shared/sentry.advanced.ts(22,7): error TS2532: Object is possibly 'undefined'.
+C:\Users\Alejandro\NEXUS V1\frontend\apps\dashboard:
+ÔÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILÔÇë NEXUS V1-frontend@0.2.0 build: `tsc -b && vite build`
+Exit status 1
+

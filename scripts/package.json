@@ -1,0 +1,20 @@
+﻿{
+  "name": "docs-automation",
+  "version": "1.0.0",
+  "description": "Sistema automatizado de organización de documentación para NEXUS V1",
+  "scripts": {
+    "docs:organize": "pwsh ./scripts/organize-docs.ps1",
+    "docs:organize:dry": "pwsh ./scripts/organize-docs.ps1 -DryRun",
+    "docs:index": "pwsh ./scripts/generate-docs-index.ps1",
+    "docs:validate": "pwsh ./.husky/pre-commit-docs",
+    "docs:full": "npm run docs:organize && npm run docs:index",
+    "precommit:docs": "pwsh ./.husky/pre-commit-docs"
+  },
+  "keywords": [
+    "documentation",
+    "automation",
+    "markdown"
+  ],
+  "author": "NEXUS V1 Team",
+  "license": "MIT"
+}

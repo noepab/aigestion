@@ -1,0 +1,15 @@
+­ƒöÁ [DEBUG] server.ts starting...
+[dotenv@17.2.3] injecting env (6) from ..\.env -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (67) from .env -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
+{"level":30,"time":1767551494441,"pid":8572,"hostname":"AlexPc","msg":"YouTube channels initialized"}
+UNCAUGHT EXCEPTION: TypeError: Cannot read properties of undefined (reading 'CredentialManagerService')
+    at Server.<anonymous> (C:\Users\Alejandro\AIGestion\backend\src\server.ts:168:73)
+    at Object.onceWrapper (node:events:622:28)
+    at Server.emit (node:events:520:35)
+    at Server.emit (node:domain:489:12)
+    at emitListeningNT (node:net:1983:10)
+    at processTicksAndRejections (node:internal/process/task_queues:88:21)
+{"level":30,"time":1767551494441,"pid":8572,"hostname":"AlexPc","msg":"Personal: noepab@gmail.com"}
+{"level":30,"time":1767551494441,"pid":8572,"hostname":"AlexPc","msg":"Business (AIGestion): a.fernandez@aigestion.net"}
+{"level":30,"time":1767551494445,"pid":8572,"hostname":"AlexPc","msg":"\n    ################################################\n    ­ƒøí´©Å  Server listening on port: 5001 ­ƒøí´©Å\n    ################################################\n      "}
+{"level":50,"time":1767551494449,"pid":8572,"hostname":"AlexPc","err":{"type":"TypeError","message":"Cannot read properties of undefined (reading 'CredentialManagerService')","stack":"TypeError: Cannot read properties of undefined (reading 'CredentialManagerService')\n    at Server.<anonymous> (C:\\Users\\Alejandro\\AIGestion\\backend\\src\\server.ts:168:73)\n    at Object.onceWrapper (node:events:622:28)\n    at Server.emit (node:events:520:35)\n    at Server.emit (node:domain:489:12)\n    at emitListeningNT (node:net:1983:10)\n    at processTicksAndRejections (node:internal/process/task_queues:88:21)"},"msg":"UNCAUGHT EXCEPTION!"}

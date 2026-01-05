@@ -1,0 +1,10 @@
+{"id": "benchmark-001", "input": "def benchmark_suite(): tests = []; for i in range(1000): tests.append(lambda x=i: x * 2); return [t() for t in tests]", "ground_truth": 1}
+{"id": "benchmark-002", "input": "result = 5", "ground_truth": 0}
+{"id": "benchmark-003", "input": "def matrix_multiply(a, b): result = []; for i in range(len(a)): row = []; for j in range(len(b[0])): sum_val = sum(a[i][k] * b[k][j] for k in range(len(b))); row.append(sum_val); result.append(row); return result", "ground_truth": 1}
+{"id": "benchmark-004", "input": "x = 1", "ground_truth": 0}
+{"id": "benchmark-005", "input": "class PerformanceOptimizer: def __init__(self): self.cache = {}; def memoize(self, func): def wrapper(n): if n in self.cache: return self.cache[n]; result = func(n); self.cache[n] = result; return result; return wrapper", "ground_truth": 1}
+{"id": "benchmark-006", "input": "print('hello')", "ground_truth": 0}
+{"id": "benchmark-007", "input": "async def parallel_process(tasks): import asyncio; results = await asyncio.gather(*[process(task) for task in tasks]); return results", "ground_truth": 1}
+{"id": "benchmark-008", "input": "n = 10", "ground_truth": 0}
+{"id": "benchmark-009", "input": "def trie_implementation(): class TrieNode: def __init__(self): self.children = {}; self.is_end = False; def insert(self, word): node = self; for char in word: if char not in node.children: node.children[char] = TrieNode(); node = node.children[char]; node.is_end = True; return TrieNode()", "ground_truth": 1}
+{"id": "benchmark-010", "input": "flag = True", "ground_truth": 0}
