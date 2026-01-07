@@ -10,9 +10,7 @@ export interface PaginationDto {
   order?: 'ASC' | 'DESC';
 }
 
-export interface FilterDto {
-  [key: string]: any;
-}
+export type FilterDto = Record<string, any>;
 
 /**
  * Validador base

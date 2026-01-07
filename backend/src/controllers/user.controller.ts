@@ -1,18 +1,17 @@
-// src/controllers/user.controller.ts
-import { buildResponse, buildError } from '../common/response-builder';
-import { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
+import { container, TYPES } from '../config/inversify.config';
+import { AppError } from '../utils/errors';
+import { validate, schemas, validateParams } from '../middleware/validation.middleware';
 import { UserService } from '../services/user.service';
-import { validate } from '../middleware/validation.middleware';
-import { CreateUserDto, UpdateUserDto } from '../dto/dtoSchemas';
+import { buildResponse } from '../common/response-builder';
 
-const userService = new UserService();
+const userService = container.get<UserService>(TYPES.UserService);
 
 export const createUser = [
-  validate(CreateUserDto),
+  validate({ body: schemas.user.create }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = (req as any).validatedBody as CreateUserDto;
-      const user = await userService.create(data);
+      const user = await userService.create(req.body);
       res.status(201).json(buildResponse(user, 201, (req as any).requestId));
     } catch (err) {
       next(err);
@@ -22,33 +21,30 @@ export const createUser = [
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userService.findAll();
-    res.json(buildResponse(users, 200, (req as any).requestId));
+    const { page = 1, limit = 10 } = (req as any).pagination || {};
+    const allUsers = await userService.findAll();
+    const total = allUsers.length;
+    const start = (page - 1) * limit;
+    const data = allUsers.slice(start, start + limit);
+
+    const response = {
+      data,
+      pagination: { page, limit, total },
+    };
+    res.json(buildResponse(response, 200, (req as any).requestId));
   } catch (err) {
     next(err);
   }
 };
 
-export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await userService.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json(buildError('User not found', 'NOT_FOUND', 404, (req as any).requestId));
-    }
-    res.json(buildResponse(user, 200, (req as any).requestId));
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const updateUser = [
-  validate(UpdateUserDto),
+export const getUserById = [
+  validateParams(schemas.common.id),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = (req as any).validatedBody as UpdateUserDto;
-      const user = await userService.update(req.params.id, data);
+      const { id } = req.params;
+      const user = await userService.findById(id);
       if (!user) {
-        return res.status(404).json(buildError('User not found', 'NOT_FOUND', 404, (req as any).requestId));
+        return next(new AppError('User not found', 404, 'NOT_FOUND'));
       }
       res.json(buildResponse(user, 200, (req as any).requestId));
     } catch (err) {
@@ -57,14 +53,35 @@ export const updateUser = [
   },
 ];
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const success = await userService.delete(req.params.id);
-    if (!success) {
-      return res.status(404).json(buildError('User not found', 'NOT_FOUND', 404, (req as any).requestId));
+export const updateUser = [
+  validateParams(schemas.common.id),
+  validate({ body: schemas.user.update }),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const user = await userService.update(id, req.body);
+      if (!user) {
+        return next(new AppError('User not found', 404, 'NOT_FOUND'));
+      }
+      res.json(buildResponse(user, 200, (req as any).requestId));
+    } catch (err) {
+      next(err);
     }
-    res.json(buildResponse({ message: 'User deleted' }, 200, (req as any).requestId));
-  } catch (err) {
-    next(err);
-  }
-};
+  },
+];
+
+export const deleteUser = [
+  validateParams(schemas.common.id),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const success = await userService.delete(id);
+      if (!success) {
+        return next(new AppError('User not found', 404, 'NOT_FOUND'));
+      }
+      res.json(buildResponse({ message: 'User deleted' }, 200, (req as any).requestId));
+    } catch (err) {
+      next(err);
+    }
+  },
+];

@@ -343,8 +343,8 @@ export const landingStateWrapper = (actual: LandingState | undefined, snapshotPa
 export const conditionalTest = (
   skipTest: boolean,
   name: string,
-  fn?: jest.ProvidesCallback | undefined,
-  timeout?: number | undefined,
+  fn?: jest.ProvidesCallback  ,
+  timeout?: number  ,
 ) => (skipTest ? it.skip(name, fn, timeout) : it(name, fn, timeout));
 
 /**
@@ -361,7 +361,7 @@ export const detectTestTargets = (dirname: string, namedTestPrefixes: string[]):
     .reduce((accumulator: Map<string, TestTarget>, file: string) => {
       // Check if this is an input file. If so, set it in the accumulator.
       const inFileRegex = /(?<prefix>.+)\.in\.(?<extension>.+)$/;
-      const foundIn = file.match(inFileRegex);
+      const foundIn = inFileRegex.exec(file);
       const prefix = foundIn?.groups?.prefix;
       if (foundIn && prefix) {
         if (prefix && (namedTestPrefixes.includes(prefix) || namedTestPrefixes.length === 0)) {

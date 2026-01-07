@@ -1,4 +1,5 @@
 import { YoutubeTranscript } from 'youtube-transcript';
+
 import { logger } from './logger';
 
 /**
@@ -101,7 +102,7 @@ export class YoutubeTranscriptionService {
   /**
    * Formatea la transcripción en párrafos más legibles
    */
-  formatTranscript(transcript: string, wordsPerParagraph: number = 100): string {
+  formatTranscript(transcript: string, wordsPerParagraph = 100): string {
     const words = transcript.split(' ');
     const paragraphs: string[] = [];
 

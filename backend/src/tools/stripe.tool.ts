@@ -1,9 +1,10 @@
 
 import { z } from 'zod';
-import { BaseTool } from './base.tool';
-import { stripeService } from '../services/stripe.service';
+
 import { User } from '../models/User';
+import { stripeService } from '../services/stripe.service';
 import { logger } from '../utils/logger';
+import { BaseTool } from './base.tool';
 
 export class StripeTool extends BaseTool<{ action: string; userId: string; priceId?: string }> {
   name = 'manage_subscription';
@@ -49,7 +50,7 @@ export class StripeTool extends BaseTool<{ action: string; userId: string; price
         const cancelUrl = process.env.STRIPE_CANCEL_URL || 'http://localhost:3000/dashboard?canceled=true';
 
         const session = await stripeService.createSubscriptionCheckoutSession(
-          user.stripeCustomerId!,
+          user.stripeCustomerId,
           priceId,
           successUrl,
           cancelUrl

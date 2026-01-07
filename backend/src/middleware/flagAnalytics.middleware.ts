@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
+
 import { logger } from '../utils/logger';
 
 /**
@@ -9,10 +10,10 @@ import { logger } from '../utils/logger';
 export const flagAnalytics = (req: Request, _res: Response, next: NextFunction) => {
   const flags = (req as any).flags;
   if (flags) {
-    logger.info({ flags, path: req.path, method: req.method }, 'Feature flags attached to request');
+    logger.info({ flags, path: (req as any).path, method: (req as any).method }, 'Feature flags attached to request');
     // If Sentry is initialized, add flags to the current scope
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+       
       const Sentry = require('@sentry/node');
       if (Sentry && typeof Sentry.setContext === 'function') {
         Sentry.setContext('featureFlags', flags);

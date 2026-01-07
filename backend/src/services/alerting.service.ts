@@ -1,8 +1,9 @@
-import { injectable, inject } from 'inversify';
+import { inject,injectable } from 'inversify';
+
+import { TYPES } from '../types';
+import { logger } from '../utils/logger';
 import { SystemMetricsService } from './system-metrics.service';
 import { TelegramService } from './telegram.service';
-import { logger } from '../utils/logger';
-import { TYPES } from '../types';
 
 @injectable()
 export class AlertingService {

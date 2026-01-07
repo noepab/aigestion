@@ -1,10 +1,11 @@
-import apiService from '@/services/api';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
+import apiService from '@/services/api';
 
 /**
  * Hook para obtener contenedores Docker
  */
-export function useDockerContainers(options?: UseQueryOptions<any[], Error>) {
+export function useDockerContainers(options?: UseQueryOptions<any[]>) {
   return useQuery({
     queryKey: ['docker', 'containers'],
     queryFn: () => apiService.docker.getContainers(),
@@ -16,7 +17,7 @@ export function useDockerContainers(options?: UseQueryOptions<any[], Error>) {
 /**
  * Hook para obtener estadísticas de un contenedor específico
  */
-export function useContainerStats(containerId: string, options?: UseQueryOptions<any, Error>) {
+export function useContainerStats(containerId: string, options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['docker', 'container', containerId, 'stats'],
     queryFn: () => apiService.docker.getContainerStats(containerId),
@@ -29,7 +30,7 @@ export function useContainerStats(containerId: string, options?: UseQueryOptions
 /**
  * Hook para obtener métricas del sistema
  */
-export function useSystemMetrics(options?: UseQueryOptions<any, Error>) {
+export function useSystemMetrics(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['system', 'metrics'],
     queryFn: () => apiService.system.getMetrics(),
@@ -41,7 +42,7 @@ export function useSystemMetrics(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener modelos de IA
  */
-export function useAIModels(options?: UseQueryOptions<any[], Error>) {
+export function useAIModels(options?: UseQueryOptions<any[]>) {
   return useQuery({
     queryKey: ['ai', 'models'],
     queryFn: () => apiService.ai.getModels(),
@@ -52,7 +53,7 @@ export function useAIModels(options?: UseQueryOptions<any[], Error>) {
 /**
  * Hook para obtener modelo activo de IA
  */
-export function useActiveAIModel(options?: UseQueryOptions<any, Error>) {
+export function useActiveAIModel(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['ai', 'active-model'],
     queryFn: () => apiService.ai.getActiveModel(),
@@ -64,7 +65,7 @@ export function useActiveAIModel(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener logs recientes
  */
-export function useRecentLogs(limit = 100, options?: UseQueryOptions<any[], Error>) {
+export function useRecentLogs(limit = 100, options?: UseQueryOptions<any[]>) {
   return useQuery({
     queryKey: ['logs', 'recent', limit],
     queryFn: () => apiService.logs.getRecent(limit),
@@ -76,7 +77,7 @@ export function useRecentLogs(limit = 100, options?: UseQueryOptions<any[], Erro
 /**
  * Hook para obtener estadísticas de usuarios
  */
-export function useUserStats(options?: UseQueryOptions<any, Error>) {
+export function useUserStats(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['users', 'stats'],
     queryFn: () => apiService.users.getStats(),
@@ -87,7 +88,7 @@ export function useUserStats(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener overview de analytics
  */
-export function useAnalyticsOverview(options?: UseQueryOptions<any, Error>) {
+export function useAnalyticsOverview(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['analytics', 'overview'],
     queryFn: () => apiService.analytics.getOverview(),
@@ -99,7 +100,7 @@ export function useAnalyticsOverview(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener actividad de usuarios (analytics)
  */
-export function useAnalyticsUserActivity(timeRange?: string, options?: UseQueryOptions<any, Error>) {
+export function useAnalyticsUserActivity(timeRange?: string, options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['analytics', 'user-activity', timeRange],
     queryFn: () => apiService.analytics.getUserActivity(timeRange),
@@ -110,7 +111,7 @@ export function useAnalyticsUserActivity(timeRange?: string, options?: UseQueryO
 /**
  * Hook para obtener uso del sistema (analytics)
  */
-export function useAnalyticsSystemUsage(options?: UseQueryOptions<any, Error>) {
+export function useAnalyticsSystemUsage(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['analytics', 'system-usage'],
     queryFn: () => apiService.analytics.getSystemUsage(),
@@ -122,7 +123,7 @@ export function useAnalyticsSystemUsage(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener tasas de error (analytics)
  */
-export function useAnalyticsErrorRates(options?: UseQueryOptions<any, Error>) {
+export function useAnalyticsErrorRates(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['analytics', 'error-rates'],
     queryFn: () => apiService.analytics.getErrorRates(),
@@ -134,7 +135,7 @@ export function useAnalyticsErrorRates(options?: UseQueryOptions<any, Error>) {
 /**
  * Hook para obtener commits recientes de Git
  */
-export function useGitCommits(limit = 10, options?: UseQueryOptions<any[], Error>) {
+export function useGitCommits(limit = 10, options?: UseQueryOptions<any[]>) {
   return useQuery({
     queryKey: ['git', 'commits', limit],
     queryFn: () => apiService.git.getRecentCommits(limit),
@@ -145,7 +146,7 @@ export function useGitCommits(limit = 10, options?: UseQueryOptions<any[], Error
 /**
  * Hook para health check
  */
-export function useHealthCheck(options?: UseQueryOptions<any, Error>) {
+export function useHealthCheck(options?: UseQueryOptions<any>) {
   return useQuery({
     queryKey: ['health'],
     queryFn: () => apiService.health.check(),

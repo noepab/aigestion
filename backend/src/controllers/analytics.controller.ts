@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
-import { getCache, setCache } from '../utils/redis';
-import { User } from '../models/User';
-import { stats } from '../utils/stats';
+import type { Request, Response } from 'express-serve-static-core';
 import os from 'os';
+
+import { User } from '../models/User';
+import { getCache, setCache } from '../utils/redis';
+import { stats } from '../utils/stats';
 
 /**
  * Get analytics overview

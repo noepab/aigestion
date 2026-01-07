@@ -1,7 +1,8 @@
 
-import { z } from 'zod';
-import { BaseTool } from './base.tool';
 import { tavily } from '@tavily/core';
+import { z } from 'zod';
+
+import { BaseTool } from './base.tool';
 
 /**
  * SearchWebTool

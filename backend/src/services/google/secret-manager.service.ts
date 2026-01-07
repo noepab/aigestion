@@ -1,7 +1,8 @@
-import { injectable } from 'inversify';
-import { logger } from '../../utils/logger';
 import fs from 'fs';
+import { injectable } from 'inversify';
 import path from 'path';
+
+import { logger } from '../../utils/logger';
 
 @injectable()
 export class GoogleSecretManagerService {

@@ -1,6 +1,8 @@
-import { Router, Request, Response } from 'express';
-import { getTemplates, renderTemplate } from '../services/exitEmail.service';
+import { Router } from 'express';
+import type { Request, Response } from 'express-serve-static-core';
+
 import { buildResponse } from '../common/response-builder';
+import { getTemplates, renderTemplate } from '../services/exitEmail.service';
 
 const router = Router();
 

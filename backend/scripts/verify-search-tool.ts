@@ -1,7 +1,8 @@
 
-import { SearchWebTool } from '../src/tools/web-search.tool';
 import dotenv from 'dotenv';
 import path from 'path';
+
+import { SearchWebTool } from '../src/tools/web-search.tool';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.join(__dirname, '..', '.env') });

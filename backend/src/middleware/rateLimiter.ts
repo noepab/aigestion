@@ -1,6 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
+import type { NextFunction,Request, Response } from 'express-serve-static-core';
 import RedisStore from 'rate-limit-redis';
+
 import { getRedisClient } from '../cache/redis';
 import { config } from '../config/index';
 import { logger } from '../utils/logger';
@@ -21,7 +22,7 @@ interface AuthenticatedRequest extends Request {
 const createRateLimiter = (
   windowMs: number,
   max: number,
-  message: string = 'Too many requests, please try again later.'
+  message = 'Too many requests, please try again later.'
 ) => {
   // Use memory store for development (simpler, no Redis dependency)
   // In production, Redis store can be enabled via environment variable
@@ -56,9 +57,9 @@ const createRateLimiter = (
     store, // undefined = memory store
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
-    keyGenerator: (req: Request) => {
+    keyGenerator: (req: any) => {
       const authReq = req as AuthenticatedRequest;
-      return authReq.user?.id || req.ip || 'unknown';
+      return authReq.user?.id || (req).ip || 'unknown';
     },
   });
 };

@@ -1,6 +1,7 @@
+import type { Request, Response } from 'express-serve-static-core';
 import mongoose from 'mongoose';
 import os from 'os';
-import { Request, Response } from 'express';
+
 import { getRedisClient } from '../cache/redis';
 import { getRabbitMQChannel } from '../queue/rabbitmq';
 import { logger } from '../utils/logger';
@@ -93,6 +94,7 @@ export const checkRedisHealth = async () => {
 
   try {
     const [info] = await Promise.all([redisClient.info(), redisClient.ping()]);
+
 
     const redisInfo: Record<string, string> = {};
     info.split('\r\n').forEach((line) => {
@@ -188,7 +190,7 @@ const getDatabaseStats = async (db: any) => {
 };
 
 const formatBytes = (bytes: number, decimals = 2): string => {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) {return '0 Bytes';}
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
@@ -222,7 +224,8 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
     memoryUsage: process.memoryUsage(),
     nodeVersion: process.version,
     dependencies: {
-      mongoose: mongoose.version,
+      redis: (require('redis/package.json')).version,
+      mongoose: (require('mongoose/package.json')).version,
       node_mongodb_native: (mongoose.mongo as any).version || 'unknown',
     },
     metrics: {
@@ -327,8 +330,8 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
     // Add version info for dependencies
     try {
       const [redisPkg, amqpPkg] = await Promise.all([
-        import('redis/package.json').then((pkg) => pkg.version).catch(() => 'unknown'),
-        import('amqplib/package.json').then((pkg) => pkg.version).catch(() => 'unknown'),
+        (require('redis/package.json')).version,
+        (require('amqplib/package.json')).version,
       ]);
 
       response.dependencies = {
@@ -410,8 +413,6 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
-  res.set('X-Health-Check-Timestamp', new Date().toISOString());
-
-  res.status(statusCode).json(response);
+  (res as any).status(statusCode).json(response);
   return;
 };

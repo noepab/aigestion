@@ -1,6 +1,7 @@
 import 'reflect-metadata';
+
 import { jest } from '@jest/globals';
-import { Container } from 'typedi';
+
 import { SystemMetricsService } from '../../services/system-metrics.service';
 
 // Mock child_process exec
@@ -17,7 +18,7 @@ describe('SystemMetricsService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    service = Container.get(SystemMetricsService);
+    service = new SystemMetricsService();
   });
 
   describe('getCPUUsage', () => {

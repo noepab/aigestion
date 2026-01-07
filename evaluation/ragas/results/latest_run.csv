@@ -1,0 +1,4 @@
+user_input,retrieved_contexts,response,reference,context_precision,context_recall,faithfulness,answer_relevancy
+What is NEXUS V1?,['NEXUS V1 is a platform for managing AI resources.'],NEXUS V1 is an advanced AI management platform.,NEXUS V1 is an AI platform.,0.9999999999,1.0,0.0,0.9999999999999997
+How do I reset my password?,['User settings allow password resets via email.'],Go to settings and click reset password.,You can reset password in settings.,0.9999999999,1.0,0.0,0.9999999999999994
+Does it support Docker?,['The system is containerized using Docker.'],"Yes, it runs on Docker containers.",Docker is supported.,0.9999999999,1.0,0.5,0.6528536037368116

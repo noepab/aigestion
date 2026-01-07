@@ -22,7 +22,7 @@ const processor: DataProcessor = {
   },
 
   async filterLogs(logs: any[], filter: string) {
-    if (!filter) return logs;
+    if (!filter) {return logs;}
     const lowerFilter = filter.toLowerCase();
     return logs.filter(log =>
       log.mensaje.toLowerCase().includes(lowerFilter) ||
@@ -32,7 +32,7 @@ const processor: DataProcessor = {
   },
 
   async calculateStatistics(data: number[]) {
-    if (data.length === 0) return { mean: 0, median: 0, stdDev: 0 };
+    if (data.length === 0) {return { mean: 0, median: 0, stdDev: 0 };}
 
     const sum = data.reduce((a, b) => a + b, 0);
     const mean = sum / data.length;
@@ -40,8 +40,8 @@ const processor: DataProcessor = {
     const sorted = [...data].sort((a, b) => a - b);
     const mid = Math.floor(sorted.length / 2);
     const median = sorted.length % 2 !== 0
-      ? sorted[mid]!
-      : (sorted[mid - 1]! + sorted[mid]!) / 2;
+      ? sorted[mid]
+      : (sorted[mid - 1] + sorted[mid]) / 2;
 
     const squareDiffs = data.map(value => {
       const diff = value - mean;

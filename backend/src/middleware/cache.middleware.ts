@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Response } from 'express-serve-static-core';
+
 import { cache } from '../utils/cacheManager';
 import { logger } from '../utils/logger';
 
@@ -6,8 +7,8 @@ import { logger } from '../utils/logger';
  * Middleware to cache API responses
  * @param ttl Time to live in seconds (default 300)
  */
-export const cacheMiddleware = (ttl: number = 300) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const cacheMiddleware = (ttl = 300) => {
+  return async (req: any, res: any, next: NextFunction): Promise<void> => {
     // Only cache GET requests
     if (req.method !== 'GET') {
       next();
@@ -29,7 +30,7 @@ export const cacheMiddleware = (ttl: number = 300) => {
       // Intercept response to cache it
       const originalJson = res.json;
 
-      res.json = function (body: any): Response<any, Record<string, any>> {
+      res.json = function (body: any): Response {
         // Restore original method
         res.json = originalJson;
 

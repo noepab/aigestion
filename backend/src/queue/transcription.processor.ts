@@ -1,11 +1,12 @@
-import { Container } from 'typedi';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TranscriptionJob } from './youtube-transcription.queue';
-import { youtubeTranscriptionService } from '../utils/youtube-transcription.service';
+import { Container } from 'typedi';
+
 import { EmailService } from '../services/email.service';
 import { TelegramService } from '../services/telegram.service';
 import { logger } from '../utils/logger';
+import { youtubeTranscriptionService } from '../utils/youtube-transcription.service';
+import { TranscriptionJob } from './youtube-transcription.queue';
 
 /**
  * Process a transcription job:

@@ -4,6 +4,7 @@
  */
 
 import chalk from 'chalk';
+
 import { cache } from '../utils/cacheManager';
 import { applyIndexes } from '../utils/queryOptimizer';
 
@@ -52,14 +53,14 @@ async function setupDatabaseIndexes() {
     try {
       // Dynamically import models if they exist
       const userModule = await import('../models/User.js').catch(() => null);
-      if (userModule?.User) models.User = userModule.User;
+      if (userModule?.User) {models.User = userModule.User;}
     } catch (e) {
       console.log(chalk.gray('  ℹ️  User model not found, skipping'));
     }
 
     try {
       const projectModule = await import('../models/Project.js').catch(() => null);
-      if (projectModule?.Project) models.Project = projectModule.Project;
+      if (projectModule?.Project) {models.Project = projectModule.Project;}
     } catch (e) {
       console.log(chalk.gray('  ℹ️  Project model not found, skipping'));
     }

@@ -1,7 +1,8 @@
-import { google, calendar_v3 } from 'googleapis';
-import { logger } from './logger';
+import { calendar_v3,google } from 'googleapis';
+
 import { env } from '../config/env.schema';
 import type { CalendarEvent } from '../types/google-cloud.types';
+import { logger } from './logger';
 
 /**
  * Servicio para Google Calendar API
@@ -30,7 +31,7 @@ export class GoogleCalendarService {
    * Crea o devuelve un cliente de Calendario autenticado (Cached)
    */
   private async getCalendarClient(): Promise<calendar_v3.Calendar> {
-    if (this.calendar) return this.calendar;
+    if (this.calendar) {return this.calendar;}
 
     // Si hay credenciales de cuenta de servicio, priorizarlas
     if (env.GOOGLE_APPLICATION_CREDENTIALS) {

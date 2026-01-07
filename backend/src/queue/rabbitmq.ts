@@ -1,11 +1,12 @@
 import * as amqp from 'amqplib';
+
 import { logger } from '../utils/logger';
 
-type ChannelPool = {
+interface ChannelPool {
   channel: amqp.Channel;
   lastUsed: number;
   inUse: boolean;
-};
+}
 
 // Configuration
 const RABBIT_MQ_URL = process.env.RABBITMQ_URI || 'amqp://localhost:5672';

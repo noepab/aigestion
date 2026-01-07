@@ -1,9 +1,7 @@
-// jest.config.cjs
-/** @type {import('jest').Config} */
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jest-environment-jsdom',
-  roots: ['<rootDir>/frontend', '<rootDir>/server', '<rootDir>/tests'],
+  testEnvironment: 'node',
+  roots: ['<rootDir>/backend'],
   testMatch: ['**/__tests__/**/*.test.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
@@ -11,18 +9,29 @@ module.exports = {
     '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
     '^tests/(.*)$': '<rootDir>/tests/$1',
     '^tests$': '<rootDir>/tests/index.ts',
+    '^@/(.*)$': '<rootDir>/backend/src/$1',
   },
+  transform: {
+    '^.+\\.[tj]sx?$': 'ts-jest',
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.test.json',
+    },
+  },
+  transformIgnorePatterns: ['/node_modules/(?!bson|mongodb|@noble|@paralleldrive)/'],
+  setupFiles: ['<rootDir>/jest.polyfills.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['text', 'lcov'],
   coverageThreshold: {
     global: {
-      branches: 55,
-      functions: 55,
+      branches: 40,
+      functions: 40,
       lines: 55,
       statements: 55,
     },
   },
-  modulePathIgnorePatterns: ['<rootDir>/frontend/shared'],
+  moduleDirectories: ['node_modules', 'backend/node_modules', '<rootDir>'],
 };

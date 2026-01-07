@@ -7,7 +7,7 @@ export const useSciFiSound = () => {
 
     const playTone = (freq: number, type: OscillatorType, duration: number, vol = 0.1) => {
         const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioContext) return;
+        if (!AudioContext) {return;}
 
         const ctx = new AudioContext();
         const osc = ctx.createOscillator();

@@ -6,3 +6,5 @@ try {
 } catch (e) {
     // jest-extended not found or not needed in this context
 }
+// Polyfill TextEncoder/TextDecoder for environments where they are missing
+// TextEncoder polyfills moved to jest.polyfills.js loaded via setupFiles

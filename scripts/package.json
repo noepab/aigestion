@@ -1,7 +1,7 @@
 ﻿{
   "name": "docs-automation",
   "version": "1.0.0",
-  "description": "Sistema automatizado de organización de documentación para NEXUS V1",
+  "description": "Sistema automatizado de organizacion de documentacion para NEXUS V1",
   "scripts": {
     "docs:organize": "pwsh ./scripts/organize-docs.ps1",
     "docs:organize:dry": "pwsh ./scripts/organize-docs.ps1 -DryRun",

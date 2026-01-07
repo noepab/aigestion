@@ -1,6 +1,7 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { renderTemplate, getTemplates } from '../src/services/exitEmail.service';
+
+import { getTemplates,renderTemplate } from '../src/services/exitEmail.service';
 
 const argv = yargs(hideBin(process.argv))
   .option('name', {

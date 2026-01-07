@@ -1,14 +1,13 @@
-console.log('🔵 [DEBUG] setup.ts: Starting...');
 import { jest } from '@jest/globals';
+import { TextDecoder, TextEncoder } from 'util';
+console.log('🔵 [DEBUG] setup.ts: Starting...');
+global.TextEncoder = TextEncoder;
+global.setImmediate = setTimeout;
+
+(global as any).TextDecoder = TextDecoder;
 
 // Mock redis module to avoid real connection in tests
-jest.mock('redis', () => ({
-  createClient: () => ({
-    sendCommand: jest.fn().mockResolvedValue('OK'),
-    connect: jest.fn().mockResolvedValue(undefined),
-    disconnect: jest.fn().mockResolvedValue(undefined),
-  }),
-}));
+
 
 // Mock Redis client to avoid real connections in tests
 jest.mock('../cache/redis');

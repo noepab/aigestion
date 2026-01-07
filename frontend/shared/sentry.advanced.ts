@@ -16,9 +16,7 @@ Sentry.init({
   beforeSend(event) {
     // Example: filter out specific errors
     if (
-      event.exception &&
-      event.exception.values &&
-      event.exception.values[0].type === 'IgnoredError'
+      event.exception?.values?.[0].type === 'IgnoredError'
     ) {
       return null;
     }

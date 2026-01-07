@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { SocialController } from '../controllers/social.controller';
 
 const router = Router();

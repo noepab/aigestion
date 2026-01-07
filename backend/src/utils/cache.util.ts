@@ -1,4 +1,5 @@
 import { RedisClientType } from 'redis';
+
 import { logger } from './logger';
 
 /**
@@ -17,8 +18,8 @@ export class CacheUtil {
   async getOrFetch<T>(
     key: string,
     fetchFunction: () => Promise<T>,
-    ttl: number = 300,
-    swrTtl: number = 600
+    ttl = 300,
+    swrTtl = 600
   ): Promise<T> {
     try {
       const cached = await this.client.get(key);

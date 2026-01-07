@@ -37,7 +37,7 @@ const getColors = () => {
 };
 
 const initParticles = () => {
-  if (!width || !height) return;
+  if (!width || !height) {return;}
   particles = [];
   const colors = getColors();
 
@@ -54,7 +54,7 @@ const initParticles = () => {
       speedY: Math.random() * 0.5 - 0.25,
       angle: Math.random() * Math.PI * 2,
       spinSpeed: Math.random() * 0.02 - 0.01,
-      color: colors[Math.floor(Math.random() * colors.length)]!,
+      color: colors[Math.floor(Math.random() * colors.length)],
       alpha: Math.random() * 0.5 + 0.2,
       pulseSpeed: Math.random() * 0.02 + 0.01,
     });
@@ -62,7 +62,7 @@ const initParticles = () => {
 };
 
 const animate = (time: number) => {
-  if (!ctx || !isAnimating) return;
+  if (!ctx || !isAnimating) {return;}
 
   ctx.clearRect(0, 0, width, height);
   ctx.globalCompositeOperation = 'screen';
@@ -76,10 +76,10 @@ const animate = (time: number) => {
     p.y += Math.sin(p.angle) * 0.5 + p.speedY;
 
     // Wrap
-    if (p.x < -50) p.x = width + 50;
-    if (p.x > width + 50) p.x = -50;
-    if (p.y < -50) p.y = height + 50;
-    if (p.y > height + 50) p.y = -50;
+    if (p.x < -50) {p.x = width + 50;}
+    if (p.x > width + 50) {p.x = -50;}
+    if (p.y < -50) {p.y = height + 50;}
+    if (p.y > height + 50) {p.y = -50;}
 
     // Pulse
     const currentAlpha = p.alpha + Math.sin(timeScale * p.pulseSpeed) * 0.15;

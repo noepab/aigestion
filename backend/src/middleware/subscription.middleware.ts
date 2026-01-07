@@ -1,15 +1,16 @@
-import { Request, Response, NextFunction } from 'express';
+import type { NextFunction,Request, Response } from 'express-serve-static-core';
+
 import { User } from '../models/User';
 import { logger } from '../utils/logger';
 
 export const requireSubscription = (requiredPlan?: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) {
+      if (!(req as any).user) {
          return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const user = await User.findById(req.user.id);
+      const user = await User.findById((req as any).user.id);
 
       if (!user) {
         return res.status(401).json({ error: 'User not found' });

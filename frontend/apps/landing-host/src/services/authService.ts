@@ -129,7 +129,7 @@ class AuthService {
 
     const demoUser = DEMO_USERS[email.toLowerCase()];
 
-    if (!demoUser || demoUser.password !== password) {
+    if (demoUser?.password !== password) {
       throw new Error('Credenciales inválidas');
     }
 

@@ -1,11 +1,13 @@
-import { Request, Response } from 'express';
 import { randomUUID } from 'node:crypto';
+
+import type { Request, Response } from 'express-serve-static-core';
+
 import { logger } from '../../utils/logger';
 import { RemoteAccessRequest, RemoteSession } from './types';
 
 export class RemoteAccessController {
-  private pendingRequests: Map<string, RemoteAccessRequest> = new Map();
-  private activeSessions: Map<string, RemoteSession> = new Map();
+  private pendingRequests = new Map<string, RemoteAccessRequest>();
+  private activeSessions = new Map<string, RemoteSession>();
 
   // Solicitar acceso remoto
   async requestAccess(req: Request, res: Response): Promise<void> {
@@ -14,7 +16,7 @@ export class RemoteAccessController {
 
       // Validar permisos
       if (!permissions || typeof permissions !== 'object') {
-        res.status(400).json({
+        (res as any).status(400).json({
           success: false,
           error: 'Se deben especificar los permisos',
         });
@@ -44,13 +46,13 @@ export class RemoteAccessController {
       // En una implementación real, aquí notificaríamos al usuario objetivo
       logger.info(`Solicitud de acceso remoto creada: ${request.id}`);
 
-      res.status(201).json({
+      (res as any).status(201).json({
         success: true,
         data: request,
       });
     } catch (error) {
       logger.error(error, 'Error al procesar la solicitud de acceso:');
-      res.status(500).json({
+      (res as any).status(500).json({
         success: false,
         error: 'Error al procesar la solicitud de acceso',
       });
@@ -65,7 +67,7 @@ export class RemoteAccessController {
 
       const request = this.pendingRequests.get(requestId);
       if (!request) {
-        res.status(404).json({
+        (res as any).status(404).json({
           success: false,
           error: 'Solicitud no encontrada',
         });
@@ -74,7 +76,7 @@ export class RemoteAccessController {
 
       // Verificar que el usuario que responde es el destinatario
       if (request.toUserId !== userId) {
-        res.status(403).json({
+        (res as any).status(403).json({
           success: false,
           error: 'No autorizado para responder a esta solicitud',
         });
@@ -101,7 +103,7 @@ export class RemoteAccessController {
 
         logger.info(`Sesión de acceso remoto iniciada: ${session.id}`);
 
-        res.status(200).json({
+        (res as any).status(200).json({
           success: true,
           data: {
             request,
@@ -109,14 +111,14 @@ export class RemoteAccessController {
           },
         });
       } else {
-        res.status(200).json({
+        (res as any).status(200).json({
           success: true,
           data: { request },
         });
       }
     } catch (error) {
       logger.error(error, 'Error al procesar la respuesta a la solicitud:');
-      res.status(500).json({
+      (res as any).status(500).json({
         success: false,
         error: 'Error al procesar la respuesta a la solicitud',
       });
@@ -132,13 +134,13 @@ export class RemoteAccessController {
         (session) => session.fromUserId === userId || session.toUserId === userId
       );
 
-      res.status(200).json({
+      (res as any).status(200).json({
         success: true,
         data: sessions,
       });
     } catch (error) {
       logger.error(error, 'Error al obtener sesiones activas:');
-      res.status(500).json({
+      (res as any).status(500).json({
         success: false,
         error: 'Error al obtener sesiones activas',
       });
@@ -153,7 +155,7 @@ export class RemoteAccessController {
 
       const session = this.activeSessions.get(sessionId);
       if (!session) {
-        res.status(404).json({
+        (res as any).status(404).json({
           success: false,
           error: 'Sesión no encontrada',
         });
@@ -162,7 +164,7 @@ export class RemoteAccessController {
 
       // Verificar que el usuario que finaliza es participante
       if (session.fromUserId !== userId && session.toUserId !== userId) {
-        res.status(403).json({
+        (res as any).status(403).json({
           success: false,
           error: 'No autorizado para finalizar esta sesión',
         });
@@ -176,13 +178,13 @@ export class RemoteAccessController {
 
       logger.info(`Sesión de acceso remoto finalizada: ${sessionId}`);
 
-      res.status(200).json({
+      (res as any).status(200).json({
         success: true,
         message: 'Sesión finalizada correctamente',
       });
     } catch (error) {
       logger.error(error, 'Error al finalizar la sesión:');
-      res.status(500).json({
+      (res as any).status(500).json({
         success: false,
         error: 'Error al finalizar la sesión',
       });

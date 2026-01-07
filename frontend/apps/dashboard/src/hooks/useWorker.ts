@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import * as Comlink from 'comlink';
+import { useEffect, useRef, useState } from 'react';
+
 import type { WorkerApi } from '../workers/data.worker';
 
 export function useWorker() {

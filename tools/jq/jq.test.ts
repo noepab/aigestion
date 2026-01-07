@@ -1,7 +1,7 @@
 import { makeToolTestConfig, toolTest } from "tests";
 import { skipCPUOS } from "tests/utils";
 
-const skipTestIfLambda = (version?: string | undefined) =>
+const skipTestIfLambda = (version?: string  ) =>
   skipCPUOS([{ os: "darwin", cpu: "arm64" }])(version) ||
   skipCPUOS([{ os: "linux", cpu: "arm64" }])(version);
 

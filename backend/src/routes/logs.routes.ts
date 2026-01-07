@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { clearLogs, getRecentLogs } from '../controllers/logs.controller';
 
 const router = Router();

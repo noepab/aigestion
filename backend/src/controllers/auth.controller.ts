@@ -1,201 +1,155 @@
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
+import jwt from 'jsonwebtoken';
+
+import { buildResponse } from '../common/response-builder';
 import { config } from '../config';
+import { container } from '../config/inversify.config';
 import { User } from '../models/User';
-import { logger } from '../utils/logger';
+import { AuthService } from '../services/auth.service';
+import { Enable2FAUseCase } from '../application/usecases/Enable2FAUseCase';
+import { Verify2FAUseCase } from '../application/usecases/Verify2FAUseCase';
+import { TYPES } from '../types';
+import { AppError } from '../utils/errors';
+import { validate, schemas } from '../middleware/validation.middleware';
 
+// Helper to set refresh token cookie
+const setRefreshTokenCookie = (res: Response, token: string) => {
+  res.cookie('refresh_token', token, {
+    httpOnly: true,
+    secure: config.env === 'production',
+    sameSite: 'strict',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
+};
 
-export const register = async (_req: Request, res: Response): Promise<void> => {
+export const register = [
+  validate({ body: schemas.auth.register }),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const authService = container.get<AuthService>(TYPES.AuthService);
+      const { user, token, refreshToken } = await authService.register(req.body);
+
+      // No devolver la contraseña en la respuesta
+      const userResponse: any = user.toObject();
+      delete userResponse.password;
+      delete userResponse.refreshTokens; // Don't send DB array to client
+
+      setRefreshTokenCookie(res, refreshToken);
+
+      res.status(201).json(buildResponse({ user: userResponse, token }, 201, (req as any).requestId));
+    } catch (error) {
+      next(error);
+    }
+  },
+];
+
+export const login = [
+  validate({ body: schemas.auth.login }),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const authService = container.get<AuthService>(TYPES.AuthService);
+      const { email, password } = req.body;
+      const ip = req.ip;
+      const userAgent = req.headers['user-agent'];
+
+      const { user, token, refreshToken } = await authService.login({ email, password, ip, userAgent });
+
+      const userResponse: any = user.toObject();
+      delete userResponse.password;
+      delete userResponse.refreshTokens;
+
+      setRefreshTokenCookie(res, refreshToken);
+
+      res.status(200).json(buildResponse({ user: userResponse, token }, 200, (req as any).requestId));
+    } catch (error) {
+      next(error);
+    }
+  },
+];
+
+export const refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { email, password, name } = _req.body;
-
-    // Validar datos de entrada
-    if (!email || !password || !name) {
-      res.status(400).json({
-        success: false,
-        message: 'Por favor, proporcione email, contraseña y nombre',
-      });
-      return;
+    const refreshToken = req.cookies['refresh_token'];
+    if (!refreshToken) {
+      throw new AppError('Refresh Token Required', 401, 'REFRESH_TOKEN_REQUIRED');
     }
 
-    // Verificar si el usuario ya existe
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      res.status(400).json({
-        success: false,
-        message: 'El correo electrónico ya está registrado',
-      });
-      return;
-    }
+    const authService = container.get<AuthService>(TYPES.AuthService);
+    const ip = req.ip || 'unknown';
+    const userAgent = req.headers['user-agent'] || 'unknown';
 
-    // Hashear la contraseña
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const { user, accessToken, refreshToken: newRefreshToken } = await authService.refreshToken(refreshToken, ip, userAgent);
 
-    // Crear nuevo usuario
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role: 'user', // Por defecto, los nuevos usuarios son 'user'
-    });
+    setRefreshTokenCookie(res, newRefreshToken);
 
-    await user.save();
-
-    // Generar token JWT
-    const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn as any }
-    );
-
-    // No devolver la contraseña en la respuesta
-    const userResponse: any = user.toObject();
-    delete userResponse.password;
-
-    res.status(201).json({
-      success: true,
-      data: {
-        user: userResponse,
-        token,
-      },
-    });
+    res.status(200).json(buildResponse({ accessToken }, 200, (req as any).requestId));
   } catch (error) {
-    logger.error(error, 'Error en el registro:');
-    res.status(500).json({
-      success: false,
-      message: 'Error al registrar el usuario',
-    });
+    // If refresh fails (security reuse, expired), clear cookie
+    res.clearCookie('refresh_token');
+    next(error);
   }
 };
 
-export const login = async (_req: Request, res: Response): Promise<void> => {
+export const logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { email, password } = _req.body;
-
-    // Validar datos de entrada
-    if (!email || !password) {
-      res.status(400).json({
-        success: false,
-        message: 'Por favor, proporcione email y contraseña',
-      });
-      return;
+    const refreshToken = req.cookies['refresh_token'];
+    if (refreshToken) {
+      // @ts-ignore
+      const authService = container.get<AuthService>(TYPES.AuthService);
+      await authService.logout(refreshToken);
     }
 
-    // Verificar si el usuario existe
-    const user = await User.findOne({ email }).select('+password');
-    if (!user) {
-      res.status(401).json({
-        success: false,
-        message: 'Credenciales inválidas',
-      });
-      return;
-    }
-
-    // Verificar si la cuenta está bloqueada
-    if (user.lockUntil && user.lockUntil > new Date()) {
-      const remainingMinutes = Math.ceil((user.lockUntil.getTime() - Date.now()) / 60000);
-      res.status(403).json({
-        success: false,
-        message: `Cuenta bloqueada temporalmente. Intente de nuevo en ${remainingMinutes} minutos.`,
-      });
-      return;
-    }
-
-    // Verificar contraseña
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      // Incrementar intentos fallidos
-      user.loginAttempts += 1;
-
-      // Bloquear si excede 5 intentos
-      if (user.loginAttempts >= 5) {
-        user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // Bloqueo de 30 min
-        user.loginAttempts = 0; // Resetear intentos después del bloqueo
-      }
-
-      await user.save();
-
-      res.status(401).json({
-        success: false,
-        message: 'Credenciales inválidas',
-      });
-      return;
-    }
-
-    // Login exitoso: Resetear intentos y actualizar lastLogin
-    user.loginAttempts = 0;
-    user.lockUntil = undefined;
-    user.lastLogin = new Date();
-    await user.save();
-
-    // Generar token JWT con fingerprint
-    const fingerprint = {
-      ip: _req.ip || 'unknown',
-      userAgent: _req.headers['user-agent'] || 'unknown',
-    };
-
-    const token = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-        fingerprint,
-      },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn as any }
-    );
-
-    // No devolver la contraseña en la respuesta
-    const userResponse: any = user.toObject();
-    delete userResponse.password;
-
-    res.status(200).json({
-      success: true,
-      data: {
-        user: userResponse,
-        token,
-      },
-    });
+    res.clearCookie('refresh_token');
+    res.status(200).json(buildResponse({ message: 'Logged out successfully' }, 200, (req as any).requestId));
   } catch (error) {
-    logger.error(error, 'Error en el inicio de sesión:');
-    res.status(500).json({
-      success: false,
-      message: 'Error al iniciar sesión',
-    });
+    next(error);
   }
 };
 
-export const getMe = async (req: Request, res: Response): Promise<void> => {
+export const getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    // El usuario ya está disponible en req.user gracias al middleware de autenticación
     if (!req.user) {
-      res.status(401).json({
-        success: false,
-        message: 'Usuario no autenticado',
-      });
-      return;
+      return next(new AppError('Usuario no autenticado', 401, 'UNAUTHORIZED'));
     }
     const user = await User.findById(req.user.id).select('-password');
 
     if (!user) {
-      res.status(404).json({
-        success: false,
-        message: 'Usuario no encontrado',
-      });
-      return;
+      return next(new AppError('Usuario no encontrado', 404, 'NOT_FOUND'));
     }
 
-    res.status(200).json({
-      success: true,
-      data: user,
-    });
+    res.status(200).json(buildResponse(user, 200, (req as any).requestId));
   } catch (error) {
-    logger.error(error, 'Error al obtener perfil de usuario:');
-    res.status(500).json({
-      success: false,
-      message: 'Error al obtener el perfil de usuario',
-    });
+    next(error);
   }
 };
+
+// Enable 2FA
+export const enable2FA = [
+  validate({ body: schemas.auth.enable2FA }),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const enable2FAUseCase = container.get<Enable2FAUseCase>(TYPES.Enable2FAUseCase);
+      const { userId } = req.body;
+      const result = await enable2FAUseCase.execute(userId);
+      res.status(200).json(buildResponse(result, 200, (req as any).requestId));
+    } catch (error) {
+      next(error);
+    }
+  },
+];
+
+// Verify 2FA token
+export const verify2FA = [
+  validate({ body: schemas.auth.verify2FA }),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const verify2FAUseCase = container.get<Verify2FAUseCase>(TYPES.Verify2FAUseCase);
+      const { userId, token } = req.body;
+      await verify2FAUseCase.execute(userId, token);
+      res.status(200).json(buildResponse({ success: true }, 200, (req as any).requestId));
+    } catch (error) {
+      next(error);
+    }
+  },
+];

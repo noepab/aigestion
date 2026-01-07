@@ -1,5 +1,8 @@
 import request from 'supertest';
+
 import { app } from '../app';
+
+jest.mock('redis');
 
 describe('Task 1.1 & 1.2: REST API v1 + GraphQL', () => {
   describe('REST API v1 - Health Check', () => {

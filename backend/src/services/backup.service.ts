@@ -1,10 +1,11 @@
-import { injectable, inject } from 'inversify';
+import crypto from 'crypto';
+import fs, { promises as fsPromises } from 'fs';
+import { inject,injectable } from 'inversify';
+import path from 'path';
+
 import { logger } from '../utils/logger';
 import { GoogleDriveService } from './google/google-drive.service';
-import fs from 'fs';
-import path from 'path';
-import crypto from 'crypto';
-import mime from 'mime-types';
+const mime = require('mime-types');
 
 @injectable()
 export class BackupService {
@@ -17,7 +18,8 @@ export class BackupService {
    * @param sourceDir Absolute path to local directory
    * @param rootTargetFolder Name of the root folder in Drive (e.g. "Backups")
    */
-  async backupDirectory(sourceDir: string, rootTargetFolder: string = 'AIGestion_Backups') {
+  async backupDirectory(sourceDir: string, rootTargetFolder = 'AIGestion_Backups') {
+
     logger.info(`Starting backup of ${sourceDir} to Drive folder: ${rootTargetFolder}`);
 
     if (!fs.existsSync(sourceDir)) {
@@ -46,7 +48,7 @@ export class BackupService {
       for (const entry of entries) {
         const entryPath = path.join(localPath, entry);
         // Ignore node_modules, .git, etc
-        if (entry === 'node_modules' || entry === '.git' || entry === '.DS_Store' || entry === 'dist') continue;
+        if (entry === 'node_modules' || entry === '.git' || entry === '.DS_Store' || entry === 'dist') {continue;}
 
         try {
           const entryStats = fs.statSync(entryPath);
@@ -93,5 +95,69 @@ export class BackupService {
       input.on('data', chunk => hash.update(chunk));
       input.on('close', () => resolve(hash.digest('hex')));
     });
+  }
+
+  /**
+   * Restore a backup from Drive to local file system
+   * @param targetDir Local directory to restore to
+   * @param rootSourceFolder Name of the root folder in Drive
+   */
+  async restoreDirectory(targetDir: string, rootSourceFolder = 'AIGestion_Backups') {
+    logger.info(`Starting restore from ${rootSourceFolder} to ${targetDir}`);
+
+    if (!fs.existsSync(targetDir)) {
+      await fsPromises.mkdir(targetDir, { recursive: true });
+    }
+
+    try {
+      // Find root backup folder
+      const rootId = await this.googleDriveService.findFolder(rootSourceFolder, 'root');
+      if (!rootId) {
+        throw new Error(`Remote backup folder not found: ${rootSourceFolder}`);
+      }
+
+      await this.downloadMetadata(targetDir, rootId);
+      logger.info('Restore completed successfully');
+    } catch (error) {
+      logger.error('Restore failed:', error);
+      throw error;
+    }
+  }
+
+  private async downloadMetadata(localPath: string, driveFolderId: string) {
+    const contents = await this.googleDriveService.listFolderContents(driveFolderId);
+
+    for (const item of contents) {
+      const localItemPath = path.join(localPath, item.name);
+
+      if (item.mimeType === 'application/vnd.google-apps.folder') {
+        // It's a folder
+        if (!fs.existsSync(localItemPath)) {
+          await fsPromises.mkdir(localItemPath, { recursive: true });
+        }
+        await this.downloadMetadata(localItemPath, item.id);
+      } else {
+        // It's a file
+        await this.restoreFile(localItemPath, item.id, item.localHash);
+      }
+    }
+  }
+
+  private async restoreFile(filePath: string, fileId: string, remoteHash?: string) {
+    try {
+      // Check if local file exists and matches hash
+      if (fs.existsSync(filePath) && remoteHash) {
+        const localHash = await this.calculateHash(filePath);
+        if (localHash === remoteHash) {
+          logger.debug(`Skipping ${filePath} (matching hash)`);
+          return;
+        }
+      }
+
+      logger.info(`Downloading to ${filePath}...`);
+      await this.googleDriveService.downloadFile(fileId, filePath);
+    } catch (err) {
+      logger.error(`Failed to restore file ${filePath}:`, err);
+    }
   }
 }

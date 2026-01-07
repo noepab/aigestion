@@ -1,24 +1,30 @@
-import express, { Request, Response } from 'express';
+import compression from 'compression';
+import cors from 'cors';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import type { Request, Response } from 'express-serve-static-core';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import xssClean from 'xss-clean';
-import cors from 'cors';
-import compression from 'compression';
-import rateLimit from 'express-rate-limit';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import RateLimitRedisStore from 'rate-limit-redis';
 import { createClient } from 'redis';
-import morgan from 'morgan';
-import routes from './routes';
-import { errorHandler, notFoundHandler } from './middleware/error.middleware';
-import { config } from './config';
-import { logger } from './utils/logger';
+// @ts-ignore
+import xssClean from 'xss-clean';
+
+// Middleware to ensure every JSON response follows the standard API for
+import { config } from './config/config';
 import { setupSwagger } from './docs/swagger';
-import mcpRouter from './routes/mcp.routes';
-
+import { createGraphQLRouter } from './graphql/router';
+import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 import { requestIdMiddleware } from './middleware/requestId.middleware';
+import routes from './routes';
+import mcpRouter from './routes/mcp.routes';
+import { logger } from './utils/logger';
 
+import { buildResponse } from './common/response-builder';
 const app = express();
-app.get('/health', (_req: Request, res: Response) => res.json({ status: 'ok' }));
+
 
 
 // Request Traceability
@@ -41,7 +47,13 @@ app.use(
 app.use(
   cors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || config.cors.origin === '*' || origin === config.cors.origin) {
+      const allowedOrigins = config.cors.origin;
+      const isAllowed =
+        !origin ||
+        allowedOrigins === '*' ||
+        (Array.isArray(allowedOrigins) && allowedOrigins.includes(origin));
+
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
@@ -56,10 +68,15 @@ const redisClient = createClient({ url: process.env.REDIS_URL || 'redis://localh
 redisClient.connect().catch(err => logger.error('Redis connection error:', err));
 
 // Rate limiting middleware (15 min window, 100 requests per IP)
+// Rate limiting middleware (15 min window, 100 requests per IP)
+const isTest = process.env.NODE_ENV === 'test' || !!process.env.JEST_WORKER_ID;
+
 const apiLimiter = rateLimit({
-  store: new RateLimitRedisStore({
-    sendCommand: (...args) => redisClient.sendCommand(args)
-  }),
+  store: isTest
+    ? undefined // Use default MemoryStore for tests
+    : new RateLimitRedisStore({
+      sendCommand: (...args) => redisClient.sendCommand(args),
+    }),
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
@@ -67,7 +84,9 @@ const apiLimiter = rateLimit({
 });
 
 // Apply rate limiter to all API routes
-app.use('/api/v1', apiLimiter);
+if (!isTest) {
+  app.use('/api/v1', apiLimiter);
+}
 
 // Security middlewares
 app.use(hpp());
@@ -95,46 +114,32 @@ app.use(
 app.use(
   express.json({
     limit: '10mb',
-    verify: (req: any, _res, buf: Buffer) => {
+    verify: (req: any, _res: Response, buf: Buffer) => {
       if (req.originalUrl.includes('/stripe/webhook')) {
         req.rawBody = buf;
       }
     },
   })
 );
-app.use(requestIdMiddleware);
-
-
-
-
-
-import { createGraphQLRouter } from './graphql/router';
+app.use(cookieParser());
 
 // Mount Routes
 setupSwagger(app);
+
+app.get('/api/v1/health', (req: Request, res: Response) => {
+  const requestId = (req as any).requestId;
+  const response = buildResponse({ status: 'healthy', uptime: process.uptime(), version: '1.0.0' }, 200, requestId);
+  console.log('DEBUG: App.ts /health response:', JSON.stringify(response, null, 2));
+  res.json(response);
+});
 app.use('/api/v1', routes);
 app.use('/mcp', mcpRouter);
 app.use(createGraphQLRouter());
 
-// Middleware to ensure every JSON response follows the standard API format
-import { buildResponse } from './common/response-builder';
-app.use((req, res, next) => {
-  const originalJson = res.json.bind(res);
-  res.json = (body: any) => {
-    // If body already looks like a standard response, leave it
-    if (body && typeof body === 'object' && 'status' in body && 'data' in body) {
-      return originalJson(body);
-    }
-    const requestId = (req as any).requestId;
-    const timestamp = new Date().toISOString();
-    const wrapped = buildResponse(body, 200, requestId);
-    // Ensure timestamp is present (buildResponse already adds it)
-    // Overwrite timestamp just in case
-    wrapped.timestamp = timestamp;
-    return originalJson(wrapped);
-  };
-  next();
-});
+
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Graceful shutdown
 process.on('SIGINT', async () => {

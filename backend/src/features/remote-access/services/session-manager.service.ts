@@ -1,13 +1,15 @@
-import { EventEmitter } from 'events';
 import { randomUUID } from 'node:crypto';
+
+import { EventEmitter } from 'events';
+
 import { logger } from '../../../utils/logger';
 import { RemoteAccessRequest, RemoteSession } from '../types';
 import { webRTCService } from './webrtc.service';
 
 export class SessionManagerService extends EventEmitter {
-  private activeSessions: Map<string, RemoteSession> = new Map();
-  private pendingRequests: Map<string, RemoteAccessRequest> = new Map();
-  private userSessions: Map<string, Set<string>> = new Map(); // userId -> Set<sessionId>
+  private activeSessions = new Map<string, RemoteSession>();
+  private pendingRequests = new Map<string, RemoteAccessRequest>();
+  private userSessions = new Map<string, Set<string>>(); // userId -> Set<sessionId>
 
   /**
    * Crea una nueva solicitud de acceso remoto
@@ -59,7 +61,7 @@ export class SessionManagerService extends EventEmitter {
     userId: string
   ): RemoteAccessRequest | null {
     const request = this.pendingRequests.get(requestId);
-    if (!request || request.toUserId !== userId) {
+    if (request?.toUserId !== userId) {
       return null;
     }
 
@@ -252,7 +254,7 @@ export class SessionManagerService extends EventEmitter {
    */
   addStream(sessionId: string, stream: MediaStream, userId: string): boolean {
     const session = this.getSession(sessionId);
-    if (!session || session.toUserId !== userId) {
+    if (session?.toUserId !== userId) {
       // Solo el destinatario puede compartir pantalla
       return false;
     }

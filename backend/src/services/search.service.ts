@@ -1,5 +1,6 @@
-import { injectable } from 'inversify';
 import axios from 'axios';
+import { injectable } from 'inversify';
+
 import { env } from '../config/env.schema';
 import { logger } from '../utils/logger';
 

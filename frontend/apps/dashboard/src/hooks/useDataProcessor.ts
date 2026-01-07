@@ -1,5 +1,6 @@
 import * as Comlink from 'comlink';
 import { useEffect, useRef, useState } from 'react';
+
 import type { DataProcessor } from '../workers/dataProcessor.worker';
 
 export function useDataProcessor() {

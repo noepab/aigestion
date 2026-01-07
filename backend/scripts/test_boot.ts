@@ -1,7 +1,8 @@
 import 'reflect-metadata';
+
 import { container } from '../src/config/inversify.config';
-import { TYPES } from '../src/types';
 import { AIService } from '../src/services/ai.service';
+import { TYPES } from '../src/types';
 
 /*
  * Test Boot Script

@@ -1,12 +1,13 @@
 ﻿import * as chokidar from 'chokidar';
 import * as fs from 'fs';
 import * as path from 'path';
-import { logger } from '../utils/logger';
-import { youtubeTranscriptionQueue, TranscriptionJob } from '../queue/youtube-transcription.queue';
-import { env } from '../config/env.schema';
 import { Container } from 'typedi';
-import { TelegramService } from '../services/telegram.service';
+
+import { env } from '../config/env.schema';
+import { TranscriptionJob,youtubeTranscriptionQueue } from '../queue/youtube-transcription.queue';
 import { youtubeChannelService } from '../services/google/youtube-channel.service';
+import { TelegramService } from '../services/telegram.service';
+import { logger } from '../utils/logger';
 
 const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.avi', '.mkv'];
 

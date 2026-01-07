@@ -1,7 +1,17 @@
-import { Router, Request, Response } from 'express';
-import { buildResponse } from '../common/response-builder';
+import { Router } from 'express';
+import type { Request, Response } from 'express-serve-static-core';
+
+import { buildResponse, buildError } from '../common/response-builder';
 // import { buildError, buildResponse, requestIdMiddleware } from '../common/response-builder';
-import { requestIdMiddleware } from '../common/response-builder';
+
+// import { getEmailTracking } from '../controllers/email-tracking.controller';
+// import briefingRoutes from './briefing.routes';
+import { container } from '../config/inversify.config';
+import exitEmailRouter from '../controllers/exitEmail.controller';
+import { CredentialManagerService } from '../services/credential-manager.service';
+import { HistoryService } from '../services/history.service';
+import { TYPES } from '../types';
+import aiRouter from './ai.routes';
 // import gmailRoutes from './gmail.routes';
 // import bigqueryRoutes from './bigquery.routes';
 // import cloudMonitoringRoutes from './cloudMonitoring.routes';
@@ -9,23 +19,27 @@ import { requestIdMiddleware } from '../common/response-builder';
 // import { env } from '../config/env.schema';
 // import { dashboardAuth } from '../middleware/dashboardAuth';
 import stripeRouter from './stripe.routes';
-import youtubeRouter from './youtube.routes';
 import usersRouter from './users.routes';
-import aiRouter from './ai.routes';
-import exitEmailRouter from '../controllers/exitEmail.controller';
-// import { getEmailTracking } from '../controllers/email-tracking.controller';
-// import briefingRoutes from './briefing.routes';
+import youtubeRouter from './youtube.routes';
+import authRouter from './auth.routes';
+import dockerRouter from './docker.routes';
 
-import { container } from '../config/inversify.config';
-import { TYPES } from '../types';
-import { CredentialManagerService } from '../services/credential-manager.service';
-import { HistoryService } from '../services/history.service';
+import { idempotencyMiddleware } from '../middleware/idempotency.middleware';
 
 /**
  * API v1 Router
  * Base estandarizada para todas las rutas versionadas
  */
 const apiV1Router = Router();
+
+// Aplicar middleware de idempotencia globalmente para proteger todos los POST/PUT/PATCH
+apiV1Router.use(idempotencyMiddleware);
+
+console.log('DEBUG: API V1 router loaded');
+
+// Mount Auth Routes
+apiV1Router.use('/auth', authRouter);
+apiV1Router.use('/docker', dockerRouter);
 
 /**
  * @openapi
@@ -39,14 +53,15 @@ const apiV1Router = Router();
  *       500:
  *         description: Internal server error
  */
-apiV1Router.post('/system/credentials/verify', async (_req: any, res: any) => {
+apiV1Router.post('/system/credentials/verify', async (req: any, res: any) => {
+  const requestId = (req as any).requestId;
   try {
     const credManager = container.get<CredentialManagerService>(TYPES.CredentialManagerService);
     const report = await credManager.verifyAll();
-    res.json(report);
+    res.json(buildResponse(report, 200, requestId));
   } catch (err) {
-    console.error('Credential verification failed:', err);
-    res.status(500).json({ error: 'Verification failed' });
+    const requestId = (req as any).requestId;
+    res.status(500).json(buildError('Verification failed', 'VERIFICATION_ERROR', 500, requestId));
   }
 });
 
@@ -70,19 +85,36 @@ apiV1Router.post('/system/credentials/verify', async (_req: any, res: any) => {
  *         description: Internal server error
  */
 apiV1Router.get('/system/history/:metric', async (req: any, res: any) => {
+  const requestId = (req as any).requestId;
   try {
     const { metric } = req.params;
     const historyService = container.get<HistoryService>(TYPES.HistoryService);
     const history = await historyService.getHistory(metric);
-    res.json(history);
+    res.json(buildResponse(history, 200, requestId));
   } catch (err) {
-    console.error('Failed to get history:', err);
-    res.status(500).json({ error: 'Failed to get history' });
+    const requestId = (req as any).requestId;
+    res.status(500).json(buildError('Internal server error', 'INTERNAL_ERROR', 500, requestId));
   }
 });
 
-// Middleware
-apiV1Router.use(requestIdMiddleware);
+// Standard API Routes
+
+
+// Users (Prueba poniéndolo arriba)
+apiV1Router.use('/users', usersRouter);
+
+// Health check
+apiV1Router.get('/health', (req: Request, res: Response) => {
+  console.log('DEBUG: Health handler hit');
+  const { requestId } = req as any;
+  return res.status(200).json(buildResponse({
+    status: 'healthy',
+    uptime: process.uptime(),
+    version: '1.0.0'
+  }, 200, requestId));
+});
+
+// Other services
 /**
  * @openapi
  * /stripe:
@@ -123,47 +155,8 @@ apiV1Router.use('/youtube', youtubeRouter);
 // Nueva ruta para el tracking de emails
 // apiV1Router.get('/email/tracking', getEmailTracking);
 
-/**
- * @openapi
- * /health:
- *   get:
- *     summary: Health check endpoint
- *     tags: [Utility]
- *     responses:
- *       200:
- *         description: Server is healthy
- */
-apiV1Router.get('/health', (req: Request, res: Response) => {
-  const { requestId } = req as any;
-  return res.status(200).json(
-    buildResponse(
-      {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        version: '1.0.0',
-      },
-      200,
-      requestId
-    )
-  );
-});
+import { dynamicRateLimiter } from '../middleware/rate-limit.middleware';
 
-// Users routes
-// Users routes
-/**
- * @openapi
- * /users:
- *   get:
- *     summary: Users related endpoints (placeholder)
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: Successful response
- */
-apiV1Router.use('/users', usersRouter);
-
-// AI routes
 /**
  * @openapi
  * /ai:
@@ -174,7 +167,7 @@ apiV1Router.use('/users', usersRouter);
  *       200:
  *         description: Successful response
  */
-apiV1Router.use('/ai', aiRouter);
+apiV1Router.use('/ai', dynamicRateLimiter, aiRouter);
 /**
  * @openapi
  * /exit-templates:

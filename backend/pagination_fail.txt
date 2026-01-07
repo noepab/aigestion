@@ -1,0 +1,222 @@
+
+> nexus-v1-dashboard-backend@1.0.0 test C:\Users\Alejandro\AIGestion\backend
+> npx jest "src/__tests__/api-v1.test.ts" "-t" "should validate pagination parameters" "--runInBand"
+
+npm warn config production Use `--omit=dev` instead.
+ts-jest[config] (WARN) 
+    The "ts-jest" config option "isolatedModules" is deprecated and will be removed in v30.0.0. Please use "isolatedModules: true" in C:/Users/Alejandro/AIGestion/backend/tsconfig.test.json instead, see https://www.typescriptlang.org/tsconfig/#isolatedModules
+  
+  console.log
+    ­ƒöÁ [DEBUG] env-setup.ts: Starting...
+
+      at Object.<anonymous> (src/__tests__/env-setup.ts:8:9)
+
+  console.log
+    ­ƒƒó [DEBUG] env-setup.ts: Finished
+
+      at Object.<anonymous> (src/__tests__/env-setup.ts:13:9)
+
+  console.log
+    ­ƒöÁ [DEBUG] setup.ts: Starting...
+
+      at Object.<anonymous> (src/__tests__/setup.ts:3:9)
+
+  console.log
+    [dotenv@17.2.3] injecting env (67) from .env -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (../node_modules/.pnpm/dotenv@17.2.3/node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [DEBUG] users.routes.ts: Router created
+
+      at Object.<anonymous> (src/routes/users.routes.ts:13:9)
+
+  console.log
+    ­ƒôÜ API Documentation available at http://localhost:${process.env.PORT || 3000}/api-docs
+
+      at setupSwagger (src/docs/swagger.ts:39:11)
+
+  console.log
+    [DEBUG] validatePagination: query= { page: '0', limit: '10' }
+
+      at validatePagination (src/middleware/pagination.middleware.ts:10:11)
+
+(node:19260) TimeoutNaNWarning: NaN is not a number.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[33mwarn[39m: Route not found: GET /api/v1/users?page=0&limit=10 {"requestId":"req_1767695358384_6yihpyfq9","timestamp":"2026-01-06T10:29:18.401Z"}
+  console.log
+    [DEBUG] errorHandler: err= HttpError: Resource not found
+        at notFoundHandler (C:\Users\Alejandro\AIGestion\backend\src\middleware\error.middleware.ts:9:17)
+        at Layer.handle [as handle_request] (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\layer.js:95:5)
+        at trim_prefix (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:328:13)
+        at C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:286:9
+        at router.process_params (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:346:12)
+        at next (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:280:10)
+        at C:\Users\Alejandro\AIGestion\backend\src\app.ts:138:3
+        at Layer.handle [as handle_request] (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\layer.js:95:5)
+        at trim_prefix (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:328:13)
+        at C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:286:9
+        at router.process_params (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:346:12)
+        at next (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:280:10)
+        at C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:646:15
+        at next (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:265:14)
+        at router.handle (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:175:3)
+        at router (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:47:12)
+        at Layer.handle [as handle_request] (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\layer.js:95:5)
+        at trim_prefix (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:328:13)
+        at C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:286:9
+        at router.process_params (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:346:12)
+        at Timeout.next (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:280:10)
+        at Timeout._onTimeout (C:\Users\Alejandro\AIGestion\node_modules\.pnpm\express@4.22.1\node_modules\express\lib\router\index.js:646:15)
+        at listOnTimeout (node:internal/timers:605:17)
+        at processTimers (node:internal/timers:541:7) {
+      statusCode: 404,
+      isOperational: true,
+      code: undefined
+    }
+
+      at errorHandler (src/middleware/errorHandler.ts:37:11)
+
+[32minfo[39m: ::ffff:127.0.0.1 - - [06/Jan/2026:10:29:18 +0000] "GET /api/v1/users?page=0&limit=10 HTTP/1.1" 404 236 "-" "-" {"requestId":"req_1767695358384_6yihpyfq9","timestamp":"2026-01-06T10:29:18.430Z"}
+FAIL src/__tests__/api-v1.test.ts (8.464 s)
+  API v1 - REST Refactoring
+    GET /health
+      Ôùï skipped should return standardized health response
+      Ôùï skipped response time should be < 200ms
+      Ôùï skipped should include X-Request-ID header
+    GET /users/{userId}
+      Ôùï skipped should retrieve user with standardized response
+      Ôùï skipped should validate userId format
+      Ôùï skipped response time should be < 200ms
+    GET /users (list)
+      ├ù should validate pagination parameters (109 ms)
+      Ôùï skipped should return paginated users list
+      Ôùï skipped should use default pagination if not provided
+    POST /users (create)
+      Ôùï skipped should create user with valid input
+      Ôùï skipped should validate required fields
+      Ôùï skipped should validate email format
+      Ôùï skipped response time should be < 200ms
+    Response format standardization
+      Ôùï skipped all responses should include requestId
+      Ôùï skipped error responses should follow RFC 7807
+      Ôùï skipped should include timestamps in ISO 8601 format
+    Performance metrics
+      Ôùï skipped GET /health should average < 100ms
+      Ôùï skipped GET /users should average < 150ms
+      Ôùï skipped POST /users should average < 200ms
+
+  ÔùÅ API v1 - REST Refactoring ÔÇ║ GET /users (list) ÔÇ║ should validate pagination parameters
+
+    expected 400 "Bad Request", got 404 "Not Found"
+
+       98 |         .get('/api/v1/users')
+       99 |         .query({ page: 0, limit: 10 })
+    > 100 |         .expect(400);
+          |          ^
+      101 |
+      102 |       expect(response.body.error.code).toBe('VALIDATION_ERROR');
+      103 |
+
+      at Object.<anonymous> (src/__tests__/api-v1.test.ts:100:10)
+      ----
+      at Test._assertStatus (../node_modules/.pnpm/supertest@6.3.4/node_modules/supertest/lib/test.js:252:14)
+      at ../node_modules/.pnpm/supertest@6.3.4/node_modules/supertest/lib/test.js:308:13
+      at Test._assertFunction (../node_modules/.pnpm/supertest@6.3.4/node_modules/supertest/lib/test.js:285:13)
+      at Test.assert (../node_modules/.pnpm/supertest@6.3.4/node_modules/supertest/lib/test.js:164:23)
+      at Server.localAssert (../node_modules/.pnpm/supertest@6.3.4/node_modules/supertest/lib/test.js:120:14)
+
+---------------------------------|---------|----------|---------|---------|---------------------------------------
+File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                     
+---------------------------------|---------|----------|---------|---------|---------------------------------------
+All files                        |   33.41 |     22.3 |   12.35 |   32.23 |                                       
+ src                             |   76.71 |     62.5 |   54.54 |   78.87 |                                       
+  app.ts                         |   76.38 |     62.5 |   54.54 |   78.57 | 57,81,111-112,130-136,147-149,152-154 
+  types.ts                       |     100 |      100 |     100 |     100 |                                       
+ src/common                      |      50 |        0 |       0 |      50 |                                       
+  response-builder.ts            |      50 |        0 |       0 |      50 | 30,45                                 
+ src/config                      |   69.79 |    88.88 |   11.76 |   70.96 |                                       
+  config.ts                      |     100 |    95.12 |     100 |     100 | 35                                    
+  env.schema.ts                  |   29.26 |       25 |    6.25 |   30.76 | 22-290,386-406                        
+  index.ts                       |     100 |      100 |     100 |     100 |                                       
+  inversify.config.ts            |     100 |      100 |     100 |     100 |                                       
+ src/controllers                 |   30.23 |        0 |       0 |   27.71 |                                       
+  ai.controller.ts               |   45.45 |      100 |       0 |   45.45 | 13-21                                 
+  exitEmail.controller.ts        |   38.88 |      100 |       0 |   38.88 | 21-24,47-54                           
+  user.controller.ts             |   24.56 |        0 |       0 |   20.37 | 16-22,28-40,50-63,70-83,89-101        
+ src/docs                        |   81.81 |      100 |      50 |   81.81 |                                       
+  swagger.ts                     |   81.81 |      100 |      50 |   81.81 | 35-36                                 
+ src/dto                         |     100 |      100 |     100 |     100 |                                       
+  dtoSchemas.ts                  |     100 |      100 |     100 |     100 |                                       
+ src/graphql                     |    28.8 |        0 |    17.5 |    30.5 |                                       
+  dataloaders.ts                 |   21.42 |        0 |       0 |      25 | 18-37,49-64,73                        
+  router.ts                      |      80 |        0 |   33.33 |      80 | 16-25                                 
+  schema.ts                      |   25.28 |        0 |   26.08 |   26.19 | 136-297,318                           
+ src/infrastructure/docker       |   13.23 |        0 |       0 |   11.66 |                                       
+  DockerService.ts               |   13.23 |        0 |       0 |   11.66 | 16-153                                
+ src/infrastructure/repository   |   42.85 |        0 |      25 |   47.36 |                                       
+  BaseRepository.ts              |   30.76 |        0 |      20 |   33.33 | 16-32                                 
+  UserRepository.ts              |    62.5 |        0 |   33.33 |   71.42 | 30-31                                 
+ src/infrastructure/resilience   |   73.33 |        0 |      20 |   73.33 |                                       
+  CircuitBreakerFactory.ts       |   73.33 |        0 |      20 |   73.33 | 37,41,45,49                           
+ src/middleware                  |   79.66 |    44.44 |   88.88 |   78.18 |                                       
+  error.middleware.ts            |     100 |      100 |     100 |     100 |                                       
+  errorHandler.ts                |     100 |    46.66 |     100 |     100 | 17-44                                 
+  pagination.middleware.ts       |   69.23 |    45.45 |     100 |   69.23 | 19-23                                 
+  requestId.middleware.ts        |     100 |      100 |     100 |     100 |                                       
+  validation.middleware.ts       |   33.33 |        0 |      50 |   27.27 | 8-16                                  
+ src/models                      |   54.16 |        0 |       0 |   56.52 |                                       
+  Project.ts                     |     100 |      100 |     100 |     100 |                                       
+  User.ts                        |   35.29 |        0 |       0 |    37.5 | 89-90,98-99,105-112                   
+  metric-snapshot.model.ts       |     100 |      100 |     100 |     100 |                                       
+ src/queue                       |   19.51 |        0 |       0 |   16.21 |                                       
+  youtube-transcription.queue.ts |   19.51 |        0 |       0 |   16.21 | 29-83                                 
+ src/routes                      |   43.13 |        0 |       0 |   43.13 |                                       
+  ai.routes.ts                   |     100 |      100 |     100 |     100 |                                       
+  api-v1.routes.ts               |   58.33 |      100 |       0 |   58.33 | 44-50,74-81,93-94                     
+  index.ts                       |     100 |      100 |     100 |     100 |                                       
+  mcp.routes.ts                  |    37.5 |        0 |       0 |    37.5 | 22-34                                 
+  stripe.routes.ts               |   16.07 |        0 |       0 |   16.07 | 50-92,115-163                         
+  users.routes.ts                |     100 |      100 |     100 |     100 |                                       
+  youtube.routes.ts              |    37.5 |        0 |       0 |    37.5 | 43-82                                 
+ src/services                    |   22.58 |    12.69 |    2.75 |   19.11 |                                       
+  ai.service.ts                  |   15.55 |       20 |       0 |   13.79 | 33-254                                
+  alerting.service.ts            |   27.58 |       50 |       0 |   22.22 | 10-64                                 
+  analytics.service.ts           |   19.51 |        0 |       0 |   16.66 | 14-126                                
+  auth.service.ts                |   18.18 |        0 |       0 |   14.28 | 14-104                                
+  backup-scheduler.service.ts    |   28.12 |       50 |       0 |   24.13 | 11-54                                 
+  backup.service.ts              |    12.5 |    11.11 |       0 |   10.66 | 13-160                                
+  credential-manager.service.ts  |      16 |        0 |       0 |   14.28 | 24-102                                
+  email.service.ts               |   36.84 |      100 |       0 |   29.41 | 13-65                                 
+  exitEmail.service.ts           |   20.83 |        0 |       0 |   20.83 | 12-24,35-45                           
+  history.service.ts             |    62.5 |      100 |       0 |      50 | 11-19                                 
+  instagram.service.ts           |   21.21 |        0 |       0 |   16.12 | 9-105                                 
+  linkedin.service.ts            |   41.17 |        0 |       0 |   33.33 | 9-55                                  
+  rag.service.ts                 |   15.06 |        0 |   16.66 |   15.49 | 56-170                                
+  search.service.ts              |   41.17 |        0 |       0 |   33.33 | 17-42                                 
+  stripe.service.ts              |      40 |       25 |      10 |   36.36 | 19,29,35,48-113                       
+  system-metrics.service.ts      |   14.51 |        0 |       0 |   12.28 | 24-149                                
+  telegram.service.ts            |   21.87 |        0 |       0 |   16.66 | 9-67                                  
+  tiktok.service.ts              |   41.17 |        0 |       0 |   33.33 | 9-55                                  
+  user.service.ts                |   53.33 |       50 |   14.28 |   46.15 | 16-37                                 
+  x.service.ts                   |   41.17 |        0 |       0 |   33.33 | 9-39                                  
+ src/services/google             |    10.6 |        0 |       0 |    8.26 |                                       
+  google-drive.service.ts        |    6.93 |        0 |       0 |    5.43 | 10-238                                
+  secret-manager.service.ts      |   22.58 |        0 |       0 |   17.24 | 14-49                                 
+ src/tools                       |   19.64 |        0 |       0 |   19.64 |                                       
+  base.tool.ts                   |     100 |      100 |     100 |     100 |                                       
+  stripe.tool.ts                 |   16.21 |        0 |       0 |   16.21 | 10-75                                 
+  web-search.tool.ts             |   22.22 |        0 |       0 |   22.22 | 15-66                                 
+ src/utils                       |   83.33 |    58.33 |      75 |   82.75 |                                       
+  context.ts                     |     100 |      100 |     100 |     100 |                                       
+  logger.ts                      |   88.23 |    58.33 |     100 |   88.23 | 45,48                                 
+  redis.ts                       |     100 |      100 |     100 |     100 |                                       
+  stats.ts                       |      50 |      100 |       0 |      40 | 14-17                                 
+---------------------------------|---------|----------|---------|---------|---------------------------------------
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 18 skipped, 19 total
+Snapshots:   0 total
+Time:        9.295 s
+Ran all test suites matching /src\\__tests__\\api-v1.test.ts/i with tests matching "should validate pagination parameters".
+ÔÇëELIFECYCLEÔÇë Test failed. See above for more details.

@@ -48,13 +48,13 @@ export interface SheetRange {
 export interface SpreadsheetInfo {
   spreadsheetId: string;
   title: string;
-  sheets: Array<{
+  sheets: {
     sheetId: number;
     title: string;
     index: number;
     rowCount: number;
     columnCount: number;
-  }>;
+  }[];
 }
 
 export type CellValue = string | number | boolean | null;
@@ -76,18 +76,18 @@ export interface CalendarEvent {
     date?: string;
     timeZone?: string;
   };
-  attendees?: Array<{
+  attendees?: {
     email: string;
     displayName?: string;
     responseStatus?: 'needsAction' | 'declined' | 'tentative' | 'accepted';
-  }>;
+  }[];
   recurrence?: string[]; // RFC 5545 RRULE
   reminders?: {
     useDefault: boolean;
-    overrides?: Array<{
+    overrides?: {
       method: 'email' | 'popup';
       minutes: number;
-    }>;
+    }[];
   };
   colorId?: string;
 }
@@ -128,14 +128,14 @@ export type VisionFeatureType =
   | 'WEB_DETECTION';
 
 export interface VisionAnnotation {
-  labels?: Array<{
+  labels?: {
     description: string;
     score: number;
     topicality: number;
-  }>;
+  }[];
   text?: string;
   fullText?: string;
-  faces?: Array<{
+  faces?: {
     boundingPoly: any;
     fdBoundingPoly: any;
     landmarks: any[];
@@ -148,7 +148,7 @@ export interface VisionAnnotation {
     sorrowLikelihood: string;
     angerLikelihood: string;
     surpriseLikelihood: string;
-  }>;
+  }[];
   safeSearch?: {
     adult: string;
     spoof: string;
@@ -189,7 +189,7 @@ export interface LanguageDetectionResult {
 // ==================== Google Cloud Natural Language ====================
 
 export interface EntityAnalysis {
-  entities: Array<{
+  entities: {
     name: string;
     type:
       | 'PERSON'
@@ -201,11 +201,11 @@ export interface EntityAnalysis {
       | 'OTHER';
     salience: number;
     metadata: Record<string, string>;
-    mentions: Array<{
+    mentions: {
       text: string;
       type: 'PROPER' | 'COMMON';
-    }>;
-  }>;
+    }[];
+  }[];
 }
 
 export interface SentimentAnalysis {
@@ -214,17 +214,17 @@ export interface SentimentAnalysis {
     magnitude: number; // 0.0 to infinity (emotional intensity)
   };
   language: string;
-  sentences: Array<{
+  sentences: {
     text: string;
     sentiment: {
       score: number;
       magnitude: number;
     };
-  }>;
+  }[];
 }
 
 export interface SyntaxAnalysis {
-  tokens: Array<{
+  tokens: {
     text: string;
     partOfSpeech: string;
     lemma: string;
@@ -232,6 +232,6 @@ export interface SyntaxAnalysis {
       headTokenIndex: number;
       label: string;
     };
-  }>;
+  }[];
   language: string;
 }

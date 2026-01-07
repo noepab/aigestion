@@ -6,6 +6,7 @@ import { useRole } from './context/RoleContext';
 import { useNetworkStatus } from './hooks/useNetworkStatus';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
 import { NexusChatWidget } from './components/widgets/NexusChatWidget';
+import { ConnectivityBanner } from './components/common/ConnectivityBanner';
 
 const GrowthDashboard = lazy(() => import('./pages/GrowthDashboard'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
@@ -81,17 +82,7 @@ function App() {
 
   return (
     <LazyMotion features={domAnimation}>
-      {(!online || isSlowConnection) && (
-        <m.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`fixed top-0 left-0 right-0 z-[100] p-2 text-center text-xs font-bold ${
-            !online ? 'bg-red-500' : 'bg-yellow-500'
-          } text-white`}
-        >
-          {!online ? '⚠️ You are currently offline.' : '⚠️ Slow connection detected.'}
-        </m.div>
-      )}
+      <ConnectivityBanner />
 
       <m.div
         initial={{ opacity: 0 }}

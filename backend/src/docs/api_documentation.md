@@ -2,6 +2,11 @@
 
 Base URL: `/api/v1`
 
+## Rate Limiting
+The API implements **Dynamic Rate Limiting** specifically for resource-intensive endpoints.
+- **/ai/*** routes are protected by a granular limiter to prevent abuse and manage costs.
+- Headers `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` are provided in responses.
+
 ## System Endpoints
 
 ### `POST /system/credentials/verify`

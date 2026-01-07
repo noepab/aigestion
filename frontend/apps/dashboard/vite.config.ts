@@ -1,9 +1,9 @@
-﻿import { VitePWA } from 'vite-plugin-pwa';
-import react from '@vitejs/plugin-react';
+﻿import react from '@vitejs/plugin-react';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +54,24 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            // Cache para la API de NEXUS (Dashboard Analytics & System)
+            // Usamos StaleWhileRevalidate para que cargue instantáneamente
+            // y se actualice en background.
+            urlPattern: /\/api\/v1\/(analytics|system)/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'nexus-api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24, // 24 horas
               },
               cacheableResponse: {
                 statuses: [0, 200],
@@ -62,6 +79,10 @@ export default defineConfig({
             },
           },
         ],
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
       },
     }),
   ],

@@ -85,7 +85,7 @@ lint:
     }
     try {
       // trunk-ignore(eslint/@typescript-eslint/no-unnecessary-template-expression): Cast to string to handle decimal case
-      const version = `${this.extractToolVersion()}`;
+      const version = this.extractToolVersion();
       const versionString = version.length > 0 ? `@${version}` : "";
       const toolVersionString = `${this.tool}${versionString}`;
       // Prefer calling `tools enable` over editing trunk.yaml directly because it also handles version, etc.

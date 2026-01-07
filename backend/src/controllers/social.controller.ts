@@ -1,11 +1,13 @@
-import { Request, Response } from 'express';
 import axios from 'axios';
+import type { Request, Response } from 'express-serve-static-core';
 import { Container } from 'typedi';
+
+import { buildError } from '../common/response-builder';
+import { config } from '../config/index';
 import { InstagramService } from '../services/instagram.service';
+import { LinkedInService } from '../services/linkedin.service';
 import { TikTokService } from '../services/tiktok.service';
 import { XService } from '../services/x.service';
-import { LinkedInService } from '../services/linkedin.service';
-import { config } from '../config/index';
 
 const FB_API_URL = config.whatsapp.apiUrl;
 
@@ -66,7 +68,7 @@ export class SocialController {
       res.json(response.data);
     } catch (error: any) {
       console.error('❌ Error fetching FB stats:', error.response?.data || error.message);
-      res.status(500).json({ error: 'Failed to get stats' });
+      (res as any).status(500).json(buildError('Failed to get stats', 'SOCIAL_ERROR', 500, (_req as any).requestId));
     }
   }
 
@@ -102,7 +104,7 @@ export class SocialController {
   // Publicar Video en TikTok
   static async publishTikTokVideo(req: Request, res: Response): Promise<void> {
     try {
-      const { videoUrl, title } = req.body;
+      const { videoUrl, title } = (req as any).body || {};
       const tiktokService = Container.get(TikTokService);
       const result = await tiktokService.publishVideo(videoUrl, title);
       res.json({ success: true, result });
@@ -114,7 +116,7 @@ export class SocialController {
   // Publicar Post en LinkedIn
   static async publishLinkedInPost(req: Request, res: Response): Promise<void> {
     try {
-      const { text } = req.body;
+      const { text } = (req as any).body || {};
       const linkedinService = Container.get(LinkedInService) as any;
       const result = await linkedinService.sharePost(text);
       res.json({ success: true, result });

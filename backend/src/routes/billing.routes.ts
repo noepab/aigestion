@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { StripeService } from '../services/stripe.service';
-import { requireAuth } from '../middleware/auth.middleware';
-import { logger } from '../utils/logger';
+
 import { env } from '../config/env.schema';
-import { User } from '../models/User';
 import { container } from '../config/inversify.config'; // Assuming you have a container export
+import { requireAuth } from '../middleware/auth.middleware';
+import { User } from '../models/User';
+import { StripeService } from '../services/stripe.service';
+import { logger } from '../utils/logger';
 
 const router = Router();
 const stripeService = container.get(StripeService);

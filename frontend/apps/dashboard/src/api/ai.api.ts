@@ -25,11 +25,11 @@ export const AIService = {
             const reader = response.body?.getReader();
             const decoder = new TextDecoder();
 
-            if (!reader) throw new Error('No reader available');
+            if (!reader) {throw new Error('No reader available');}
 
             while (true) {
                 const { done, value } = await reader.read();
-                if (done) break;
+                if (done) {break;}
 
                 const chunk = decoder.decode(value);
                 const lines = chunk.split('\n\n');

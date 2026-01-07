@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { useAgentStore, AgentMessage } from '../store/useAgentStore';
+
 import { useRole } from '../context/RoleContext';
+import { AgentMessage,useAgentStore } from '../store/useAgentStore';
 
 interface UseAgentReturn {
   messages: AgentMessage[];
@@ -45,7 +46,7 @@ export const useAgent = (): UseAgentReturn => {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to connect to AI Agent');
+      if (!response.ok) {throw new Error('Failed to connect to AI Agent');}
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -58,7 +59,7 @@ export const useAgent = (): UseAgentReturn => {
 
       while (true) {
         const { done, value } = await reader!.read();
-        if (done) break;
+        if (done) {break;}
 
         const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split('\n\n');
@@ -66,7 +67,7 @@ export const useAgent = (): UseAgentReturn => {
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const dataStr = line.slice(6);
-            if (dataStr === '[DONE]') break;
+            if (dataStr === '[DONE]') {break;}
 
             try {
               const data = JSON.parse(dataStr);

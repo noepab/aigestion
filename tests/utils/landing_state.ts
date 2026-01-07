@@ -81,7 +81,7 @@ const normalizeMessage = (message?: string) =>
 // trunk-ignore(eslint/@typescript-eslint/no-non-null-assertion)
 const normalizeFile = (file: string) => normalizePlatformPath(file.replace(".dup.", "."))!;
 
-const normalizeRange = ({ filePath: _filePath = undefined, ...rest }) => ({
+const normalizeRange = ({ filePath: _filePath, ...rest }) => ({
   filePath: normalizePlatformPath(_filePath),
   ...rest,
 });

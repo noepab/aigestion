@@ -1,5 +1,7 @@
-import express from 'express';
+import { Router } from 'express';
+import type { Request, Response } from 'express-serve-static-core';
 import fetch from 'node-fetch';
+
 import { env } from '../config/env.schema';
 
 const mcpRouter = Router();
@@ -16,20 +18,20 @@ const mcpRouter = Router();
  *       502:
  *         description: Unable to reach MCP server
  */
-mcpRouter.get('/health', async (req: express.Request, res: express.Response) => {
+mcpRouter.get('/health', async (_req: Request, res: Response) => {
   const baseUrl = env.MCP_SERVER_URL;
   if (!baseUrl) {
-    return res.status(500).json({ error: 'MCP_SERVER_URL not configured' });
+    return (res as any).status(500).json({ error: 'MCP_SERVER_URL not configured' });
   }
   try {
     const response = await fetch(`${baseUrl}/health`);
     if (!response.ok) {
-      return res.status(502).json({ error: 'MCP server responded with error', status: response.status });
+      return (res as any).status(502).json({ error: 'MCP server responded with error', status: response.status });
     }
     const data = await response.json();
-    return res.status(200).json({ status: 'ok', mcp: data });
+    return (res as any).status(200).json({ status: 'ok', mcp: data });
   } catch (err) {
-    return res.status(502).json({ error: 'Failed to reach MCP server', details: err instanceof Error ? err.message : String(err) });
+    return (res as any).status(502).json({ error: 'Failed to reach MCP server', details: err instanceof Error ? err.message : String(err) });
   }
 });
 

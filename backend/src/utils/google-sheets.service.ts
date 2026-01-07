@@ -1,7 +1,8 @@
 import { google, sheets_v4 } from 'googleapis';
-import { logger } from './logger';
+
 import { env } from '../config/env.schema';
-import type { SpreadsheetInfo, CellValue } from '../types/google-cloud.types';
+import type { CellValue,SpreadsheetInfo } from '../types/google-cloud.types';
+import { logger } from './logger';
 
 /**
  * Servicio para Google Sheets API
@@ -30,7 +31,7 @@ export class GoogleSheetsService {
    * Crea o devuelve un cliente de Sheets autenticado (Cached)
    */
   private async getSheetsClient(): Promise<sheets_v4.Sheets> {
-    if (this.sheets) return this.sheets;
+    if (this.sheets) {return this.sheets;}
 
     // Si hay credenciales de cuenta de servicio, priorizarlas
     if (env.GOOGLE_APPLICATION_CREDENTIALS) {

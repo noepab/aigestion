@@ -1,5 +1,6 @@
 // src/routes/ai.routes.ts
 import { Router } from 'express';
+
 import { runPrompt } from '../controllers/ai.controller';
 
 const router = Router();

@@ -1,5 +1,5 @@
-import { redisClient, getCache, setCache } from './redis';
 import { logger } from './logger';
+import { getCache, getClient, setCache } from './redis';
 
 /**
  * Cache Manager
@@ -25,7 +25,8 @@ export const cache = {
    * Delete value from cache
    */
   delete: async (key: string) => {
-    if (!redisClient) return false;
+    const redisClient = getClient();
+    if (!redisClient) { return false; }
     try {
       await redisClient.del(key);
       return true;
@@ -39,6 +40,7 @@ export const cache = {
    * Close connection
    */
   close: async () => {
+    const redisClient = getClient();
     if (redisClient && redisClient.isOpen) {
       await redisClient.quit();
     }
@@ -48,6 +50,7 @@ export const cache = {
    * Get stats (mocked for now as redis util doesn't expose stats directly)
    */
   getStats: () => {
+    const redisClient = getClient();
     return {
       connected: redisClient?.isOpen || false,
       type: 'redis',
@@ -58,7 +61,7 @@ export const cache = {
    * Warm cache with multiple items
    */
   warm: async (
-    items: Array<{ key: string; value: any; options?: { ttl?: number; tags?: string[] } }>
+    items: { key: string; value: any; options?: { ttl?: number; tags?: string[] } }[]
   ) => {
     const results = await Promise.all(
       items.map((item) => cache.set(item.key, item.value, item.options))

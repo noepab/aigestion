@@ -126,10 +126,13 @@ src/generated/
 
 # Testing
 playwright-report
-test-results
+test-results*
 junit.xml
 test_output*.txt
 errors_*.txt
+backend/test-*.txt
+backend/test_*.txt
+backend/test_results.json
 
 # Project Specific
 backend/dist/
@@ -143,3 +146,7 @@ backups/
 node_modules/
 *.zip
 *.pt
+
+# Infrastructure Keys
+infra/keys/
+nexus-*.json

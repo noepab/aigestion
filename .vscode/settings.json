@@ -61,5 +61,8 @@
   },
   "[yaml]": {
     "editor.defaultFormatter": "googlecloudtools.cloudcode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

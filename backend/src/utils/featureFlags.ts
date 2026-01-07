@@ -22,13 +22,13 @@ export const defaultFeatureFlags: FeatureFlags = {
  */
 export const getFlag = (req: any, name: keyof FeatureFlags): FeatureFlags[typeof name] => {
   const raw = req.cookies?.[name as string];
-  if (raw === undefined) return defaultFeatureFlags[name];
+  if (raw === undefined) {return defaultFeatureFlags[name];}
   // For boolean flags, interpret "true"/"false"
   if (typeof defaultFeatureFlags[name] === 'boolean') {
     return (raw === 'true') as any;
   }
   // For string‑based flags (e.g., ab_test)
-  return raw as any;
+  return raw;
 };
 
 /**

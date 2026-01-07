@@ -1,5 +1,7 @@
-import { Server, Socket } from 'socket.io';
 import { randomUUID } from 'node:crypto';
+
+import { Server, Socket } from 'socket.io';
+
 import {
   ClientToServerEvents,
   RemoteAccessRequest,
@@ -10,9 +12,9 @@ import {
 
 export class SignalingService {
   private io: Server<ClientToServerEvents, ServerToClientEvents>;
-  private activeSessions: Map<string, RemoteSession> = new Map();
-  private pendingRequests: Map<string, RemoteAccessRequest> = new Map();
-  private userSockets: Map<string, string> = new Map(); // userId -> socketId
+  private activeSessions = new Map<string, RemoteSession>();
+  private pendingRequests = new Map<string, RemoteAccessRequest>();
+  private userSockets = new Map<string, string>(); // userId -> socketId
 
   constructor(io: Server) {
     this.io = io;
@@ -168,7 +170,7 @@ export class SignalingService {
 
   public endSession(sessionId: string): boolean {
     const session = this.activeSessions.get(sessionId);
-    if (!session) return false;
+    if (!session) {return false;}
 
     session.status = 'ended';
     session.endedAt = new Date();

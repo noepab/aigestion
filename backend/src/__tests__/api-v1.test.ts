@@ -9,6 +9,9 @@
  */
 
 import request from 'supertest';
+
+
+
 import { app } from '../app';
 
 describe('API v1 - REST Refactoring', () => {
@@ -17,6 +20,7 @@ describe('API v1 - REST Refactoring', () => {
   describe('GET /health', () => {
     it('should return standardized health response', async () => {
       const response = await request(app).get('/api/v1/health').expect(200);
+      console.log('DEBUG: /health response', JSON.stringify(response.body, null, 2));
 
       expect(response.body).toHaveProperty('status', 200);
       expect(response.body).toHaveProperty('data');
@@ -121,6 +125,7 @@ describe('API v1 - REST Refactoring', () => {
         .send({
           email: 'test@example.com',
           name: 'Test User',
+          password: 'password123',
         })
         .expect(201);
 
@@ -140,7 +145,10 @@ describe('API v1 - REST Refactoring', () => {
         .expect(400);
 
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
-      expect(response.body.error.details).toHaveProperty('missing');
+      expect(Array.isArray(response.body.error.details)).toBe(true);
+      const emailError = response.body.error.details.find((d: any) => d.path === 'email');
+      expect(emailError).toBeDefined();
+      expect(emailError.message).toContain('Required');
 
       // Missing name
       response = await request(app)
@@ -151,6 +159,9 @@ describe('API v1 - REST Refactoring', () => {
         .expect(400);
 
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
+      const nameError = response.body.error.details.find((d: any) => d.path === 'name');
+      expect(nameError).toBeDefined();
+      expect(nameError.message).toContain('Required');
     });
 
     it('should validate email format', async () => {
@@ -163,7 +174,10 @@ describe('API v1 - REST Refactoring', () => {
         .expect(400);
 
       expect(response.body.error.code).toBe('VALIDATION_ERROR');
-      expect(response.body.error.message).toContain('email');
+      // Check details for specific message
+      const emailError = response.body.error.details.find((d: any) => d.path === 'email');
+      expect(emailError).toBeDefined();
+      expect(emailError.message).toContain('email');
     });
 
     it('response time should be < 200ms', async () => {
@@ -187,7 +201,7 @@ describe('API v1 - REST Refactoring', () => {
       ];
 
       for (const endpoint of endpoints) {
-        const response = await (request(app) as any)[endpoint.method]('/api/v1' + endpoint.path);
+        const response = await (request(app))[endpoint.method]('/api/v1' + endpoint.path);
         expect(response.body).toHaveProperty('requestId');
         expect(response.body.requestId).toMatch(/^req_\d+_[a-z0-9]{9}$/);
       }

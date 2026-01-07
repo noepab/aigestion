@@ -1,4 +1,4 @@
-import { ChildProcess, execFile, execFileSync, ExecFileOptions, ExecFileSyncOptions, execSync, ExecSyncOptions } from "child_process";
+import { ChildProcess, execFile, ExecFileOptions, execFileSync, ExecFileSyncOptions, execSync, ExecSyncOptions } from "child_process";
 import { Debugger } from "debug";
 import * as fs from "fs";
 import * as os from "os";

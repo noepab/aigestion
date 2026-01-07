@@ -1,27 +1,28 @@
-﻿console.log('🔵 [DEBUG] server.ts starting...');
-import dotenv from 'dotenv';
-import path from 'path';
+﻿import dotenv from 'dotenv';
 // import fs from 'fs';
 import { createServer } from 'http';
+import path from 'path';
 import { Server, type Socket } from 'socket.io';
 
-// Load .env from workspace root
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-
+import { app } from './app';
 // import { connectToDatabase } from './config/database';
 import { config } from './config/index';
-import { logger } from './utils/logger';
-import { app } from './app';
-import { stats } from './utils/stats';
 import { container, TYPES } from './config/inversify.config';
-import { HistoryService } from './services/history.service';
 import { AlertingService } from './services/alerting.service';
+import { BackupSchedulerService } from './services/backup-scheduler.service';
 import { CredentialManagerService } from './services/credential-manager.service';
-import { TelegramService } from './services/telegram.service';
+import { HistoryService } from './services/history.service';
 // import { youtubeTranscriptionQueue } from './queue/youtube-transcription.queue';
 // import { youtubeWatcherService } from './utils/youtube-watcher.service';
 // import { GoogleSecretManagerService } from './services/google/secret-manager.service';
 import { SystemMetricsService } from './services/system-metrics.service';
+import { TelegramService } from './services/telegram.service';
+import { logger } from './utils/logger';
+import { stats } from './utils/stats';
+console.log('🔵 [DEBUG] server.ts starting...');
+
+// Load .env from workspace root
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const httpServer = createServer(app);
 
@@ -182,6 +183,14 @@ const startServer = async () => {
         }
       }).catch((err: any) => logger.error('Credential audit system error:', err));
 
+      // Start Backup Scheduler
+      try {
+        const backupScheduler = container.get<BackupSchedulerService>(TYPES.BackupSchedulerService);
+        backupScheduler.start();
+      } catch (err: any) {
+        logger.error('Failed to start BackupSchedulerService:', err);
+      }
+
       // YouTube background services
       Promise.resolve().then(async () => {
         try {
@@ -205,9 +214,10 @@ const startServer = async () => {
           logger.info('HTTP server closed.');
 
           try {
-            // No database connection handling here; skip shutdown of DB.
             // If a DB connection is needed, integrate it with connectToDatabase.
-            // Placeholder for future DB cleanup.  }
+            // Placeholder for future DB cleanup.
+
+            await WorkerSetup.close();
 
             process.exit(0);
           } catch (err) {
@@ -248,6 +258,8 @@ process.on('uncaughtException', (err: Error) => {
   }
 });
 
+import { WorkerSetup } from './infrastructure/jobs/WorkerSetup';
+
 /**
  * Initialize and boot
  */
@@ -262,6 +274,9 @@ const initializeAndStart = async () => {
   } else {
     logger.info('Skipping Google Secret Manager (Dev mode or missing Project ID)');
   }
+
+  // Start Background Workers
+  WorkerSetup.startWorkers();
 
   startServer();
 };

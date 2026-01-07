@@ -1,6 +1,8 @@
-import { Request, Response } from 'express';
 import { exec } from 'child_process';
+import type { Request, Response } from 'express-serve-static-core';
 import { promisify } from 'util';
+
+import { buildError } from '../common/response-builder';
 
 const execAsync = promisify(exec);
 
@@ -47,7 +49,7 @@ export async function getRecentCommits(req: Request, res: Response): Promise<voi
       return;
     }
 
-    res.status(500).json({ error: 'Failed to get commits' });
+    (res as any).status(500).json(buildError('Failed to get status', 'GIT_ERROR', 500, (req as any).requestId));
   }
 }
 

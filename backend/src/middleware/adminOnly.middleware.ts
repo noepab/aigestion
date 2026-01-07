@@ -1,5 +1,5 @@
-// Admin-only middleware
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
+
 import { logger } from '../utils/logger';
 
 /**
@@ -8,15 +8,15 @@ import { logger } from '../utils/logger';
  */
 export const adminOnly = (req: Request, res: Response, next: NextFunction) => {
   const user = (req as any).user;
-  if (!user || user.role !== 'admin') {
+  if (user?.role !== 'admin') {
     logger.warn(
       {
-        path: req.path,
-        method: req.method,
+        path: (req as any).path,
+        method: (req as any).method,
       },
       'Forbidden: adminOnly middleware blocked access'
     );
-    res.status(403).json({ success: false, message: 'Forbidden – admin only' });
+    (res as any).status(403).json({ success: false, message: 'Forbidden – admin only' });
     return;
   }
   next();

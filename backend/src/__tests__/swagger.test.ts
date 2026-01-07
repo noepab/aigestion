@@ -1,9 +1,10 @@
 import request from 'supertest';
+
 import { app } from '../app';
 
 describe('Swagger UI and JSON', () => {
   it('should serve Swagger UI at /api-docs', async () => {
-    const response = await request(app).get('/api-docs');
+    const response = await request(app).get('/api-docs/');
     expect(response.status).toBe(200);
     expect(response.text).toContain('Swagger UI');
   });

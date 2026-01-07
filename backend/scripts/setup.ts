@@ -60,8 +60,8 @@ const envConfig: Record<string, EnvVarConfig> = {
     default: '5000',
     validate: (value: string) => {
       const port = parseInt(value, 10);
-      if (isNaN(port)) return 'Debe ser un número';
-      if (port < 1 || port > 65535) return 'El puerto debe estar entre 1 y 65535';
+      if (isNaN(port)) {return 'Debe ser un número';}
+      if (port < 1 || port > 65535) {return 'El puerto debe estar entre 1 y 65535';}
       return true;
     },
   },
@@ -243,7 +243,7 @@ async function setupEnvironment() {
   if (fs.existsSync(envPath)) {
     const content = fs.readFileSync(envPath, 'utf-8');
     content.split('\n').forEach(line => {
-      const match = line.match(/^([^=#][^=]*?)\s*=\s*(.*?)\s*$/);
+      const match = /^([^=#][^=]*?)\s*=\s*(.*?)\s*$/.exec(line);
       if (match) {
         const [, key, value] = match;
         existingEnv[key] = value.replace(/(^['"]|['"]$)/g, '');

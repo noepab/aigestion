@@ -101,7 +101,7 @@ export type ActionTestCallback = (driver: TrunkActionDriver) => unknown;
  */
 export const setupLintDriver = (
   dirname: string,
-  { setupGit = true, setupTrunk = true, trunkVersion = undefined }: SetupSettings,
+  { setupGit = true, setupTrunk = true, trunkVersion }: SetupSettings,
   linterName?: string,
   version?: string,
   preCheck?: TestCallback,
@@ -136,7 +136,7 @@ export const setupLintDriver = (
 
 export const setupTrunkToolDriver = (
   dirname: string,
-  { setupGit = true, setupTrunk = true, trunkVersion = undefined }: SetupSettings,
+  { setupGit = true, setupTrunk = true, trunkVersion }: SetupSettings,
   toolName?: string,
   version?: string,
   preCheck?: ToolTestCallback,
@@ -169,7 +169,7 @@ export const setupTrunkToolDriver = (
 
 export const setUpTrunkToolDriverForHealthCheck = (
   dirname: string,
-  { setupGit = true, setupTrunk = true, trunkVersion = undefined }: SetupSettings,
+  { setupGit = true, setupTrunk = true, trunkVersion }: SetupSettings,
   toolName?: string,
   version?: string,
   preCheck?: ToolTestCallback,
@@ -202,7 +202,7 @@ export const setUpTrunkToolDriverForHealthCheck = (
 
 export const setupTrunkActionDriver = (
   dirname: string,
-  { setupGit = true, setupTrunk = true, trunkVersion = undefined }: SetupSettings,
+  { setupGit = true, setupTrunk = true, trunkVersion }: SetupSettings,
   actionName: string,
   syncGitHooks: boolean,
   preCheck?: ActionTestCallback,

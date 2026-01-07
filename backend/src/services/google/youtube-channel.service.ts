@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { google } from 'googleapis';
+
 import { env } from '../../config/env.schema';
 import type { ChannelType, UploadOptions, YouTubeChannel } from '../../types/youtube.types';
 import { logger } from '../../utils/logger';
@@ -100,7 +101,7 @@ export class YouTubeChannelService {
    */
   isChannelConfigured(channelType: ChannelType): boolean {
     const channel = this.channels.get(channelType);
-    if (!channel) return false;
+    if (!channel) {return false;}
 
     const { clientId, clientSecret, refreshToken } = channel.credentials;
     return !!(clientId && clientSecret && refreshToken);
@@ -168,7 +169,7 @@ export class YouTubeChannelService {
   /**
    * Lista los videos de un canal
    */
-  async listVideos(channelType: ChannelType, maxResults: number = 50): Promise<any[]> {
+  async listVideos(channelType: ChannelType, maxResults = 50): Promise<any[]> {
     if (!this.isChannelConfigured(channelType)) {
       throw new Error(`${channelType} channel is not properly configured`);
     }
@@ -195,7 +196,7 @@ export class YouTubeChannelService {
   /**
    * Lista las playlists de un canal
    */
-  async listPlaylists(channelType: ChannelType, maxResults: number = 50): Promise<any[]> {
+  async listPlaylists(channelType: ChannelType, maxResults = 50): Promise<any[]> {
     if (!this.isChannelConfigured(channelType)) {
       throw new Error(`${channelType} channel is not properly configured`);
     }
@@ -305,7 +306,7 @@ export class YouTubeChannelService {
     description: string
   ): Promise<string> {
     const existing = await this.findPlaylistByName(channelType, title);
-    if (existing) return existing;
+    if (existing) {return existing;}
     return this.createPlaylist(channelType, title, description);
   }
 

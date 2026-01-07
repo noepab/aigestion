@@ -6,6 +6,17 @@ import App from './App';
 import { RoleProvider } from './context/RoleContext';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { registerSW } from 'virtual:pwa-register';
+
+// Register Service Worker for Offline-First capability
+registerSW({
+  onNeedRefresh() {
+    console.log('New content available, please refresh.');
+  },
+  onOfflineReady() {
+    console.log('App ready to work offline.');
+  },
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,0 +1,41 @@
+:root {
+  /* --- Brand Colors (Nexus V1 Blue/Purple) --- */
+  --nexus-primary: #3b82f6; /* Blue 500 */
+  --nexus-primary-hover: #2563eb; /* Blue 600 */
+  --nexus-secondary: #8b5cf6; /* Violet 500 */
+  --nexus-accent: #10b981; /* Emerald 500 */
+
+  /* --- Dark Mode Surface --- */
+  --nexus-bg: #0f172a; /* Slate 900 */
+  --nexus-card-bg: rgba(30, 41, 59, 0.7); /* Slate 800 with alpha */
+  --nexus-border: rgba(255, 255, 255, 0.1);
+
+  /* --- Typography --- */
+  --nexus-text-primary: #f8fafc;
+  --nexus-text-secondary: #94a3b8;
+  --nexus-text-muted: #64748b;
+
+  /* --- Glassmorphism --- */
+  --nexus-glass-bg: rgba(255, 255, 255, 0.03);
+  --nexus-glass-border: rgba(255, 255, 255, 0.05);
+  --nexus-glass-blur: blur(12px);
+
+  /* --- Spacing --- */
+  --nexus-space-xs: 4px;
+  --nexus-space-sm: 8px;
+  --nexus-space-md: 16px;
+  --nexus-space-lg: 24px;
+  --nexus-space-xl: 32px;
+
+  /* --- Shadows --- */
+  --nexus-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --nexus-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --nexus-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.nexus-glass {
+  background: var(--nexus-glass-bg);
+  backdrop-filter: var(--nexus-glass-blur);
+  border: 1px solid var(--nexus-glass-border);
+  border-radius: 12px;
+}

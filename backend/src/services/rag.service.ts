@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+
 import { logger } from '../utils/logger';
 
 interface FileContext {
@@ -8,11 +9,23 @@ interface FileContext {
     size: number;
 }
 
+// Basic simulation of TF-IDF / BM25 components
+interface SearchResult {
+    file: FileContext;
+    score: number;
+    metadata: {
+        keywordScore: number;
+        semanticScore: number;
+        matches: string[];
+    };
+}
+
 export class RagService {
     private readonly rootDir: string;
-    private readonly maxContextSize: number = 500000; // ~125k tokens
+    private readonly maxContextSize: number = 100000; // ~25k tokens (safe limit)
     private readonly cacheTTL = 5 * 60 * 1000; // 5 minutes
     private cache: { data: string; timestamp: number } | null = null;
+    private fileCache: { files: FileContext[]; timestamp: number } | null = null;
 
     private readonly ignoredDirs = new Set([
         'node_modules',
@@ -26,6 +39,7 @@ export class RagService {
         '.vscode',
         '.idea'
     ]);
+
     private readonly ignoredExtensions = new Set([
         '.lock',
         '.png',
@@ -48,49 +62,135 @@ export class RagService {
     /**
      * Scans the codebase and returns a formatted string of the context.
      * Uses in-memory caching and prepends an ASCII tree of the project structure.
+     * If query is provided, performs a Hybrid Search simulation to prioritize relevant files.
      */
-    async getProjectContext(_query?: string): Promise<string> {
-        // 1. Check Cache
-        if (this.cache && (Date.now() - this.cache.timestamp < this.cacheTTL)) {
-            logger.info('[RagService] Returning cached context');
-            return this.cache.data;
-        }
-
+    async getProjectContext(query?: string): Promise<string> {
         try {
-            logger.info('[RagService] Scanning filesystem...');
-            const files = await this.scanDirectory(this.rootDir);
+            logger.info(`[RagService] Getting context${query ? ` for query: "${query}"` : ' (full)'}...`);
 
-            // 2. Generate ASCII Tree
+            // 1. Get all files (cached)
+            const files = await this.getAllFiles();
+
+            // 2. Generate ASCII Tree (always useful for structure)
             const filePaths = files.map(f => f.path);
             const asciiTree = this.generateAsciiTree(filePaths);
 
-            let context = `Project Structure:\n${asciiTree}\n\nHere is the codebase context:\n\n`;
+            let context = `Project Structure:\n${asciiTree}\n\n`;
+
+            let sortedFiles = files;
+
+            // 3. Hybrid Search / RRF Simulation
+            if (query && query.trim().length > 0) {
+                context += `[Context optimized for query: "${query}"]\n\n`;
+                sortedFiles = this.rankFiles(files, query);
+            } else {
+                context += `[Full Context - No Query Provided]\n\n`;
+                // Default sort by path if no query to maintain stability
+                sortedFiles.sort((a, b) => a.path.localeCompare(b.path));
+            }
+
+            context += `Here is the codebase context:\n\n`;
             let currentSize = context.length;
 
-            // 3. Context Stuffing with Limit
-            for (const file of files) {
+            // 4. Context Stuffing with Limit
+            let includedCount = 0;
+            for (const file of sortedFiles) {
                 const fileBlock = `<file path="${file.path}">\n${file.content}\n</file>\n\n`;
 
                 if (currentSize + fileBlock.length > this.maxContextSize) {
-                    context += `\n<!-- Context truncated due to size limit (${this.maxContextSize} chars) -->`;
+                    context += `\n<!-- Context truncated due to size limit (${this.maxContextSize} chars). Included ${includedCount} of ${sortedFiles.length} files. -->`;
                     break;
                 }
 
                 context += fileBlock;
                 currentSize += fileBlock.length;
+                includedCount++;
             }
-
-            // 4. Update Cache
-            this.cache = {
-                data: context,
-                timestamp: Date.now()
-            };
 
             return context;
         } catch (error) {
             logger.error(error, 'Error in RagService:');
             return ''; // Fail gracefully
         }
+    }
+
+    private async getAllFiles(): Promise<FileContext[]> {
+        if (this.fileCache && (Date.now() - this.fileCache.timestamp < this.cacheTTL)) {
+            return this.fileCache.files;
+        }
+
+        const files = await this.scanDirectory(this.rootDir);
+        this.fileCache = {
+            files,
+            timestamp: Date.now()
+        };
+        return files;
+    }
+
+    /**
+     * Ranks files using a simulated Hybrid Search (Keyword + Structural).
+     * Calculates a simple score based on:
+     * 1. Path/Filename match (Structural/Semantic proxy)
+     * 2. Content keyword frequency (TF proxy)
+     */
+    private rankFiles(files: FileContext[], query: string): FileContext[] {
+        const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+        if (terms.length === 0) return files;
+
+        const results: SearchResult[] = files.map(file => {
+            let keywordScore = 0;
+            let semanticScore = 0;
+            const matches: string[] = [];
+            const contentLower = file.content.toLowerCase();
+            const pathLower = file.path.toLowerCase();
+
+            terms.forEach(term => {
+                // Structural Score: Filename matches are high signal
+                if (pathLower.includes(term)) {
+                    semanticScore += 10;
+                    matches.push(`path:${term}`);
+                }
+
+                // Keyword Score: Simple frequency count in content
+                // A real BM25 would need document frequency, simplified here to Term Count
+                const regex = new RegExp(this.escapeRegExp(term), 'g');
+                const count = (contentLower.match(regex) || []).length;
+                if (count > 0) {
+                    keywordScore += count;
+                }
+            });
+
+            // Normalize scores slightly to prevent massive files from dominating solely by size
+            // (Logarithmic dampening for keyword frequency)
+            const finalKeywordScore = keywordScore > 0 ? Math.log(1 + keywordScore) : 0;
+
+            // Reciprocal Rank Fusion (Simulated)
+            // We just sum them here for simplicity, but in RRF we'd rank lists separately and fuse.
+            // Weighted sum: Structure is very important for code retrieval.
+            const totalScore = (semanticScore * 2) + finalKeywordScore;
+
+            return {
+                file,
+                score: totalScore,
+                metadata: { keywordScore: finalKeywordScore, semanticScore, matches }
+            };
+        });
+
+        // Sort by Score DESC
+        // Return relevant files first, followed by the rest
+        const relevantFiles = results
+            .filter(r => r.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .map(r => r.file);
+
+        // Append unrelated files to fill context if space permits (deduplicated)
+        const otherFiles = files.filter(f => !relevantFiles.includes(f));
+
+        return [...relevantFiles, ...otherFiles];
+    }
+
+    private escapeRegExp(string: string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     private async scanDirectory(dir: string): Promise<FileContext[]> {

@@ -1,6 +1,7 @@
 import 'reflect-metadata';
+
 import { jest } from '@jest/globals';
-import { Container } from 'typedi';
+
 import { AlertingService } from '../../services/alerting.service';
 import { SystemMetricsService } from '../../services/system-metrics.service';
 import { TelegramService } from '../../services/telegram.service';
@@ -12,21 +13,19 @@ describe('AlertingService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Create mock metrics service
     mockMetricsService = {
       getSystemMetrics: jest.fn(),
       getDockerContainerCount: jest.fn(),
-    };
-    Container.set(SystemMetricsService, mockMetricsService);
+    } as unknown as SystemMetricsService;
 
     // Create mock telegram service
     mockTelegramService = {
       sendMessage: jest.fn(),
-    };
-    Container.set(TelegramService, mockTelegramService);
+    } as unknown as TelegramService;
 
-    alertingService = Container.get(AlertingService);
+    alertingService = new AlertingService(mockMetricsService, mockTelegramService);
   });
 
   describe('checkSystemHealth', () => {

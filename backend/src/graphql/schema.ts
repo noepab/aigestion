@@ -1,18 +1,19 @@
+import { exec } from 'child_process';
 import {
+  GraphQLFloat,
   GraphQLID,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  GraphQLFloat,
-  GraphQLInt,
 } from 'graphql';
 import os from 'os';
-import { exec } from 'child_process';
 import { promisify } from 'util';
-import { getCache, setCache } from '../utils/redis';
+
 import { User } from '../models/User';
+import { getCache, setCache } from '../utils/redis';
 
 const execAsync = promisify(exec);
 
@@ -154,7 +155,7 @@ export const RootQuery = new GraphQLObjectType({
           const cacheKey = 'system:metrics';
           const cachedData = await getCache(cacheKey);
 
-          if (cachedData) return cachedData;
+          if (cachedData) {return cachedData;}
 
           const cpus = os.cpus();
           const totalMem = os.totalmem();
@@ -194,7 +195,7 @@ export const RootQuery = new GraphQLObjectType({
           const cacheKey = 'docker:containers';
           const cachedData = await getCache(cacheKey);
 
-          if (cachedData) return cachedData;
+          if (cachedData) {return cachedData;}
 
           const { stdout } = await execAsync('docker ps -a --format "{{json .}}"');
           const containers = stdout

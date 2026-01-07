@@ -1,60 +1,87 @@
-// src/middleware/errorHandler.ts
-import { Request, Response, NextFunction } from 'express';
-import { requestContext } from '../utils/context';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
+import { logger } from '../utils/logger';
+import { AppError, HttpStatusCode } from '../utils/errors';
 
 /**
- * HttpError extends the native Error object to include an HTTP status code.
- * It is used throughout the application to throw errors with explicit response
- * semantics. The `statusCode` defaults to 500 (Internal Server Error).
- */
-export class HttpError extends Error {
-  public readonly statusCode: number;
-  public readonly isOperational: boolean;
-  public readonly code?: string;
-
-  constructor(message: string, statusCode = 500, isOperational = true, code?: string) {
-    super(message);
-    this.statusCode = statusCode;
-    this.isOperational = isOperational;
-    this.code = code;
-    // Set the prototype explicitly to maintain instanceof checks.
-    Object.setPrototypeOf(this, new.target.prototype);
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-
-/**
- * Central error‑handling middleware for Express.
+ * Central error-handling middleware for Express.
  *
- * It catches both synchronous and asynchronous errors (the latter when passed
- * to `next(err)`). Operational errors (instances of HttpError) are sent to the
- * client with their status code and message. Unexpected errors are logged and a
- * generic 500 response is returned to avoid leaking implementation details.
+ * It catches synchronous and asynchronous errors. Operational errors (AppError)
+ * are sent to the client with their status code and code. External errors
+ * (Zod, Mongoose, JWT) are transformed into operational AppErrors for consistency.
  */
-export function errorHandler(
-  err: unknown,
-  _req: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _next: NextFunction,
-): void {
-  if (err instanceof HttpError) {
-    const store = requestContext.getStore?.();
-    const requestId = (req as any).requestId || store?.get('requestId');
-    const errorPayload: any = { message: err.message };
-    if (err.code) errorPayload.code = err.code;
-    errorPayload.timestamp = new Date().toISOString();
-    if (requestId) errorPayload.requestId = requestId;
-    res.status(err.statusCode).json({ error: errorPayload });
-    return;
+export const errorHandler = (err: any, req: Request, res: Response, _next: NextFunction) => {
+  let error = { ...err };
+  error.message = err.message;
+
+  // 1. Handle specific error types
+
+  // Zod Validation Errors
+  if (err.name === 'ZodError') {
+    const message = 'Validation Failed';
+    const details = err.issues.map((i: any) => ({
+      path: i.path.join('.'),
+      message: i.message,
+    }));
+    error = new AppError(message, HttpStatusCode.BAD_REQUEST, 'VALIDATION_ERROR', details);
   }
 
-  // For unknown errors, log the stack (could be replaced with Winston later).
-  console.error('Unexpected error:', err);
-  const store = requestContext.getStore?.();
-  const requestId = (req as any).requestId || store?.get('requestId');
-  const errorPayload: any = { message: 'Internal Server Error' };
-  errorPayload.timestamp = new Date().toISOString();
-  if (requestId) errorPayload.requestId = requestId;
-  res.status(500).json({ error: errorPayload });
-}
+  // Mongoose Cast Error (e.g., invalid ObjectId)
+  if (err.name === 'CastError') {
+    const message = `Invalid ${err.path}: ${err.value}`;
+    error = new AppError(message, HttpStatusCode.BAD_REQUEST, 'CAST_ERROR');
+  }
+
+  // Mongoose Duplicate Key Error
+  if (err.code === 11000) {
+    const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+    const message = `Duplicate field value: ${value}. Please use another value!`;
+    error = new AppError(message, HttpStatusCode.CONFLICT, 'DUPLICATE_KEY_ERROR');
+  }
+
+  // Mongoose Validation Error
+  if (err.name === 'ValidationError') {
+    const errors = Object.values(err.errors).map((el: any) => el.message);
+    const message = `Invalid input data. ${errors.join('. ')}`;
+    error = new AppError(message, HttpStatusCode.BAD_REQUEST, 'VALIDATION_ERROR');
+  }
+
+  // JWT Errors
+  if (err.name === 'JsonWebTokenError') {
+    error = new AppError('Invalid token. Please log in again!', HttpStatusCode.UNAUTHORIZED, 'INVALID_TOKEN');
+  }
+  if (err.name === 'TokenExpiredError') {
+    error = new AppError('Your token has expired! Please log in again.', HttpStatusCode.UNAUTHORIZED, 'TOKEN_EXPIRED');
+  }
+
+  // 2. Final Error Response
+  const statusCode = error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const requestId = (req as any).requestId || '';
+
+  // Log non-operational (unexpected) errors
+  if (!error.isOperational) {
+    logger.error('ERROR 💥:', err);
+  } else {
+    logger.warn(`Operational Error: ${error.message} [${error.code}]`);
+  }
+
+  // Use standardized builder for consistent error format
+  const { buildError } = require('../common/response-builder');
+  const response = buildError(
+    error.message || 'Something went wrong!',
+    error.code || 'INTERNAL_ERROR',
+    statusCode,
+    requestId,
+    error.details
+  );
+
+  // Add stack trace in development
+  if (isDevelopment && !error.isOperational) {
+    (response as any).error.stack = err.stack;
+  }
+
+  res.status(statusCode).json(response);
+};
+
+// Exporting HttpError for legacy compatibility if needed, but AppError is preferred.
+export { AppError as HttpError };

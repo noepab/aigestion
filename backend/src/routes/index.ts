@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-
 // import aiRoutes from './ai.routes';
 // import analyticsRoutes from './analytics.routes';
 import apiV1Routes from './api-v1.routes';
@@ -20,6 +19,8 @@ import apiV1Routes from './api-v1.routes';
 // import cloudRoutes from './cloud.routes';
 
 const router = Router();
+console.log('DEBUG: Index router loaded');
+
 
 // Health Check
 // router.get('/health', healthCheck);

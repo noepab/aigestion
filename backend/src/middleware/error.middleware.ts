@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
-import { errorHandler } from './errorHandler';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import { logger } from '../utils/logger';
+import { NotFoundError } from '../utils/errors';
+import { errorHandler } from './errorHandler';
 
-// Not-found handler for undefined routes
-export const notFoundHandler = (req: Request, res: Response, _next: NextFunction) => {
+/**
+ * Not-found handler for undefined routes
+ */
+export const notFoundHandler = (req: Request, _res: Response, next: NextFunction) => {
   logger.warn(`Route not found: ${req.method} ${req.originalUrl}`);
-  res.status(404).json({
-    success: false,
-    message: 'Resource not found',
-  });
+  next(new NotFoundError(`Resource not found: ${req.method} ${req.originalUrl}`));
 };
 
 export { errorHandler };

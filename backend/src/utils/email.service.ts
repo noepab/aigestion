@@ -1,4 +1,5 @@
 ﻿import nodemailer from 'nodemailer';
+
 // import type { Transporter } from 'nodemailer';
 import { env } from '../config/env.schema';
 import { logger } from './logger';
@@ -11,11 +12,11 @@ export interface EmailOptions {
   subject: string;
   text?: string;
   html?: string;
-  attachments?: Array<{
+  attachments?: {
     filename: string;
     content: string | Buffer;
     contentType?: string;
-  }>;
+  }[];
 }
 
 /**
@@ -23,7 +24,7 @@ export interface EmailOptions {
  */
 export class EmailService {
   private transporter: any = null;
-  private isConfigured: boolean = false;
+  private isConfigured = false;
 
   constructor() {
     this.initialize();

@@ -1,5 +1,6 @@
-import { Service } from 'typedi';
 import axios from 'axios';
+import { Service } from 'typedi';
+
 import { env } from '../config/env.schema';
 import { logger } from '../utils/logger';
 

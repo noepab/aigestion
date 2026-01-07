@@ -1,10 +1,11 @@
 import DataLoader from 'dataloader';
 
+import { IProject,Project } from '../models/Project';
 /**
  * User DataLoader
  * Evita N+1 queries al cargar usuarios
  */
-import { User, IUser } from '../models/User';
+import { IUser,User } from '../models/User';
 
 /**
  * User DataLoader
@@ -37,8 +38,6 @@ export class UserDataLoader {
     }
   }
 }
-
-import { Project, IProject } from '../models/Project';
 
 /**
  * Project DataLoader

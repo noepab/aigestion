@@ -1,10 +1,11 @@
 
-import { StripeTool } from '../src/tools/stripe.tool';
-import { User } from '../src/models/User';
-import { stripeService } from '../src/services/stripe.service';
 // import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
+
+import { User } from '../src/models/User';
+import { stripeService } from '../src/services/stripe.service';
+import { StripeTool } from '../src/tools/stripe.tool';
 
 // Load env
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
@@ -27,9 +28,9 @@ async function verifyStripeTool() {
         save: async () => { }
     };
 
-    User.findById = jest.fn().mockResolvedValue(mockUser) as any;
-    stripeService.createSubscriptionCheckoutSession = jest.fn().mockResolvedValue({ url: 'https://checkout.stripe.com/test' }) as any;
-    stripeService.createPortalSession = jest.fn().mockResolvedValue({ url: 'https://billing.stripe.com/test' }) as any;
+    User.findById = jest.fn().mockResolvedValue(mockUser);
+    stripeService.createSubscriptionCheckoutSession = jest.fn().mockResolvedValue({ url: 'https://checkout.stripe.com/test' });
+    stripeService.createPortalSession = jest.fn().mockResolvedValue({ url: 'https://billing.stripe.com/test' });
 
     console.log('🔹 Mocked Database and Stripe Service.');
 
@@ -40,7 +41,7 @@ async function verifyStripeTool() {
     const status = await tool.execute({ action: 'get_status', userId: 'mock-user-123' });
     console.log('✅ Status Result:', status);
 
-    if (status.status !== 'active') throw new Error('Status verification failed');
+    if (status.status !== 'active') {throw new Error('Status verification failed');}
 
     // Test 2: Create Checkout
     console.log('\nTesting [create_checkout]...');
@@ -51,14 +52,14 @@ async function verifyStripeTool() {
     });
     console.log('✅ Checkout Result:', checkout);
 
-    if (!checkout.url) throw new Error('Checkout URL verification failed');
+    if (!checkout.url) {throw new Error('Checkout URL verification failed');}
 
     // Test 3: Create Portal
     console.log('\nTesting [create_portal]...');
     const portal = await tool.execute({ action: 'create_portal', userId: 'mock-user-123' });
     console.log('✅ Portal Result:', portal);
 
-    if (!portal.url) throw new Error('Portal URL verification failed');
+    if (!portal.url) {throw new Error('Portal URL verification failed');}
 
     console.log('\n🎉 All StripeTool verifications passed!');
 }

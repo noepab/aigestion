@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { z } from 'zod';
+
+import { buildError,buildResponse } from '../common/response-builder';
 import { youtubeTranscriptionQueue } from '../queue/youtube-transcription.queue';
 import { logger } from '../utils/logger';
-import { buildResponse, buildError } from '../common/response-builder';
-import { z } from 'zod';
 
 const youtubeRouter = Router();
 
@@ -39,7 +40,7 @@ const TranscribeSchema = z.object({
  *         description: Server error
  */
 youtubeRouter.post('/transcribe', async (req: any, res: any) => {
-  const requestId = (req as any).requestId;
+  const requestId = (req).requestId;
   try {
     const validated = TranscribeSchema.safeParse(req.body);
     if (!validated.success) {

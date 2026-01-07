@@ -1,1 +1,2 @@
-export * from './components/VirtualList';
+export * from './components';
+export * from './design-system';

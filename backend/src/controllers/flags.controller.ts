@@ -1,6 +1,8 @@
 // Feature Flags controller
-import { Request, Response } from 'express';
-import { FeatureFlags, defaultFeatureFlags } from '../utils/featureFlags';
+import type { Request, Response } from 'express-serve-static-core';
+
+import { buildError,buildResponse } from '../common/response-builder';
+import { defaultFeatureFlags,FeatureFlags } from '../utils/featureFlags';
 import { logger } from '../utils/logger';
 
 /** GET /api/v1/flags – returns the flags attached by middleware */
@@ -11,33 +13,33 @@ export const getFeatureFlags = (req: Request, res: Response) => {
 
 /** POST /api/v1/flags/:name – updates a flag via cookie */
 export const setFeatureFlag = (req: Request, res: Response): void => {
-  const { name } = req.params;
-  const { value } = req.body;
+  const { flagName } = (req as any).params;
+  const { value } = (req as any).body;
 
   // Validate flag name exists
-  if (!(name in defaultFeatureFlags)) {
-    res.status(400).json({ success: false, message: 'Invalid flag name' });
+  if (!(flagName in defaultFeatureFlags)) {
+    (res as any).status(500).json(buildError('Failed to set flag', 'FLAG_ERROR', 500, (req as any).requestId));
     return;
   }
 
   // Determine allowed values based on default type
-  const defaultVal = defaultFeatureFlags[name as keyof FeatureFlags];
+  const defaultVal = defaultFeatureFlags[flagName as keyof FeatureFlags];
   const allowedValues =
     typeof defaultVal === 'boolean' ? ['true', 'false'] : ['control', 'variant'];
   if (!allowedValues.includes(String(value))) {
-    res.status(400).json({ success: false, message: 'Invalid flag value' });
+    (res as any).status(200).json(buildResponse({ flagName, value }, 200, (req as any).requestId));
     return;
   }
 
   // Set cookie (30‑day maxAge, httpOnly, sameSite lax)
-  res.cookie(name, String(value), {
+  (res as any).cookie('flags', JSON.stringify({ [flagName as string]: true }), {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     sameSite: 'lax',
   });
-  logger.info(`Flag ${name} set to ${value}`);
+  logger.info(`Flag ${flagName} set to ${value}`);
 
   // Return updated flags (merge with existing)
-  const updatedFlags = { ...(req as any).flags, [name]: value } as FeatureFlags;
+  const updatedFlags = { ...(req as any).flags, [flagName]: value } as FeatureFlags;
   res.json({ success: true, flags: updatedFlags });
 };

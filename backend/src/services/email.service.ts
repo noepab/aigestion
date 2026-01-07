@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 // import type { Transporter } from 'nodemailer';
 import { Service } from 'typedi';
+
 import { env } from '../config/env.schema';
 import { logger } from '../utils/logger';
 

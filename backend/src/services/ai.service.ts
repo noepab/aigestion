@@ -1,16 +1,22 @@
-import { injectable, inject } from 'inversify';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-// Types for function declarations and schema types are loosely typed as any to avoid TS2709 errors
-type FunctionDeclaration = any;
-import { env } from '../config/env.schema';
+import { inject, injectable } from 'inversify';
 import { Readable } from 'stream';
-import { TYPES } from '../types';
-// import { StripeService } from './stripe.service';
-import { AnalyticsService } from './analytics.service';
+
+import { env } from '../config/env.schema';
+import { CircuitBreakerFactory } from '../infrastructure/resilience/CircuitBreakerFactory';
+import { StripeTool } from '../tools/stripe.tool';
 // import { SearchService } from './search.service';
 import { SearchWebTool } from '../tools/web-search.tool';
-import { RagService } from './rag.service';
+import { TYPES } from '../types';
 import { logger } from '../utils/logger';
+// import { StripeService } from './stripe.service';
+import { AnalyticsService } from './analytics.service';
+import { RagService } from './rag.service';
+import { UsageService } from './usage.service';
+import { AIModelRouter, AIModelTier, ModelConfig } from '../utils/aiRouter';
+import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
+// Types for function declarations and schema types are loosely typed as any to avoid TS2709 errors
+type FunctionDeclaration = any;
 
 export interface AIStreamParams {
     prompt: string;
@@ -18,26 +24,52 @@ export interface AIStreamParams {
     userId: string;
 }
 
-import { StripeTool } from '../tools/stripe.tool';
-
 @injectable()
 export class AIService {
-    private genAI: any;
-    private model: any;
+    private _model: any;
+
+    private generateContentBreaker: any;
+    private chatStreamBreaker: any;
 
     constructor(
         @inject(TYPES.AnalyticsService) private analyticsService: AnalyticsService,
-        // @inject(TYPES.SearchService) private searchService: SearchService,
-        @inject(TYPES.RagService) private ragService: RagService
+        @inject(TYPES.RagService) private ragService: RagService,
+        @inject(TYPES.UsageService) private usageService: UsageService
     ) {
-        if (!env.GEMINI_API_KEY) {
-            logger.warn('GEMINI_API_KEY is missing. AIService will fail.');
-            // Throwing error might crash server on startup if instantiated eagerly,
-            // but safer to warn and let calls fail.
+        // Breakers initialized with async lambdas that will call getModel() on execution
+        this.generateContentBreaker = CircuitBreakerFactory.create(
+            async (prompt: string) => {
+                const model = await this.getModel();
+                return model.generateContent(prompt);
+            },
+            { name: 'Gemini.generateContent', timeout: 10000 } // Higher timeout for AI
+        );
+
+        this.chatStreamBreaker = CircuitBreakerFactory.create(
+            async (prompt: string, chatSession: any) => chatSession.sendMessageStream(prompt),
+            { name: 'Gemini.sendMessageStream', timeout: 10000 }
+        );
+    }
+
+    private async getProviderModel(config: ModelConfig) {
+        if (config.provider === 'gemini') {
+            const { GoogleGenerativeAI } = await import('@google/generative-ai');
+            const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || '');
+            return genAI.getGenerativeModel({ model: config.modelId });
+        } else if (config.provider === 'openai') {
+            return new OpenAI({ apiKey: env.OPENAI_API_KEY });
+        } else if (config.provider === 'anthropic') {
+            return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
         }
-        this.genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY || '');
-        // Using gemini-2.0-flash for speed and tool capability, consistent with GeminiAnalysisService
-        this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        throw new Error(`Unsupported provider: ${config.provider}`);
+    }
+
+    private async getModel() {
+        if (!this._model) {
+            const config = AIModelRouter.getModelConfig(AIModelTier.STANDARD);
+            this._model = await this.getProviderModel(config);
+        }
+        return this._model;
     }
 
     private getTools(): FunctionDeclaration[] {
@@ -114,8 +146,17 @@ export class AIService {
             parts: [{ text: msg.content }]
         }));
 
-        // Gemini ChatSession
-        const chat = this.model.startChat({
+        const tier = AIModelRouter.route(params.prompt);
+        const config = AIModelRouter.getModelConfig(tier);
+
+        logger.info(`[AIService] Streaming with Tier: ${tier} (${config.provider}/${config.modelId})`);
+
+        // Gemini ChatSession (Standard/Economy usually)
+        // Note: For now we only support streaming with Gemini providers to maintain Tool integration.
+        const modelTier = config.provider === 'gemini' ? config : AIModelRouter.getModelConfig(AIModelTier.STANDARD);
+        const model = await this.getProviderModel(modelTier) as any;
+
+        const chat = model.startChat({
             history: history,
             generationConfig: {
                 maxOutputTokens: 2048,
@@ -126,7 +167,8 @@ export class AIService {
 
         const runner = async () => {
             try {
-                const result = await chat.sendMessageStream(params.prompt);
+                // Use circuit breaker for the initial stream connection
+                const result = await this.chatStreamBreaker.fire(params.prompt, chat);
 
                 let fullText = '';
 
@@ -139,13 +181,14 @@ export class AIService {
                         stream.push(`data: ${JSON.stringify({ type: 'text', content: chunkText })}\n\n`);
                     }
 
+
                     // Handle tool calls
                     // Gemini 2.0 Flash tool execution logic
                     const functionCalls = chunk.functionCalls();
                     if (functionCalls && functionCalls.length > 0) {
                         for (const call of functionCalls) {
                             const name = call.name;
-                            const args = call.args as any;
+                            const args = call.args;
 
                             logger.info(`[AIService] Tool Call: ${name}`, args);
 
@@ -165,7 +208,7 @@ export class AIService {
                                 const results = await searchTool.execute({ query });
                                 toolResult = JSON.stringify(results);
                             } else if (name === 'get_codebase_context') {
-                                stream.push(`data: ${JSON.stringify({ type: 'text', content: `\n\nReading codebase context...\n\n` })}\n\n`);
+                                stream.push(`data: ${JSON.stringify({ type: 'text', content: `\n\nReading codebase context for: "${args.query}"...\n\n` })}\n\n`);
                                 const context = await this.ragService.getProjectContext(args.query);
                                 toolResult = context;
                             } else if (name === 'manage_subscription') {
@@ -192,6 +235,15 @@ export class AIService {
                 stream.push('data: [DONE]\n\n');
                 stream.push(null);
 
+                // Track usage after stream completes
+                this.usageService.trackUsage({
+                    userId: params.userId,
+                    provider: config.provider,
+                    modelId: config.modelId,
+                    prompt: params.prompt,
+                    completion: fullText,
+                });
+
             } catch (error) {
                 logger.error(error, '[AIService] Error in streamChat');
                 stream.emit('error', error);
@@ -204,12 +256,68 @@ export class AIService {
     }
 
     /**
-     * Generate content (Single-shot)
+     * Generate content (Single-shot) with Semantic Routing
      */
-    public async generateContent(prompt: string): Promise<string> {
+    public async generateContent(prompt: string, userId: string = 'anonymous'): Promise<string> {
         try {
-            const result = await this.model.generateContent(prompt);
-            return result.response.text();
+            const tier = AIModelRouter.route(prompt);
+            const config = AIModelRouter.getModelConfig(tier);
+
+            logger.info(`[AIService] Routing to Tier: ${tier} (${config.provider}/${config.modelId})`);
+
+            if (config.provider === 'gemini') {
+                const model = await this.getProviderModel(config) as any;
+                const result = await model.generateContent(prompt);
+                const text = result.response.text();
+
+                // Track usage
+                this.usageService.trackUsage({
+                    userId,
+                    provider: 'gemini',
+                    modelId: config.modelId,
+                    prompt: prompt,
+                    completion: text,
+                });
+
+                return text;
+            } else if (config.provider === 'anthropic') {
+                const anthropic = await this.getProviderModel(config) as Anthropic;
+                const msg = await anthropic.messages.create({
+                    model: config.modelId,
+                    max_tokens: 1024,
+                    messages: [{ role: 'user', content: prompt }],
+                });
+                const text = (msg.content[0] as any).text;
+
+                this.usageService.trackUsage({
+                    userId,
+                    provider: 'anthropic',
+                    modelId: config.modelId,
+                    prompt: prompt,
+                    completion: text,
+                });
+
+                return text;
+            } else if (config.provider === 'openai') {
+                const openai = await this.getProviderModel(config) as OpenAI;
+                const completion = await openai.chat.completions.create({
+                    model: config.modelId,
+                    messages: [{ role: 'user', content: prompt }],
+                });
+                const text = completion.choices[0].message.content || '';
+
+                this.usageService.trackUsage({
+                    userId,
+                    provider: 'openai',
+                    modelId: config.modelId,
+                    prompt: prompt,
+                    completion: text,
+                });
+
+                return text;
+            }
+
+            return 'Error: Unsupported provider in router.';
         } catch (error) {
             logger.error(error, '[AIService] Error in generateContent');
             return 'Error generating content.';
@@ -221,7 +329,8 @@ export class AIService {
      */
     public async chat(history: any[], message: string): Promise<string> {
         try {
-            const chat = this.model.startChat({
+            const model = await this.getModel();
+            const chat = model.startChat({
                 history: history.map(msg => ({
                     role: msg.role === 'assistant' ? 'model' : 'user',
                     parts: [{ text: msg.content }]

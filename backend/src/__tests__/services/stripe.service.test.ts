@@ -1,6 +1,8 @@
 import 'reflect-metadata';
-import { StripeService } from '../../services/stripe.service';
+
 import Stripe from 'stripe';
+
+import { StripeService } from '../../services/stripe.service';
 
 // Mock env before other imports
 jest.mock('../../config/env.schema', () => ({

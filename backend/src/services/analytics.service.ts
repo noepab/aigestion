@@ -1,8 +1,9 @@
 import { injectable } from 'inversify';
-import { User } from '../models/User';
-import { stats } from '../utils/stats';
-import { getCache, setCache } from '../utils/redis';
 import os from 'os';
+
+import { User } from '../models/User';
+import { getCache, setCache } from '../utils/redis';
+import { stats } from '../utils/stats';
 
 @injectable()
 export class AnalyticsService {
@@ -42,7 +43,7 @@ export class AnalyticsService {
   /**
    * Get user activity trends
    */
-  async getUserActivity(range: string = '24h'): Promise<any> {
+  async getUserActivity(range = '24h'): Promise<any> {
     // In a real app we'd query an Activity model.
     // Here we generate a realistic trend based on total users.
     const totalUsers = await User.countDocuments();

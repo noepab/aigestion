@@ -1,4 +1,6 @@
-import { createClient, RedisClientType } from 'redis';
+import * as redis from 'redis';
+import type { RedisClientType } from 'redis';
+
 import { logger } from '../utils/logger';
 
 let redisClient: RedisClientType | null = null;
@@ -11,7 +13,7 @@ export const getRedisClient = (): RedisClientType => {
     const password = process.env.REDIS_PASSWORD;
     const url = password ? `redis://:${password}@${host}:${port}` : `redis://${host}:${port}`;
 
-    redisClient = createClient({
+    redisClient = redis.createClient({
       url,
       socket: {
         reconnectStrategy: (retries) => {
@@ -51,39 +53,76 @@ export const closeRedis = async (): Promise<void> => {
 };
 
 
-// In-memory fallback if Redis is down
-const memoryCache = new Map<string, { value: any, expiry: number }>();
+// In-memory L1 cache
+const l1Cache = new Map<string, { value: any, expiry: number }>();
+const MAX_L1_SIZE = 1000;
 
+/**
+ * Get value from layered cache
+ * L1: Memory (fastest)
+ * L2: Redis (distributed)
+ */
 export const getCache = async (key: string): Promise<any> => {
-  const client = getRedisClient();
+  // Check L1 first
+  const l1Item = l1Cache.get(key);
+  if (l1Item && l1Item.expiry > Date.now()) {
+    logger.debug({ key }, 'L1 Cache Hit');
+    return l1Item.value;
+  }
 
-  // Try Redis first
+  // L1 Miss or Expired, try L2 (Redis)
+  const client = getRedisClient();
   if (client?.isOpen) {
     try {
       const data = await client.get(key);
-      if (!data) return null;
-      return JSON.parse(data);
+      if (data) {
+        const parsed = JSON.parse(data);
+
+        // Populate L1 for subsequent requests
+        // We don't have the original TTL here safely from Redis 'get',
+        // so we assume a default or check 'ttl' if we had it.
+        // For simplicity, we use a 5-minute local L1 mirror of the L2 data.
+        l1Cache.set(key, {
+          value: parsed,
+          expiry: Date.now() + (5 * 60 * 1000)
+        });
+
+        logger.debug({ key }, 'L2 Cache Hit (Mirroring to L1)');
+        return parsed;
+      }
     } catch (error) {
-      logger.warn({ error, key }, 'Redis get error, falling back to memory');
+      logger.warn({ error, key }, 'Redis get error');
     }
   }
 
-  // Fallback to memory
-  const item = memoryCache.get(key);
-  if (item && item.expiry > Date.now()) {
-    return item.value;
-  }
   return null;
 };
 
+/**
+ * Set value in layered cache
+ * Sets both L1 and L2
+ */
 export const setCache = async (
   key: string,
   value: any,
-  ttlSeconds: number = 3600
+  ttlSeconds = 3600
 ): Promise<boolean> => {
-  const client = getRedisClient();
+  // Set L1
+  l1Cache.set(key, {
+    value,
+    expiry: Date.now() + (ttlSeconds * 1000)
+  });
 
-  // Try Redis
+  // Simple L1 GC
+  if (l1Cache.size > MAX_L1_SIZE) {
+    const now = Date.now();
+    for (const [k, v] of l1Cache) {
+      if (v.expiry < now) { l1Cache.delete(k); }
+    }
+  }
+
+  // Set L2 (Redis)
+  const client = getRedisClient();
   if (client?.isOpen) {
     try {
       await client.set(key, JSON.stringify(value), {
@@ -91,20 +130,7 @@ export const setCache = async (
       });
       return true;
     } catch (error) {
-        logger.warn({ error, key }, 'Redis set error, falling back to memory');
-      }
-  }
-
-  // Fallback to memory
-  memoryCache.set(key, {
-    value,
-    expiry: Date.now() + (ttlSeconds * 1000)
-  });
-
-  // Cleanup old keys (simple GC)
-  if (memoryCache.size > 1000) {
-    for (const [k, v] of memoryCache) {
-      if (v.expiry < Date.now()) memoryCache.delete(k);
+      logger.warn({ error, key }, 'Redis set error');
     }
   }
 

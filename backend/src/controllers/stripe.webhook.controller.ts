@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
-import { controller, httpPost, request, response } from 'inversify-express-utils';
+import type { Request, Response } from 'express-serve-static-core';
 import { inject } from 'inversify';
-import { StripeService } from '../services/stripe.service';
-import { User } from '../models/User';
-import { logger } from '../utils/logger';
+import { controller, httpPost, request, response } from 'inversify-express-utils';
 import Stripe from 'stripe';
+
+import { User } from '../models/User';
+import { StripeService } from '../services/stripe.service';
+import { logger } from '../utils/logger';
 
 @controller('/api/v1/stripe/webhook')
 export class StripeWebhookController {
@@ -15,7 +16,7 @@ export class StripeWebhookController {
     const sig = req.headers['stripe-signature'];
 
     if (!sig) {
-      return res.status(400).send('Webhook Error: Missing stripe-signature');
+      return (res as any).status(400).send('Webhook Error: Missing stripe-signature');
     }
 
     let event: Stripe.Event;
@@ -24,14 +25,14 @@ export class StripeWebhookController {
       const rawBody = (req as any).rawBody;
       if (!rawBody) {
         logger.error('Webhook Error: Missing rawBody. parsing middleware configuration might be incorrect.');
-        return res.status(400).send('Webhook Error: Missing rawBody');
+        return (res as any).status(400).send('Webhook Error: Missing rawBody');
       }
 
       // Use raw body for signature verification
       event = this.stripeService.constructEvent(rawBody, sig as string);
     } catch (err: any) {
       logger.error(`Webhook signature verification failed: ${err.message}`);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      return (res as any).status(400).send(`Webhook Error: ${err.message}`);
     }
 
     try {
@@ -54,18 +55,18 @@ export class StripeWebhookController {
       res.json({ received: true });
     } catch (error) {
       logger.error(error, 'Error processing webhook event');
-      res.status(500).json({ error: 'Webhook processing failed' });
+      (res as any).status(500).json({ error: 'Webhook processing failed' });
     }
   }
 
   private async handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
-    if (!session.customer || !session.subscription) return;
+    if (!session.customer || !session.subscription) {return;}
 
     const user = await User.findOne({ email: session.customer_details?.email });
     if (user) {
       user.stripeCustomerId = session.customer as string;
-      user.subscriptionId = session.subscription as string;
-      user.subscriptionStatus = 'active';
+      const status = session.subscription ? (session.subscription as any).status : 'active';
+      user.subscriptionStatus = status;
       // Map price ID to plan name if needed, or store price ID
       // user.subscriptionPlan = ...
       await user.save();
@@ -76,7 +77,7 @@ export class StripeWebhookController {
   private async handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     const user = await User.findOne({ stripeCustomerId: subscription.customer as string });
     if (user) {
-      user.subscriptionStatus = subscription.status;
+      user.subscriptionStatus = subscription.status as any;
       user.subscriptionId = subscription.id;
       // Update plan info if changed
       await user.save();

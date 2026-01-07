@@ -1,12 +1,14 @@
 import 'reflect-metadata';
+
 import { jest } from '@jest/globals';
-import { Container } from 'typedi';
 import axios from 'axios';
+import { Container } from 'typedi';
+
+import { env } from '../../config/env.schema';
 import { InstagramService } from '../../services/instagram.service';
 import { LinkedInService } from '../../services/linkedin.service';
 import { TikTokService } from '../../services/tiktok.service';
 import { XService } from '../../services/x.service';
-import { env } from '../../config/env.schema';
 
 // Mock axios
 jest.mock('axios');

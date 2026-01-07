@@ -1,6 +1,6 @@
-﻿import { z } from 'zod';
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 import path from 'path';
+import { z } from 'zod';
 
 // Load .env from project root
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
@@ -31,7 +31,7 @@ const envSchema = z.object({
     .string()
     .default('*')
     .transform((val) => {
-      if (val === '*') return '*';
+      if (val === '*') { return '*'; }
       return val.split(',').map((origin) => origin.trim());
     })
     .describe('Allowed CORS origins (comma-separated)'),
@@ -118,6 +118,8 @@ const envSchema = z.object({
     .string()
     .optional()
     .describe('Google Gemini API key (optional for development)'),
+  OPENAI_API_KEY: z.string().optional().describe('OpenAI API key'),
+  ANTHROPIC_API_KEY: z.string().optional().describe('Anthropic API key'),
 
   // MCP / Antigravity
   MCP_SERVER_URL: z.string().url().optional().describe('Base URL for Antigravity MCP server'),

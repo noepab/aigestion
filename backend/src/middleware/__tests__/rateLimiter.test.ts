@@ -57,7 +57,7 @@ describe('RateLimiter Middleware', () => {
     });
 
     it('should allow requests under the limit', async () => {
-      await generalLimiter(noRoleReq as any, mockRes as any, nextFunction);
+      await generalLimiter(noRoleReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
   });
@@ -69,7 +69,7 @@ describe('RateLimiter Middleware', () => {
     });
 
     it('should apply stricter limits for auth endpoints', async () => {
-      await authLimiter(mockReq as any, mockRes as any, nextFunction);
+      await authLimiter(mockReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
   });
@@ -81,7 +81,7 @@ describe('RateLimiter Middleware', () => {
     });
 
     it('should apply AI-specific rate limits', async () => {
-      await aiLimiter(mockReq as any, mockRes as any, nextFunction);
+      await aiLimiter(mockReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
   });
@@ -97,7 +97,7 @@ describe('RateLimiter Middleware', () => {
         },
       };
 
-      dynamicRoleLimiter(adminReq as any, mockRes as any, nextFunction);
+      dynamicRoleLimiter(adminReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
 
@@ -111,7 +111,7 @@ describe('RateLimiter Middleware', () => {
         },
       };
 
-      await dynamicRoleLimiter(guestReq as any, mockRes as any, nextFunction);
+      await dynamicRoleLimiter(guestReq, mockRes, nextFunction);
       // Should apply limiter, which calls next() if under limit
       expect(nextFunction).toHaveBeenCalled();
     });
@@ -126,7 +126,7 @@ describe('RateLimiter Middleware', () => {
         },
       };
 
-      await dynamicRoleLimiter(authReq as any, mockRes as any, nextFunction);
+      await dynamicRoleLimiter(authReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
 
@@ -140,12 +140,12 @@ describe('RateLimiter Middleware', () => {
         },
       };
 
-      await dynamicRoleLimiter(premiumReq as any, mockRes as any, nextFunction);
+      await dynamicRoleLimiter(premiumReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
 
     it('should default to guest limits for users without role', async () => {
-      await dynamicRoleLimiter(noRoleReq as any, mockRes as any, nextFunction);
+      await dynamicRoleLimiter(noRoleReq, mockRes, nextFunction);
       expect(nextFunction).toHaveBeenCalled();
     });
   });

@@ -1,10 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 import mongoose from 'mongoose';
+
 import { healthCheck } from '../../controllers/health.controller';
 import { logger } from '../../utils/logger';
 
-jest.mock('../../cache/redisCache', () => ({
-  getRedisClient: jest.fn(),
+jest.mock('../../cache/redis', () => ({
+  getRedisClient: jest.fn().mockReturnValue({
+    info: jest.fn().mockResolvedValue('redis_version:6.0.0\r\nused_memory_human:100MB\r\nconnected_clients:1\r\nblocked_clients:0'),
+    ping: jest.fn().mockResolvedValue('PONG'),
+    isOpen: true,
+  }),
 }));
 
 jest.mock('../../queue/rabbitmq', () => ({

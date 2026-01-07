@@ -1,7 +1,7 @@
-import { getCache as gc, setCache as sc, getRedisClient } from '../cache/redis';
+import { getCache as gc, getRedisClient, setCache as sc } from '../cache/redis';
 
 export const getCache = gc;
 export const setCache = sc;
-export const redisClient = getRedisClient();
+export const getClient = getRedisClient;
 
-export default redisClient;
+export default getRedisClient;

@@ -177,7 +177,7 @@ const parseResultsJson = (os: TestOS): TestResultSummary => {
 
     testResult.assertionResults.forEach((assertionResult: any) => {
       const testName: string = assertionResult.ancestorTitles[0];
-      const foundLinterName = testName.match(/Testing (linter|formatter|tool) (?<linter>.+)/);
+      const foundLinterName = /Testing (linter|formatter|tool) (?<linter>.+)/.exec(testName);
       const linterName = foundLinterName?.groups?.linter;
       if (!linterName) {
         console.warn(`Failed to parse test name from ${testName}`);

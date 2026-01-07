@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { getBranches, getGitStats, getRecentCommits } from '../controllers/git.controller';
 
 const router = Router();

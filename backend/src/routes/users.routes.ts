@@ -1,14 +1,17 @@
 // src/routes/users.routes.ts
 import { Router } from 'express';
+
+import { validate, schemas } from '../middleware/validation.middleware';
 import {
   createUser,
+  deleteUser,
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUser,
 } from '../controllers/user.controller';
 
 const router = Router();
+console.log('[DEBUG] users.routes.ts: Router created');
 
 /**
  * @openapi
@@ -26,7 +29,7 @@ const router = Router();
  *       201:
  *         description: User created
  */
-router.post('/', createUser);
+router.post('/', validate({ body: schemas.user.create }), createUser);
 /**
  * @openapi
  * /users:
@@ -37,7 +40,8 @@ router.post('/', createUser);
  *       200:
  *         description: List of users
  */
-router.get('/', getAllUsers);
+import { validatePagination } from '../middleware/pagination.middleware';
+router.get('/', validatePagination, getAllUsers);
 /**
  * @openapi
  * /users/{id}:

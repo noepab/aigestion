@@ -61,6 +61,16 @@ The server runs on `http://localhost:3000` by default.
 - **Validation**: `zod` for request validation and environment config.
 - **Logging**: `winston` + `morgan` for HTTP logging.
 
+## 🛠️ Linters
+The project uses the following linters and formatters:
+- ESLint: Code linting
+- Prettier: Code formatting
+- Stylelint: CSS linting
+- Commitlint: Conventional commit messages
+- Secretlint: Secret detection
+- Markdownlint: Markdown linting
+- TSC: TypeScript compilation and type checking
+
 ## 🐳 Docker
 
 Build the image:

@@ -12,7 +12,7 @@ const workerApi = {
   expensiveCalculation: (n: number) => {
     // Simulate expensive calculation (e.g., Fibonacci)
     const fib = (num: number): number => {
-      if (num <= 1) return 1;
+      if (num <= 1) {return 1;}
       return fib(num - 1) + fib(num - 2);
     };
     return fib(n);

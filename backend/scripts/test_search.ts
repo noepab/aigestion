@@ -1,9 +1,10 @@
 import 'reflect-metadata';
-import { SearchService } from '../src/services/search.service';
-import { container } from '../src/config/inversify.config';
-import { TYPES } from '../src/config/inversify.config';
+
 import dotenv from 'dotenv';
 import path from 'path';
+
+import { container, TYPES  } from '../src/config/inversify.config';
+import { SearchService } from '../src/services/search.service';
 
 // Load .env manually
 const envPath = path.resolve(__dirname, '../.env');

@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
 import { exec } from 'child_process';
+import type { Request, Response } from 'express-serve-static-core';
 import { promisify } from 'util';
-import { getCache, setCache } from '../utils/redis';
+
+import { buildError } from '../common/response-builder';
 import { logger } from '../utils/logger';
+import { getCache, setCache } from '../utils/redis';
 
 const execAsync = promisify(exec);
 
@@ -50,7 +52,7 @@ export async function getContainers(_req: Request, res: Response): Promise<void>
       return;
     }
 
-    res.status(500).json({ error: 'Failed to get containers', containers: [] });
+    (res as any).status(500).json(buildError('Failed to get containers', 'DOCKER_ERROR', 500, (_req as any).requestId));
     return;
   }
 }
@@ -67,7 +69,7 @@ export async function getContainerStats(req: Request, res: Response) {
     res.json(stats);
   } catch (error) {
     logger.error(error, 'Error getting container stats:');
-    res.status(500).json({ error: 'Failed to get container stats' });
+    (res as any).status(500).json(buildError('Failed to get container stats', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -83,7 +85,7 @@ export async function startContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} started` });
   } catch (error) {
     logger.error(error, 'Error starting container:');
-    res.status(500).json({ error: 'Failed to start container' });
+    (res as any).status(500).json(buildError('Failed to start container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -99,7 +101,7 @@ export async function stopContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} stopped` });
   } catch (error) {
     logger.error(error, 'Error stopping container:');
-    res.status(500).json({ error: 'Failed to stop container' });
+    (res as any).status(500).json(buildError('Failed to stop container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -115,7 +117,7 @@ export async function restartContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} restarted` });
   } catch (error) {
     logger.error(error, 'Error restarting container:');
-    res.status(500).json({ error: 'Failed to restart container' });
+    (res as any).status(500).json(buildError('Failed to restart container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -143,7 +145,7 @@ export async function getImages(_req: Request, res: Response): Promise<void> {
     res.json(images);
   } catch (error) {
     console.error('Error getting Docker images:', error);
-    res.status(500).json({ error: 'Failed to get images', images: [] });
+    (res as any).status(500).json(buildError('Failed to get images', 'DOCKER_ERROR', 500, (_req as any).requestId));
   }
 }
 

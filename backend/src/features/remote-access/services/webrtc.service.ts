@@ -1,21 +1,22 @@
 import { EventEmitter } from 'events';
-import Peer, { Instance, SignalData } from 'simple-peer';
+import Peer from 'simple-peer';
+
 import { logger } from '../../../utils/logger';
 
 interface PeerConnection {
-  peer: Instance;
+  peer: any;
   userId: string;
   sessionId: string;
 }
 
 export class WebRTCService extends EventEmitter {
-  private peers: Map<string, PeerConnection> = new Map();
-  private streams: Map<string, MediaStream> = new Map();
+  private peers = new Map<string, PeerConnection>();
+  private streams = new Map<string, MediaStream>();
 
   /**
    * Crea una nueva conexión peer para una sesión
    */
-  createPeerConnection(userId: string, sessionId: string, initiator: boolean): Instance {
+  createPeerConnection(userId: string, sessionId: string, initiator: boolean): any {
     // Si ya existe una conexión para esta sesión, la cerramos primero
     this.closePeerConnection(sessionId);
 
@@ -42,12 +43,12 @@ export class WebRTCService extends EventEmitter {
     });
 
     // Manejar eventos del peer
-    peer.on('signal', (data: SignalData) => {
+    peer.on('signal', (data: any) => {
       logger.debug(
         `Señal de ${initiator ? 'iniciador' : 'receptor'} generada para sesión ${sessionId}`
       );
       this.emit('signal', {
-        type: (initiator ? 'offer' : 'answer') as 'offer' | 'answer',
+        type: (initiator ? 'offer' : 'answer'),
         sdp: data,
         userId,
         sessionId,
@@ -93,7 +94,7 @@ export class WebRTCService extends EventEmitter {
   /**
    * Procesa una señal SDP (offer/answer) de un peer remoto
    */
-  handleSignal(sessionId: string, signal: SignalData): boolean {
+  handleSignal(sessionId: string, signal: any): boolean {
     const connection = this.peers.get(sessionId);
     if (!connection) {
       logger.warn(`Intento de procesar señal para sesión no encontrada: ${sessionId}`);

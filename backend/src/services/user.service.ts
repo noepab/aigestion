@@ -1,42 +1,37 @@
-// src/services/user.service.ts
-import { v4 as uuidv4 } from 'uuid';
-import { CreateUserDto, UpdateUserDto } from '../dto/dtoSchemas';
+import { inject, injectable } from 'inversify';
+import { CreateUserDto, UpdateUserDto } from '../middleware/validation.middleware';
+import type { IUserRepository } from '../infrastructure/repository/UserRepository';
+import { IUser, User } from '../models/User';
+import { TYPES } from '../types';
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string; // In real apps, hash this!
-}
-
+@injectable()
 export class UserService {
-  private users: User[] = [];
+  constructor(
+    @inject(TYPES.UserRepository) private userRepository: IUserRepository
+  ) { }
 
-  async create(data: CreateUserDto): Promise<User> {
-    const user: User = { id: uuidv4(), ...data };
-    this.users.push(user);
-    return user;
+  async create(data: CreateUserDto): Promise<IUser> {
+    const user = new User(data);
+    return this.userRepository.create(user);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.users;
+  async findAll(): Promise<IUser[]> {
+    return this.userRepository.findAll();
   }
 
-  async findById(id: string): Promise<User | null> {
-    return this.users.find(u => u.id === id) || null;
+  async findById(id: string): Promise<IUser | null> {
+    return this.userRepository.findById(id);
   }
 
-  async update(id: string, data: UpdateUserDto): Promise<User | null> {
-    const user = await this.findById(id);
-    if (!user) return null;
-    Object.assign(user, data);
-    return user;
+  async findByEmail(email: string): Promise<IUser | null> {
+    return this.userRepository.findByEmail(email);
+  }
+
+  async update(id: string, data: UpdateUserDto): Promise<IUser | null> {
+    return this.userRepository.update(id, data as Partial<IUser>);
   }
 
   async delete(id: string): Promise<boolean> {
-    const index = this.users.findIndex(u => u.id === id);
-    if (index === -1) return false;
-    this.users.splice(index, 1);
-    return true;
+    return this.userRepository.delete(id);
   }
 }

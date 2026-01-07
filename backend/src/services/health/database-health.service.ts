@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import mongoose from 'mongoose';
+
 import { getRedisClient } from '../../cache/redis';
 import { getRabbitMQChannel } from '../../queue/rabbitmq';
 import { logger } from '../../utils/logger';
@@ -74,7 +75,7 @@ export class DatabaseHealthService {
     const checkPromise = (async () => {
         try {
             const channel = await getRabbitMQChannel();
-            if (!channel) return { status: 'disabled', message: 'RabbitMQ channel not available' };
+            if (!channel) {return { status: 'disabled', message: 'RabbitMQ channel not available' };}
 
             // Simple check
             const testQueue = `health-check-${Date.now()}`;
@@ -110,7 +111,7 @@ export class DatabaseHealthService {
   }
 
   private formatBytes(bytes: number, decimals = 2): string {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) {return '0 Bytes';}
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));

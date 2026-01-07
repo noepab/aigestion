@@ -1,11 +1,13 @@
 import 'reflect-metadata';
-import { jest } from '@jest/globals';
-import { Container } from 'typedi';
-import { EmailService } from '../../services/email.service';
-import nodemailer from 'nodemailer';
 
-const mockSendMail = jest.fn() as jest.Mock<any>;
-const mockVerify = jest.fn() as jest.Mock<any>;
+import { jest } from '@jest/globals';
+import nodemailer from 'nodemailer';
+import { Container } from 'typedi';
+
+import { EmailService } from '../../services/email.service';
+
+const mockSendMail = jest.fn();
+const mockVerify = jest.fn();
 
 // Move mock implementation to allow accessing variables (or use factory correctly)
 jest.mock('nodemailer', () => {

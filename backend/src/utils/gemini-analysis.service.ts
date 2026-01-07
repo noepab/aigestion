@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+
 import { env } from '../config/env.schema';
 import { logger } from './logger';
 
@@ -197,7 +198,7 @@ Reglas:
   /**
    * Genera un resumen ejecutivo corto
    */
-  async generateExecutiveSummary(transcript: string, maxLength: number = 280): Promise<string> {
+  async generateExecutiveSummary(transcript: string, maxLength = 280): Promise<string> {
     if (!this.isAvailable() || !this.model) {
       return transcript.substring(0, maxLength) + '...';
     }
@@ -224,7 +225,7 @@ Responde SOLO con el resumen, sin comillas ni texto adicional.
   /**
    * Traduce una transcripción a otro idioma
    */
-  async translateTranscript(transcript: string, targetLanguage: string = 'en'): Promise<string> {
+  async translateTranscript(transcript: string, targetLanguage = 'en'): Promise<string> {
     const model = this.getModel();
 
     try {

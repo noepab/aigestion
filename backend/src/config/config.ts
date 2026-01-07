@@ -22,6 +22,24 @@ export const config = {
       windowMs: env.AI_RATE_LIMIT_WINDOW_MS,
       max: env.AI_RATE_LIMIT_MAX,
     },
+    plans: {
+      free: {
+        max: 100, // 100 requests per window
+        windowMs: 15 * 60 * 1000, // 15 minutes
+      },
+      pro: {
+        max: 1000,
+        windowMs: 15 * 60 * 1000,
+      },
+      god: {
+        max: 10000,
+        windowMs: 15 * 60 * 1000,
+      },
+      default: {
+        max: 100,
+        windowMs: 15 * 60 * 1000,
+      },
+    },
   },
 
   // JWT configuration

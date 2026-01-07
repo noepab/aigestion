@@ -86,9 +86,9 @@ export interface VideoAnalytics {
 
 export interface ContentCalendar {
   month: string;
-  videos: Array<{
+  videos: {
     idea: VideoIdea;
     scheduledDate: Date;
     channel: ChannelType;
-  }>;
+  }[];
 }

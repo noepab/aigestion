@@ -1,8 +1,17 @@
+import fetch from 'node-fetch';
 import request from 'supertest';
+
 import { app } from '../app';
-import fetch, { Response } from 'node-fetch';
 
 jest.mock('node-fetch', () => jest.fn());
+const { Response } = jest.requireActual('node-fetch');
+
+// Mock the env configuration
+jest.mock('../config/env.schema', () => ({
+  env: {
+    MCP_SERVER_URL: 'http://dummy-mcp.local',
+  },
+}));
 
 describe('MCP health route', () => {
   beforeAll(() => {

@@ -89,3 +89,6 @@ interface TableProps {
 export function Table({ children }: TableProps) {
   return <table className="w-full text-left border-collapse">{children}</table>;
 }
+
+export { DarkModeToggle } from './DarkModeToggle';
+export { LazyImage } from './LazyImage';

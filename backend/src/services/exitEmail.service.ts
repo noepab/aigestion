@@ -1,5 +1,5 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 
 // Load markdown templates from the assets directory (relative to this file)
 const templatesDir = path.resolve(__dirname, '../../assets/exit_templates');
