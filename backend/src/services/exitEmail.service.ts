@@ -28,10 +28,7 @@ export function getTemplates(): Record<string, string> {
  * Renders a template by replacing placeholders of the form `{{key}}` with values.
  * Placeholders that are not provided remain unchanged.
  */
-export function renderTemplate(
-  name: string,
-  data: Record<string, string>
-): string {
+export function renderTemplate(name: string, data: Record<string, string>): string {
   const templates = getTemplates();
   const raw = templates[name];
   if (!raw) {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { buildError,buildResponse } from '../common/response-builder';
+import { buildError, buildResponse } from '../common/response-builder';
 import { youtubeTranscriptionQueue } from '../queue/youtube-transcription.queue';
 import { logger } from '../utils/logger';
 
@@ -40,7 +40,7 @@ const TranscribeSchema = z.object({
  *         description: Server error
  */
 youtubeRouter.post('/transcribe', async (req: any, res: any) => {
-  const requestId = (req).requestId;
+  const requestId = req.requestId;
   try {
     const validated = TranscribeSchema.safeParse(req.body);
     if (!validated.success) {
@@ -52,8 +52,8 @@ youtubeRouter.post('/transcribe', async (req: any, res: any) => {
             'VALIDATION_ERROR',
             400,
             requestId,
-            validated.error.flatten().fieldErrors
-          )
+            validated.error.flatten().fieldErrors,
+          ),
         );
     }
 
@@ -72,7 +72,7 @@ youtubeRouter.post('/transcribe', async (req: any, res: any) => {
     if (published) {
       logger.info(`Transcription requested for ${videoUrl} by ${recipientEmail}`);
       return res.json(
-        buildResponse({ message: 'Transcription job queued', jobId: fileName }, 202, requestId)
+        buildResponse({ message: 'Transcription job queued', jobId: fileName }, 202, requestId),
       );
     } else {
       return res.status(500).json(buildError('Failed to queue job', 'QUEUE_ERROR', 500, requestId));

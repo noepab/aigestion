@@ -24,7 +24,7 @@ const usageRecordSchema = new Schema<IUsageRecord>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const UsageRecord = mongoose.model<IUsageRecord>('UsageRecord', usageRecordSchema);

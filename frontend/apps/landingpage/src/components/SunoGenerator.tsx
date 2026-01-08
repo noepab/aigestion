@@ -1,8 +1,10 @@
 export default function SunoGenerator() {
   return (
-    <div className="p-4 bg-white/5 rounded-lg text-white">
-      <h3 className="text-lg font-bold mb-2">Suno Generator Placeholder</h3>
-      <p>This component is a placeholder for the Suno AI Music Generator.</p>
+    <div className="max-w-7xl mx-auto px-6 mb-24">
+      <div className="p-8 nexus-glass text-white">
+        <h3 className="text-xl font-bold mb-4">Suno AI Music Generator</h3>
+        <p className="text-white/50">Experience the future of audio generation directly within the Nexus ecosystem.</p>
+      </div>
     </div>
   );
 }

@@ -155,7 +155,9 @@ export const RootQuery = new GraphQLObjectType({
           const cacheKey = 'system:metrics';
           const cachedData = await getCache(cacheKey);
 
-          if (cachedData) {return cachedData;}
+          if (cachedData) {
+            return cachedData;
+          }
 
           const cpus = os.cpus();
           const totalMem = os.totalmem();
@@ -195,14 +197,16 @@ export const RootQuery = new GraphQLObjectType({
           const cacheKey = 'docker:containers';
           const cachedData = await getCache(cacheKey);
 
-          if (cachedData) {return cachedData;}
+          if (cachedData) {
+            return cachedData;
+          }
 
           const { stdout } = await execAsync('docker ps -a --format "{{json .}}"');
           const containers = stdout
             .trim()
             .split('\n')
-            .filter((line) => line)
-            .map((line) => {
+            .filter(line => line)
+            .map(line => {
               try {
                 return JSON.parse(line);
               } catch {
@@ -227,14 +231,14 @@ export const RootQuery = new GraphQLObjectType({
       resolve: async (_obj, args) => {
         try {
           const { stdout } = await execAsync(
-            `git log -${args.limit} --pretty=format:"%H|%an|%ai|%s"`
+            `git log -${args.limit} --pretty=format:"%H|%an|%ai|%s"`,
           );
 
           return stdout
             .trim()
             .split('\n')
-            .filter((line) => line)
-            .map((line) => {
+            .filter(line => line)
+            .map(line => {
               const [hash, author, date, message] = line.split('|');
               return { hash, author, date, message };
             });
@@ -262,8 +266,8 @@ export const RootQuery = new GraphQLObjectType({
           return stdout
             .trim()
             .split('\n')
-            .map((branch) => branch.trim().replace('* ', ''))
-            .filter((branch) => branch);
+            .map(branch => branch.trim().replace('* ', ''))
+            .filter(branch => branch);
         } catch (error) {
           console.error('GraphQL gitBranches Error:', error);
           return ['main'];
@@ -280,7 +284,7 @@ export const RootQuery = new GraphQLObjectType({
           const contributors = contributorsRaw
             .trim()
             .split('\n')
-            .map((line) => {
+            .map(line => {
               const [commits, ...nameParts] = line.trim().split(/\s+/);
               return {
                 name: nameParts.join(' '),
@@ -318,7 +322,7 @@ export const RootMutation = new GraphQLObjectType({
         return User.create({
           email: args.email,
           name: args.name,
-          password: 'password123', // Default password for now
+          password: 'AIGestion123!', // Default password for now
           loginAttempts: 0,
         });
       },

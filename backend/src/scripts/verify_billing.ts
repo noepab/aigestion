@@ -9,7 +9,8 @@ async function verifyMeteredBilling() {
   const usageService = container.get<UsageService>(TYPES.UsageService);
 
   const prompt = 'Hola, ¿cómo estás?';
-  const completion = 'Hola, soy Nexus AI. Estoy aquí para ayudarte con tu negocio y optimizar tus procesos.';
+  const completion =
+    'Hola, soy Nexus AI. Estoy aquí para ayudarte con tu negocio y optimizar tus procesos.';
 
   const promptTokens = usageService.countTokens(prompt);
   const completionTokens = usageService.countTokens(completion);
@@ -27,7 +28,7 @@ async function verifyMeteredBilling() {
     provider: 'gemini',
     modelId: 'gemini-3.0-flash',
     prompt,
-    completion
+    completion,
   });
 
   console.log('✅ Verificación completada (Check logs for Stripe mock output)');

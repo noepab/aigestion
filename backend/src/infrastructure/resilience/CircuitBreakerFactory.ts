@@ -24,7 +24,7 @@ export class CircuitBreakerFactory {
    */
   public static create<TI extends unknown[], TR>(
     action: (...args: TI) => Promise<TR>,
-    config: CircuitBreakerConfig = {}
+    config: CircuitBreakerConfig = {},
   ): any {
     const options = {
       ...this.DEFAULT_CONFIG,

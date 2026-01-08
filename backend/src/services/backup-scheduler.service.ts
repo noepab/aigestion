@@ -1,4 +1,4 @@
-import { inject,injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import path from 'path';
 
 import { TYPES } from '../types';
@@ -16,11 +16,13 @@ export class BackupSchedulerService {
 
   constructor(
     @inject(TYPES.BackupService) private backupService: BackupService,
-    @inject(TYPES.TelegramService) private telegramService: TelegramService
+    @inject(TYPES.TelegramService) private telegramService: TelegramService,
   ) {}
 
   public start() {
-    logger.info('BackupSchedulerService started. First backup will run immediately (async) and then daily.');
+    logger.info(
+      'BackupSchedulerService started. First backup will run immediately (async) and then daily.',
+    );
 
     // Run initial backup after a short delay to let server startup finish
     setTimeout(() => this.runBackupJob(), 10000);

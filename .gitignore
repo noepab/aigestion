@@ -150,3 +150,11 @@ node_modules/
 # Infrastructure Keys
 infra/keys/
 nexus-*.json
+backend/premium_management/google_password_manager.json
+backend/premium_management/premium_credentials.json
+
+# Python Virtual Environments
+.venv
+.venv/
+ml-service/.venv/
+**/__pycache__/

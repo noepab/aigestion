@@ -11,8 +11,8 @@ import { schema } from './schema';
 export function createGraphQLRouter() {
   const router = express.Router();
 
-  router.use(
-    '/graphql',
+  router.all(
+    '/',
     graphqlHTTP(async (req: any) => ({
       schema,
       rootValue: {},
@@ -30,7 +30,7 @@ export function createGraphQLRouter() {
           code: error.extensions?.code || 'INTERNAL_ERROR',
         },
       }),
-    }))
+    })),
   );
 
   return router;

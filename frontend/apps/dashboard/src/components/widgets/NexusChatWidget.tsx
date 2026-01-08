@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Code, FileText, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Code, Loader2 } from 'lucide-react';
 import { AIService } from '../../api/ai.api';
 // Using a simple markdown parser for now or assuming text is mostly plain.
 // In a real app we'd use 'react-markdown'. For now, we'll basic formatting via CSS/whitespace.
@@ -34,7 +34,7 @@ export function NexusChatWidget() {
         setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
         setIsLoading(true);
 
-        const assistantMsgId = Date.now();
+        // Assistant message logic follows
         // Optimistic assistant message
         setMessages(prev => [...prev, { role: 'assistant', content: '', isStreaming: true }]);
 
@@ -159,6 +159,7 @@ export function NexusChatWidget() {
 
             {/* Launcher */}
             <button
+                id="assistant-widget"
                 onClick={() => setIsOpen(!isOpen)}
                 className="pointer-events-auto p-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-full shadow-lg transition-all hover:scale-110 active:scale-95 group"
             >

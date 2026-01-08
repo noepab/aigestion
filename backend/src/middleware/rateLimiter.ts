@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit';
-import type { NextFunction,Request, Response } from 'express-serve-static-core';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import RedisStore from 'rate-limit-redis';
 
 import { getRedisClient } from '../cache/redis';
@@ -22,7 +22,7 @@ interface AuthenticatedRequest extends Request {
 const createRateLimiter = (
   windowMs: number,
   max: number,
-  message = 'Too many requests, please try again later.'
+  message = 'Too many requests, please try again later.',
 ) => {
   // Use memory store for development (simpler, no Redis dependency)
   // In production, Redis store can be enabled via environment variable
@@ -57,9 +57,10 @@ const createRateLimiter = (
     store, // undefined = memory store
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
+    skip: () => process.env.NODE_ENV === 'test' || !!process.env.JEST_WORKER_ID,
     keyGenerator: (req: any) => {
       const authReq = req as AuthenticatedRequest;
-      return authReq.user?.id || (req).ip || 'unknown';
+      return authReq.user?.id || req.ip || 'unknown';
     },
   });
 };
@@ -71,7 +72,7 @@ const createRateLimiter = (
 export const generalLimiter = createRateLimiter(
   config.rateLimit.windowMs,
   config.rateLimit.max,
-  'Too many requests from this IP, please try again later.'
+  'Too many requests from this IP, please try again later.',
 );
 
 /**
@@ -81,7 +82,7 @@ export const generalLimiter = createRateLimiter(
 export const strictLimiter = createRateLimiter(
   15 * 60 * 1000, // 15 minutes
   5,
-  'Too many attempts, please try again in 15 minutes.'
+  'Too many attempts, please try again in 15 minutes.',
 );
 
 /**
@@ -91,7 +92,7 @@ export const strictLimiter = createRateLimiter(
 export const authLimiter = createRateLimiter(
   60 * 60 * 1000, // 1 hour
   10,
-  'Too many authentication attempts, please try again in an hour.'
+  'Too many authentication attempts, please try again in an hour.',
 );
 
 /**
@@ -101,7 +102,7 @@ export const authLimiter = createRateLimiter(
 export const uploadLimiter = createRateLimiter(
   60 * 60 * 1000, // 1 hour
   20,
-  'Upload limit exceeded, please try again later.'
+  'Upload limit exceeded, please try again later.',
 );
 
 /**
@@ -111,7 +112,7 @@ export const uploadLimiter = createRateLimiter(
 export const aiLimiter = createRateLimiter(
   10 * 60 * 1000, // 10 minutes
   30,
-  'AI request limit exceeded, please try again in 10 minutes.'
+  'AI request limit exceeded, please try again in 10 minutes.',
 );
 
 /**
@@ -126,17 +127,17 @@ const roleLimiters: Record<string, any> = {
   guest: createRateLimiter(
     15 * 60 * 1000, // 15 minutes
     30,
-    'Rate limit exceeded for guest users. Please try again later.'
+    'Rate limit exceeded for guest users. Please try again later.',
   ),
   authenticated: createRateLimiter(
     15 * 60 * 1000, // 15 minutes
     100,
-    'Rate limit exceeded for authenticated users. Please try again later.'
+    'Rate limit exceeded for authenticated users. Please try again later.',
   ),
   premium: createRateLimiter(
     15 * 60 * 1000, // 15 minutes
     300,
-    'Rate limit exceeded for premium users. Please try again later.'
+    'Rate limit exceeded for premium users. Please try again later.',
   ),
 };
 
@@ -171,7 +172,7 @@ export const dynamicRoleLimiter = (req: Request, res: Response, next: NextFuncti
 export const websocketLimiter = createRateLimiter(
   60 * 1000, // 1 minute
   10,
-  'Too many WebSocket connection attempts, please try again later.'
+  'Too many WebSocket connection attempts, please try again later.',
 );
 
 export default {

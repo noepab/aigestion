@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import fs, { promises as fsPromises } from 'fs';
-import { inject,injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import path from 'path';
 
 import { logger } from '../utils/logger';
@@ -9,9 +9,7 @@ const mime = require('mime-types');
 
 @injectable()
 export class BackupService {
-  constructor(
-    @inject(GoogleDriveService) private googleDriveService: GoogleDriveService
-  ) { }
+  constructor(@inject(GoogleDriveService) private googleDriveService: GoogleDriveService) {}
 
   /**
    * Main backup function
@@ -19,7 +17,6 @@ export class BackupService {
    * @param rootTargetFolder Name of the root folder in Drive (e.g. "Backups")
    */
   async backupDirectory(sourceDir: string, rootTargetFolder = 'AIGestion_Backups') {
-
     logger.info(`Starting backup of ${sourceDir} to Drive folder: ${rootTargetFolder}`);
 
     if (!fs.existsSync(sourceDir)) {
@@ -48,7 +45,14 @@ export class BackupService {
       for (const entry of entries) {
         const entryPath = path.join(localPath, entry);
         // Ignore node_modules, .git, etc
-        if (entry === 'node_modules' || entry === '.git' || entry === '.DS_Store' || entry === 'dist') {continue;}
+        if (
+          entry === 'node_modules' ||
+          entry === '.git' ||
+          entry === '.DS_Store' ||
+          entry === 'dist'
+        ) {
+          continue;
+        }
 
         try {
           const entryStats = fs.statSync(entryPath);

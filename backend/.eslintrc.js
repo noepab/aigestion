@@ -1,4 +1,3 @@
-// .eslintrc.js
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -7,7 +6,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -17,15 +16,34 @@ module.exports = {
   env: {
     node: true,
     jest: true,
+    es2022: true,
   },
   rules: {
-    // Example strict rules
+    'prettier/prettier': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-misused-promises': 'error',
     'no-console': 'warn',
     'prefer-const': 'error',
-    'eqeqeq': ['error', 'always'],
+    eqeqeq: ['error', 'always'],
   },
-  ignorePatterns: ['dist/', 'node_modules/'],
+  ignorePatterns: [
+    'dist/',
+    'node_modules/',
+    'coverage/',
+    '*.js',
+    '*.config.ts',
+    '*.setup.ts',
+    'jest.setup.js',
+    '../_legacy_assets_build/**',
+    'infra/keys/**',
+  ],
 };

@@ -30,7 +30,13 @@ export class AppError extends Error {
   public readonly isOperational: boolean;
   public readonly details?: any;
 
-  constructor(message: string, statusCode: number = HttpStatusCode.INTERNAL_SERVER_ERROR, code?: string, details?: any, isOperational = true) {
+  constructor(
+    message: string,
+    statusCode: number = HttpStatusCode.INTERNAL_SERVER_ERROR,
+    code?: string,
+    details?: any,
+    isOperational = true,
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.code = code || (statusCode === 404 ? 'NOT_FOUND' : 'INTERNAL_ERROR');

@@ -26,8 +26,8 @@ export async function getContainers(_req: Request, res: Response): Promise<void>
     const containers = stdout
       .trim()
       .split('\n')
-      .filter((line) => line)
-      .map((line) => {
+      .filter(line => line)
+      .map(line => {
         try {
           return JSON.parse(line);
         } catch {
@@ -52,7 +52,9 @@ export async function getContainers(_req: Request, res: Response): Promise<void>
       return;
     }
 
-    (res as any).status(500).json(buildError('Failed to get containers', 'DOCKER_ERROR', 500, (_req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to get containers', 'DOCKER_ERROR', 500, (_req as any).requestId));
     return;
   }
 }
@@ -69,7 +71,11 @@ export async function getContainerStats(req: Request, res: Response) {
     res.json(stats);
   } catch (error) {
     logger.error(error, 'Error getting container stats:');
-    (res as any).status(500).json(buildError('Failed to get container stats', 'DOCKER_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(
+        buildError('Failed to get container stats', 'DOCKER_ERROR', 500, (req as any).requestId),
+      );
     return;
   }
 }
@@ -85,7 +91,9 @@ export async function startContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} started` });
   } catch (error) {
     logger.error(error, 'Error starting container:');
-    (res as any).status(500).json(buildError('Failed to start container', 'DOCKER_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to start container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -101,7 +109,9 @@ export async function stopContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} stopped` });
   } catch (error) {
     logger.error(error, 'Error stopping container:');
-    (res as any).status(500).json(buildError('Failed to stop container', 'DOCKER_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to stop container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -117,7 +127,9 @@ export async function restartContainer(req: Request, res: Response) {
     res.json({ success: true, message: `Container ${id} restarted` });
   } catch (error) {
     logger.error(error, 'Error restarting container:');
-    (res as any).status(500).json(buildError('Failed to restart container', 'DOCKER_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to restart container', 'DOCKER_ERROR', 500, (req as any).requestId));
     return;
   }
 }
@@ -132,8 +144,8 @@ export async function getImages(_req: Request, res: Response): Promise<void> {
     const images = stdout
       .trim()
       .split('\n')
-      .filter((line) => line)
-      .map((line) => {
+      .filter(line => line)
+      .map(line => {
         try {
           return JSON.parse(line);
         } catch {
@@ -145,7 +157,9 @@ export async function getImages(_req: Request, res: Response): Promise<void> {
     res.json(images);
   } catch (error) {
     console.error('Error getting Docker images:', error);
-    (res as any).status(500).json(buildError('Failed to get images', 'DOCKER_ERROR', 500, (_req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to get images', 'DOCKER_ERROR', 500, (_req as any).requestId));
   }
 }
 
@@ -159,8 +173,8 @@ export async function getVolumes(_req: Request, res: Response): Promise<void> {
     const volumes = stdout
       .trim()
       .split('\n')
-      .filter((line) => line)
-      .map((line) => {
+      .filter(line => line)
+      .map(line => {
         try {
           return JSON.parse(line);
         } catch {
@@ -186,8 +200,8 @@ export async function getNetworks(_req: Request, res: Response): Promise<void> {
     const networks = stdout
       .trim()
       .split('\n')
-      .filter((line) => line)
-      .map((line) => {
+      .filter(line => line)
+      .map(line => {
         try {
           return JSON.parse(line);
         } catch {

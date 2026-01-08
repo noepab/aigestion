@@ -125,7 +125,7 @@ describe('API v1 - REST Refactoring', () => {
         .send({
           email: 'test@example.com',
           name: 'Test User',
-          password: 'password123',
+          password: 'AIGestion123!',
         })
         .expect(201);
 

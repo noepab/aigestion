@@ -12,19 +12,22 @@ import { TYPES } from '../types';
 import { IUserRepository } from '../infrastructure/repository/UserRepository';
 import { AppError } from '../utils/errors';
 
-
 @injectable()
 export class AuthService {
   constructor(
     @inject(TYPES.UserRepository) private userRepository: IUserRepository,
     @inject(TYPES.RegisterUserUseCase) private registerUseCase: RegisterUserUseCase,
-    @inject(TYPES.LoginUserUseCase) private loginUseCase: LoginUserUseCase
-  ) { }
+    @inject(TYPES.LoginUserUseCase) private loginUseCase: LoginUserUseCase,
+  ) {}
 
   /**
    * Register a new user
    */
-  async register(data: { name: string; email: string; password: string }): Promise<{ user: IUser; token: string; refreshToken: string }> {
+  async register(data: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<{ user: IUser; token: string; refreshToken: string }> {
     // Delegate to RegisterUserUseCase
     return this.registerUseCase.execute(data);
   }
@@ -32,7 +35,12 @@ export class AuthService {
   /**
    * Login user
    */
-  async login(data: { email: string; password: string; ip?: string; userAgent?: string }): Promise<{ user: IUser; token: string; refreshToken: string }> {
+  async login(data: {
+    email: string;
+    password: string;
+    ip?: string;
+    userAgent?: string;
+  }): Promise<{ user: IUser; token: string; refreshToken: string }> {
     // Delegate to LoginUserUseCase
     return this.loginUseCase.execute(data);
   }
@@ -47,7 +55,11 @@ export class AuthService {
   /**
    * Refresh Token
    */
-  async refreshToken(token: string, ip: string, userAgent: string): Promise<{ user: IUser; accessToken: string; refreshToken: string }> {
+  async refreshToken(
+    token: string,
+    ip: string,
+    userAgent: string,
+  ): Promise<{ user: IUser; accessToken: string; refreshToken: string }> {
     const user = await User.findOne({ 'refreshTokens.token': token });
 
     if (!user) {
@@ -58,10 +70,15 @@ export class AuthService {
         if (decoded.familyId) {
           // This is a "Reused Token"! Danger!
           // Find the user who owns this familyId
-          const compromisedUser = await User.findOne({ 'refreshTokens.familyId': decoded.familyId });
+          const compromisedUser = await User.findOne({
+            'refreshTokens.familyId': decoded.familyId,
+          });
           if (compromisedUser) {
             // Invalidate ALL tokens for this family
-            compromisedUser.refreshTokens = compromisedUser.refreshTokens.filter(t => t.familyId !== decoded.familyId);
+            compromisedUser.refreshTokens = compromisedUser.refreshTokens.filter(
+              t => t.familyId !== decoded.familyId,
+            );
+            await compromisedUser.save();
             await compromisedUser.save();
             throw new Error('REFRESH_TOKEN_REUSE_DETECTED');
           }
@@ -93,13 +110,14 @@ export class AuthService {
 
     // Remove used token and add new one
     user.refreshTokens = user.refreshTokens.filter(t => t.token !== token);
+
     user.refreshTokens.push({
       token: newRefreshToken,
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       familyId: newFamilyId,
       ip,
       userAgent,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
 
     // Clean up old tokens (optional limit)
@@ -134,7 +152,8 @@ export class AuthService {
     const payload = {
       id: user._id,
       familyId: familyId || crypto.randomUUID(), // New family if not provided
-      type: 'refresh'
+      type: 'refresh',
+      nonce: crypto.randomUUID(), // Ensure uniqueness even if signed in the same second
     };
     return jwt.sign(payload, config.jwt.secret, { expiresIn: '7d' });
   }
@@ -142,7 +161,7 @@ export class AuthService {
   async logout(refreshToken: string): Promise<void> {
     await User.updateOne(
       { 'refreshTokens.token': refreshToken },
-      { $pull: { refreshTokens: { token: refreshToken } } }
+      { $pull: { refreshTokens: { token: refreshToken } } },
     );
   }
 }

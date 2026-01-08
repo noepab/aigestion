@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { Verify2FAUseCase } from '../Verify2FAUseCase';
-import { TwoFactorService } from '../../services/twoFactor.service';
-import { User } from '../../models/User';
-import { AppError } from '../../utils/errors';
+import { TwoFactorService } from '../../../services/twoFactor.service';
+import { User } from '../../../models/User';
+import { AppError } from '../../../utils/errors';
 
-jest.mock('../../services/twoFactor.service');
-jest.mock('../../models/User');
+jest.mock('../../../services/twoFactor.service');
+jest.mock('../../../models/User');
 
 const MockTwoFactorService = TwoFactorService as jest.MockedClass<typeof TwoFactorService>;
 const MockUser = User as jest.MockedClass<typeof User>;

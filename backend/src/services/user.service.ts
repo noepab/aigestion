@@ -6,9 +6,7 @@ import { TYPES } from '../types';
 
 @injectable()
 export class UserService {
-  constructor(
-    @inject(TYPES.UserRepository) private userRepository: IUserRepository
-  ) { }
+  constructor(@inject(TYPES.UserRepository) private userRepository: IUserRepository) {}
 
   async create(data: CreateUserDto): Promise<IUser> {
     const user = new User(data);

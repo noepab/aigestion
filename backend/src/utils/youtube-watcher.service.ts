@@ -4,7 +4,7 @@ import * as path from 'path';
 import { Container } from 'typedi';
 
 import { env } from '../config/env.schema';
-import { TranscriptionJob,youtubeTranscriptionQueue } from '../queue/youtube-transcription.queue';
+import { TranscriptionJob, youtubeTranscriptionQueue } from '../queue/youtube-transcription.queue';
 import { youtubeChannelService } from '../services/google/youtube-channel.service';
 import { TelegramService } from '../services/telegram.service';
 import { logger } from '../utils/logger';
@@ -121,7 +121,7 @@ export class YoutubeWatcherService {
     logger.info(`Analizando archivo de texto: ${fileName}`);
 
     // Pequeña demora para asegurar que el archivo se terminó de escribir
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     // Extraer URL del video
     const videoUrl = this.extractVideoUrl(filePath);
@@ -244,7 +244,7 @@ export class YoutubeWatcherService {
     });
 
     this.watcher
-      .on('add', (filePath) => {
+      .on('add', filePath => {
         this.processFile(filePath).catch((error: any) => {
           logger.error(error, `Error procesando archivo ${filePath}`);
         });
@@ -285,4 +285,3 @@ export class YoutubeWatcherService {
 }
 
 export const youtubeWatcherService = new YoutubeWatcherService();
-

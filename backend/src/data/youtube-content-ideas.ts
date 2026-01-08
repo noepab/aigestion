@@ -45,7 +45,8 @@ export const contentIdeas: VideoIdea[] = [
   {
     id: 'pers-003',
     title: 'MongoDB + Mongoose: Patrones avanzados y optimizaciÃ³n',
-    description: 'TÃ©cnicas avanzadas de modelado, Ã­ndices, agregaciones y optimizaciÃ³n de queries',
+    description:
+      'TÃ©cnicas avanzadas de modelado, Ã­ndices, agregaciones y optimizaciÃ³n de queries',
     category: 'tutorial',
     targetChannel: 'personal',
     keywords: ['mongodb', 'mongoose', 'database', 'optimization'],
@@ -484,21 +485,21 @@ export const contentIdeas: VideoIdea[] = [
  * Obtiene ideas por canal
  */
 export function getIdeasByChannel(channel: 'personal' | 'business'): VideoIdea[] {
-  return contentIdeas.filter((idea) => idea.targetChannel === channel);
+  return contentIdeas.filter(idea => idea.targetChannel === channel);
 }
 
 /**
  * Obtiene ideas por prioridad
  */
 export function getIdeasByPriority(priority: 'low' | 'medium' | 'high'): VideoIdea[] {
-  return contentIdeas.filter((idea) => idea.priority === priority);
+  return contentIdeas.filter(idea => idea.priority === priority);
 }
 
 /**
  * Obtiene ideas por categorÃ­a
  */
 export function getIdeasByCategory(category: string): VideoIdea[] {
-  return contentIdeas.filter((idea) => idea.category === category);
+  return contentIdeas.filter(idea => idea.category === category);
 }
 
 /**
@@ -525,4 +526,3 @@ export function getContentStats() {
     },
   };
 }
-

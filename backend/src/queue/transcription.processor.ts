@@ -59,7 +59,7 @@ ${formattedTranscript}
          <p>Video URL: <a href="${result.url}">${result.url}</a></p>
          <br>
          <p>The transcript file is attached.</p>`,
-        [{ filename: outputFileName, path: outputPath }]
+        [{ filename: outputFileName, path: outputPath }],
       );
     }
 
@@ -68,24 +68,23 @@ ${formattedTranscript}
     if (adminChatId) {
       await telegramService.sendMessage(
         `✅ *Transcription Complete*\n\n` +
-        `📹 *Video:* ${result.title}\n` +
-        `📂 *File:* \`${outputFileName}\`\n` +
-        `📧 *Sent to:* ${job.recipientEmail}`,
-        adminChatId
+          `📹 *Video:* ${result.title}\n` +
+          `📂 *File:* \`${outputFileName}\`\n` +
+          `📧 *Sent to:* ${job.recipientEmail}`,
+        adminChatId,
       );
     }
-
   } catch (error: any) {
     logger.error(error, `❌ Transcription failed for ${job.fileName}`);
-    
+
     // Notify failure
     const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
     if (adminChatId) {
       await telegramService.sendMessage(
         `❌ *Transcription Failed*\n\n` +
-        `📹 *File:* ${job.fileName}\n` +
-        `⚠️ *Error:* ${error.message}`,
-        adminChatId
+          `📹 *File:* ${job.fileName}\n` +
+          `⚠️ *Error:* ${error.message}`,
+        adminChatId,
       );
     }
   }

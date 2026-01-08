@@ -1,11 +1,49 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* --- Nexus V1 Design Tokens --- */
+    --nexus-primary: #3b82f6;
+    --nexus-primary-hover: #2563eb;
+    --nexus-secondary: #8b5cf6;
+    --nexus-accent: #10b981;
+    --nexus-bg: #0f172a;
+    --nexus-card-bg: rgba(30, 41, 59, 0.7);
+    --nexus-border: rgba(255, 255, 255, 0.1);
+    --nexus-text-primary: #f8fafc;
+    --nexus-text-secondary: #94a3b8;
+    --nexus-text-muted: #64748b;
+    --nexus-glass-bg: rgba(255, 255, 255, 0.03);
+    --nexus-glass-border: rgba(255, 255, 255, 0.05);
+    --nexus-glass-blur: blur(12px);
+  
+    /* --- Spacing --- */
+    --nexus-space-xs: 4px;
+    --nexus-space-sm: 8px;
+    --nexus-space-md: 16px;
+    --nexus-space-lg: 24px;
+    --nexus-space-xl: 32px;
+  
+    /* --- Fluid Typography --- */
+    --nexus-font-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem);
+    --nexus-font-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+    --nexus-font-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
+    --nexus-font-lg: clamp(1.56rem, 1vw + 1.31rem, 2.11rem);
+    --nexus-font-xl: clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem);
+    --nexus-font-2xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
+    --nexus-font-3xl: clamp(3.05rem, 3.54vw + 2.17rem, 5rem);
+  
+    /* --- Legacy Fallbacks / Mapped --- */
+    --bg-color: var(--nexus-bg);
+    --text-color: var(--nexus-text-primary);
+    --link-color: var(--nexus-primary);
+    --button-bg: #1e293b;
+    --button-hover-border: var(--nexus-primary);
+  
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: dark;
+    color: var(--text-color);
+    background-color: var(--bg-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,9 +53,10 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--link-color);
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -42,13 +81,15 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg);
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  border-color: var(--button-hover-border);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -56,13 +97,33 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --bg-color: #ffffff;
+      --text-color: #213547;
+      --link-color: #747bff;
+      --button-bg: #f9f9f9;
+    
+    }
+    
+    @layer utilities {
+      .nexus-glass {
+        background: var(--nexus-glass-bg);
+        backdrop-filter: var(--nexus-glass-blur);
+        -webkit-backdrop-filter: var(--nexus-glass-blur);
+        border: 1px solid var(--nexus-glass-border);
+        border-radius: 12px;
+      }
+    
+      .nexus-gradient-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-400;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.optimize-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+  
+}
+.dark {
+  --bg-color: #020617;
+  --text-color: #f8fafc;
+  --link-color: #3b82f6;
+  --button-bg: #1e293b;
 }

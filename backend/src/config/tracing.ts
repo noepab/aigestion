@@ -38,7 +38,7 @@ const sdk = new NodeSDK({
       // Enable HTTP/Express tracing
       '@opentelemetry/instrumentation-http': {
         enabled: true,
-        ignoreIncomingRequestHook: (req) => {
+        ignoreIncomingRequestHook: req => {
           // Ignore health check and static assets
           return (
             req.url?.includes('/health') ||
@@ -100,4 +100,3 @@ process.on('SIGINT', async () => {
 
 // Export for manual instrumentation if needed
 export { sdk };
-

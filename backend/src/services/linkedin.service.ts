@@ -16,7 +16,7 @@ export class LinkedInService {
   async sharePost(text: string, visibility: 'PUBLIC' | 'CONNECTIONS' = 'PUBLIC'): Promise<any> {
     if (!env.LINKEDIN_ACCESS_TOKEN || !env.LINKEDIN_ORGANIZATION_URN) {
       logger.warn(
-        'LinkedIn credentials missing (LINKEDIN_ACCESS_TOKEN, LINKEDIN_ORGANIZATION_URN)'
+        'LinkedIn credentials missing (LINKEDIN_ACCESS_TOKEN, LINKEDIN_ORGANIZATION_URN)',
       );
       return { success: false, error: 'Configuration missing' };
     }
@@ -45,7 +45,7 @@ export class LinkedInService {
             'X-Restli-Protocol-Version': '2.0.0',
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
       logger.info(`LinkedIn post shared: ${response.data.id}`);

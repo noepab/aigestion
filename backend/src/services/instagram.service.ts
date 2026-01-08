@@ -30,7 +30,7 @@ export class InstagramService {
             Authorization: `Bearer ${env.INSTAGRAM_ACCESS_TOKEN}`,
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -55,7 +55,7 @@ export class InstagramService {
           image_url: imageUrl,
           caption: caption,
           access_token: env.INSTAGRAM_ACCESS_TOKEN,
-        }
+        },
       );
 
       const containerId = containerResponse.data.id;
@@ -66,7 +66,7 @@ export class InstagramService {
         {
           creation_id: containerId,
           access_token: env.INSTAGRAM_ACCESS_TOKEN,
-        }
+        },
       );
 
       logger.info(`Instagram photo published: ${publishResponse.data.id}`);
@@ -74,7 +74,7 @@ export class InstagramService {
     } catch (error: any) {
       logger.error(
         { error: error.response?.data || error.message },
-        'Error publishing to Instagram'
+        'Error publishing to Instagram',
       );
       throw error;
     }
@@ -97,7 +97,7 @@ export class InstagramService {
             period: 'day',
             access_token: env.INSTAGRAM_ACCESS_TOKEN,
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {

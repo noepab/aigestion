@@ -1,4 +1,4 @@
-import { calendar_v3,google } from 'googleapis';
+import { calendar_v3, google } from 'googleapis';
 
 import { env } from '../config/env.schema';
 import type { CalendarEvent } from '../types/google-cloud.types';
@@ -31,7 +31,9 @@ export class GoogleCalendarService {
    * Crea o devuelve un cliente de Calendario autenticado (Cached)
    */
   private async getCalendarClient(): Promise<calendar_v3.Calendar> {
-    if (this.calendar) {return this.calendar;}
+    if (this.calendar) {
+      return this.calendar;
+    }
 
     // Si hay credenciales de cuenta de servicio, priorizarlas
     if (env.GOOGLE_APPLICATION_CREDENTIALS) {
@@ -123,7 +125,7 @@ export class GoogleCalendarService {
       maxResults?: number;
       singleEvents?: boolean;
       orderBy?: 'startTime' | 'updated';
-    }
+    },
   ): Promise<any[]> {
     const calendar = await this.getCalendarClient();
 
@@ -169,7 +171,7 @@ export class GoogleCalendarService {
   async updateEvent(
     calendarId: string,
     eventId: string,
-    updates: Partial<CalendarEvent>
+    updates: Partial<CalendarEvent>,
   ): Promise<void> {
     const calendar = await this.getCalendarClient();
 
@@ -241,7 +243,7 @@ export class GoogleCalendarService {
         requestBody: {
           timeMin,
           timeMax,
-          items: calendarIds.map((id) => ({ id })),
+          items: calendarIds.map(id => ({ id })),
         },
       });
 
@@ -258,7 +260,7 @@ export class GoogleCalendarService {
   async createRecurringEvent(
     calendarId: string,
     event: CalendarEvent,
-    recurrenceRule: string
+    recurrenceRule: string,
   ): Promise<string> {
     const calendar = await this.getCalendarClient();
 

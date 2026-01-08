@@ -4,9 +4,7 @@ import { ExampleEntity } from '../domain/ExampleEntity';
 
 @injectable()
 export class CreateExampleUseCase {
-  constructor(
-    @inject('ExampleRepository') private repository: IExampleRepository
-  ) {}
+  constructor(@inject('ExampleRepository') private repository: IExampleRepository) {}
 
   async execute(id: string, name: string): Promise<ExampleEntity> {
     const existing = await this.repository.findById(id);

@@ -39,6 +39,8 @@ describe('Auth Controller', () => {
   let mockResponse: Partial<Response>;
   let jsonMock: jest.Mock;
   let statusMock: jest.Mock;
+  let cookieMock: jest.Mock;
+  let clearCookieMock: jest.Mock;
 
   // Mock Repository
   const mockUserRepo = {
@@ -56,7 +58,14 @@ describe('Auth Controller', () => {
 
     jsonMock = jest.fn();
     statusMock = jest.fn().mockReturnThis();
-    mockResponse = createMockResponse({ status: statusMock, json: jsonMock });
+    cookieMock = jest.fn().mockReturnThis();
+    clearCookieMock = jest.fn().mockReturnThis();
+    mockResponse = createMockResponse({
+      status: statusMock,
+      json: jsonMock,
+      cookie: cookieMock,
+      clearCookie: clearCookieMock
+    });
 
     mockUserRepo.create.mockReset();
     mockUserRepo.findByEmail.mockReset();
@@ -79,7 +88,7 @@ describe('Auth Controller', () => {
     const registerHandler = Array.isArray(register) ? register[register.length - 1] : register;
 
     it('should return 400 if user already exists', async () => {
-        mockRequest = createMockRequest({ body: { email: 'exists@example.com', password: 'password', name: 'Test' } });
+      mockRequest = createMockRequest({ body: { email: 'exists@example.com', password: 'AIGestion123!', name: 'Test' } });
 
         // Repo finds user
         mockUserRepo.findByEmail.mockResolvedValue({ email: 'exists@example.com' });
@@ -94,7 +103,7 @@ describe('Auth Controller', () => {
       });
 
     it('should register a new user successfully', async () => {
-      const userData = { email: 'new@example.com', password: 'password', name: 'New User' };
+      const userData = { email: 'new@example.com', password: 'AIGestion123!', name: 'New User' };
         mockRequest = createMockRequest({ body: userData, requestId: 'req_123' } as any);
 
         // Repo does not find user
@@ -142,7 +151,7 @@ describe('Auth Controller', () => {
     const loginHandler = Array.isArray(login) ? login[login.length - 1] : login;
 
     it('should return 401 for invalid credentials (user not found)', async () => {
-      mockRequest = createMockRequest({ body: { email: 'wrong@example.com', password: 'wrong' } });
+      mockRequest = createMockRequest({ body: { email: 'wrong@example.com', password: 'AIGestion123!' } });
 
       // Repo returns null
       mockUserRepo.findByEmail.mockResolvedValue(null);
@@ -166,7 +175,7 @@ describe('Auth Controller', () => {
           refreshTokens: []
         };
 
-        mockRequest = createMockRequest({ body: { email: 'test@example.com', password: 'wrong' } });
+      mockRequest = createMockRequest({ body: { email: 'test@example.com', password: 'wrongPassword123!' } });
 
         // Repo returns user
         mockUserRepo.findByEmail.mockResolvedValue(mockUser);
@@ -199,7 +208,7 @@ describe('Auth Controller', () => {
           refreshTokens: []
         };
 
-        mockRequest = createMockRequest({ body: { email: 'test@example.com', password: 'correct' }, ip: '1.2.3.4', headers: {}, requestId: 'req_123' } as any);
+      mockRequest = createMockRequest({ body: { email: 'test@example.com', password: 'AIGestion123!' }, ip: '1.2.3.4', headers: {}, requestId: 'req_123' } as any);
 
         mockUserRepo.findByEmail.mockResolvedValue(mockUser);
 

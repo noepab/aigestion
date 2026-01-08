@@ -22,3 +22,36 @@ export const runPrompt = [
     }
   },
 ];
+
+export const streamChat = [
+  // validate({ body: schemas.ai.chat }), // TODO: Add chat schema
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { prompt, history } = req.body;
+      const userId = (req as any).user?.id || 'anonymous';
+      const aiService = container.get<AIService>(TYPES.AIService);
+
+      // Set headers for SSE
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      try {
+        const stream = await aiService.streamChat({ prompt, history, userId });
+
+        for await (const chunk of stream) {
+          res.write(chunk);
+        }
+
+        res.write('data: [DONE]\n\n');
+        res.end();
+      } catch (streamError) {
+        console.error('Streaming error:', streamError);
+        res.write(`data: ${JSON.stringify({ type: 'error', content: 'Streaming failed' })}\n\n`);
+        res.end();
+      }
+    } catch (err) {
+      next(err);
+    }
+  },
+];

@@ -1,0 +1,8 @@
+# Exclude typical files
+node_modules/
+*.log
+*.tmp
+.git/
+.gitignore
+
+.kube/

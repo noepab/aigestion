@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+// Jest test imports (globals are available)
 import request from 'supertest';
 import express from 'express';
 // import { dynamicRateLimiter } from '../../src/middleware/rate-limit.middleware';

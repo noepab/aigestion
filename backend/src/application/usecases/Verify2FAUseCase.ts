@@ -6,9 +6,7 @@ import { AppError } from '../../utils/errors';
 
 @injectable()
 export class Verify2FAUseCase {
-  constructor(
-    @inject(TYPES.TwoFactorService) private twoFactorService: TwoFactorService,
-  ) {}
+  constructor(@inject(TYPES.TwoFactorService) private twoFactorService: TwoFactorService) {}
 
   async execute(userId: string, token: string): Promise<void> {
     const user = await User.findById(userId);

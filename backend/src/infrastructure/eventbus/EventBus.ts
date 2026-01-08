@@ -16,6 +16,6 @@ export class EventBus {
   public async publish<T extends IEvent>(event: T): Promise<void> {
     const eventName = event.constructor.name;
     const handlers = this.handlers.get(eventName) ?? [];
-    await Promise.all(handlers.map((h) => h.handle(event)));
+    await Promise.all(handlers.map(h => h.handle(event)));
   }
 }

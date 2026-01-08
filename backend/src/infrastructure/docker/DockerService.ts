@@ -26,8 +26,8 @@ export class DockerService {
       const containers = stdout
         .trim()
         .split('\n')
-        .filter((line) => line)
-        .map((line) => {
+        .filter(line => line)
+        .map(line => {
           try {
             return JSON.parse(line);
           } catch {
@@ -103,9 +103,13 @@ export class DockerService {
       return stdout
         .trim()
         .split('\n')
-        .filter((line) => line)
-        .map((line) => {
-          try { return JSON.parse(line); } catch { return null; }
+        .filter(line => line)
+        .map(line => {
+          try {
+            return JSON.parse(line);
+          } catch {
+            return null;
+          }
         })
         .filter(Boolean);
     } catch (error) {
@@ -123,9 +127,13 @@ export class DockerService {
       return stdout
         .trim()
         .split('\n')
-        .filter((line) => line)
-        .map((line) => {
-          try { return JSON.parse(line); } catch { return null; }
+        .filter(line => line)
+        .map(line => {
+          try {
+            return JSON.parse(line);
+          } catch {
+            return null;
+          }
         })
         .filter(Boolean);
     } catch (error) {
@@ -143,9 +151,13 @@ export class DockerService {
       return stdout
         .trim()
         .split('\n')
-        .filter((line) => line)
-        .map((line) => {
-          try { return JSON.parse(line); } catch { return null; }
+        .filter(line => line)
+        .map(line => {
+          try {
+            return JSON.parse(line);
+          } catch {
+            return null;
+          }
         })
         .filter(Boolean);
     } catch (error) {

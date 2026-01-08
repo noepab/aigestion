@@ -1,4 +1,3 @@
-
 import { z } from 'zod';
 
 import { User } from '../models/User';
@@ -8,11 +7,17 @@ import { BaseTool } from './base.tool';
 
 export class StripeTool extends BaseTool<{ action: string; userId: string; priceId?: string }> {
   name = 'manage_subscription';
-  description = 'Manage user subscriptions, check status, or generate checkout/portal links. Use this tool when the user asks about their billing, subscription, or upgrading plan.';
+  description =
+    'Manage user subscriptions, check status, or generate checkout/portal links. Use this tool when the user asks about their billing, subscription, or upgrading plan.';
   schema = z.object({
-    action: z.enum(['get_status', 'create_checkout', 'create_portal']).describe('The action to perform.'),
+    action: z
+      .enum(['get_status', 'create_checkout', 'create_portal'])
+      .describe('The action to perform.'),
     userId: z.string().describe('The ID of the user context.'),
-    priceId: z.string().optional().describe('The Stripe Price ID for checkout (required if action is create_checkout).'),
+    priceId: z
+      .string()
+      .optional()
+      .describe('The Stripe Price ID for checkout (required if action is create_checkout).'),
   });
 
   async execute(input: { action: string; userId: string; priceId?: string }): Promise<any> {
@@ -35,25 +40,27 @@ export class StripeTool extends BaseTool<{ action: string; userId: string; price
 
       if (action === 'create_checkout') {
         if (!user.stripeCustomerId) {
-           // Auto-create customer if missing
-           const customer = await stripeService.createCustomer(user.email, user.name);
-           user.stripeCustomerId = customer.id;
-           await user.save();
+          // Auto-create customer if missing
+          const customer = await stripeService.createCustomer(user.email, user.name);
+          user.stripeCustomerId = customer.id;
+          await user.save();
         }
 
         if (!priceId) {
-            throw new Error('priceId is required for create_checkout action');
+          throw new Error('priceId is required for create_checkout action');
         }
 
         // Hardcoded return/cancel URLs for now - should be configurable
-        const successUrl = process.env.STRIPE_SUCCESS_URL || 'http://localhost:3000/dashboard?success=true';
-        const cancelUrl = process.env.STRIPE_CANCEL_URL || 'http://localhost:3000/dashboard?canceled=true';
+        const successUrl =
+          process.env.STRIPE_SUCCESS_URL || 'http://localhost:3000/dashboard?success=true';
+        const cancelUrl =
+          process.env.STRIPE_CANCEL_URL || 'http://localhost:3000/dashboard?canceled=true';
 
         const session = await stripeService.createSubscriptionCheckoutSession(
           user.stripeCustomerId,
           priceId,
           successUrl,
-          cancelUrl
+          cancelUrl,
         );
         return { url: session.url };
       }
@@ -69,7 +76,6 @@ export class StripeTool extends BaseTool<{ action: string; userId: string; price
       }
 
       throw new Error(`Invalid action: ${action}`);
-
     } catch (error: any) {
       logger.error(`[StripeTool] Failed: ${error.message}`);
       throw new Error(`Stripe action failed: ${error.message}`);

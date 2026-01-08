@@ -19,7 +19,7 @@ export class CacheUtil {
     key: string,
     fetchFunction: () => Promise<T>,
     ttl = 300,
-    swrTtl = 600
+    swrTtl = 600,
   ): Promise<T> {
     try {
       const cached = await this.client.get(key);
@@ -52,17 +52,13 @@ export class CacheUtil {
     key: string,
     fetchFunction: () => Promise<T>,
     ttl: number,
-    swrTtl: number
+    swrTtl: number,
   ): Promise<T> {
     const data = await fetchFunction();
     const expiry = Date.now() + ttl * 1000;
 
     // Store with total TTL (fresh + SWR window)
-    await this.client.setEx(
-      key,
-      ttl + swrTtl,
-      JSON.stringify({ data, expiry })
-    );
+    await this.client.setEx(key, ttl + swrTtl, JSON.stringify({ data, expiry }));
 
     return data;
   }

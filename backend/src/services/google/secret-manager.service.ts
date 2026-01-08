@@ -46,7 +46,7 @@ export class GoogleSecretManagerService {
           logger.info(`Secret ${key} loaded into env`);
         }
       } catch (err) {
-        logger.error(err as any, `Failed to load secret ${key}`);
+        logger.error(err, `Failed to load secret ${key}`);
       }
     }
   }

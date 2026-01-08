@@ -78,7 +78,7 @@ export interface ClientToServerEvents {
       success: boolean;
       request?: RemoteAccessRequest;
       error?: string;
-    }) => void
+    }) => void,
   ) => void;
 
   'remote-access:respond-to-request': (
@@ -87,17 +87,17 @@ export interface ClientToServerEvents {
       success: boolean;
       request?: RemoteAccessRequest;
       error?: string;
-    }) => void
+    }) => void,
   ) => void;
 
   'remote-access:start-session': (
     data: { requestId: string },
-    callback: (response: { success: boolean; session?: RemoteSession; error?: string }) => void
+    callback: (response: { success: boolean; session?: RemoteSession; error?: string }) => void,
   ) => void;
 
   'remote-access:end-session': (
     data: { sessionId: string },
-    callback: (response: { success: boolean; error?: string }) => void
+    callback: (response: { success: boolean; error?: string }) => void,
   ) => void;
 
   'webrtc:offer': (data: WebRTCOffer) => void;

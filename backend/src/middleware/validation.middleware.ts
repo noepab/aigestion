@@ -18,10 +18,10 @@ export const validate = (schema: ValidationSchema) => {
         req.body = await schema.body.parseAsync(req.body);
       }
       if (schema.query) {
-        req.query = await schema.query.parseAsync(req.query) as any;
+        req.query = (await schema.query.parseAsync(req.query)) as any;
       }
       if (schema.params) {
-        req.params = await schema.params.parseAsync(req.params) as any;
+        req.params = (await schema.params.parseAsync(req.params)) as any;
       }
       next();
     } catch (error) {
@@ -47,12 +47,24 @@ export const schemas = {
   auth: {
     register: z.object({
       email: z.string().email(),
-      password: z.string().min(8),
+      password: z
+        .string()
+        .min(12)
+        .regex(
+          /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
+          'Password must include number and special character',
+        ),
       name: z.string().min(2),
     }),
     login: z.object({
       email: z.string().email(),
-      password: z.string(),
+      password: z
+        .string()
+        .min(12)
+        .regex(
+          /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
+          'Password must include number and special character',
+        ),
     }),
     enable2FA: z.object({
       userId: z.string().uuid(),
@@ -66,12 +78,20 @@ export const schemas = {
     create: z.object({
       name: z.string().min(1),
       email: z.string().email(),
-      password: z.string().min(6).optional(),
+      password: z
+        .string()
+        .min(12)
+        .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])/, 'Password must include number and special character')
+        .optional(),
     }),
     update: z.object({
       name: z.string().min(1).optional(),
       email: z.string().email().optional(),
-      password: z.string().min(6).optional(),
+      password: z
+        .string()
+        .min(12)
+        .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])/, 'Password must include number and special character')
+        .optional(),
     }),
   },
   ai: {

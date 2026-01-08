@@ -1,6 +1,14 @@
 import { Router } from 'express';
 
-import { getMe, login, register, enable2FA, verify2FA } from '../controllers/auth.controller';
+import {
+  getMe,
+  login,
+  register,
+  enable2FA,
+  verify2FA,
+  refresh,
+  logout,
+} from '../controllers/auth.controller';
 import { protect } from '../middleware/auth.middleware';
 import { authLimiter } from '../middleware/rateLimiter';
 import { schemas, validateBody } from '../middleware/validation.middleware';
@@ -14,15 +22,9 @@ router.post('/2fa/enable', authLimiter, enable2FA);
 router.post('/2fa/verify', authLimiter, verify2FA);
 
 // Refresh Token (uses Cookie)
-router.get('/refresh', authLimiter, (req, res, next) => {
-    // @ts-ignore
-    import('../controllers/auth.controller').then(c => c.refresh(req, res, next));
-});
+router.get('/refresh', authLimiter, refresh);
 
-router.post('/logout', (req, res, next) => {
-    // @ts-ignore
-    import('../controllers/auth.controller').then(c => c.logout(req, res, next));
-});
+router.post('/logout', logout);
 
 // Ruta protegida - Requiere autenticación
 router.get('/me', protect, getMe);

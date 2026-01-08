@@ -1,9 +1,8 @@
 import fs from 'fs';
-import { drive_v3,google } from 'googleapis';
+import { drive_v3, google } from 'googleapis';
 import { injectable } from 'inversify';
 
 import { logger } from '../../utils/logger';
-
 
 @injectable()
 export class GoogleDriveService {
@@ -109,8 +108,16 @@ export class GoogleDriveService {
    * For backup sync, usually we want to update content or replace.
    * Here we will search for existing file by name.
    */
-  async uploadFile(localPath: string, fileName: string, parentId: string, mimeType: string, hash: string): Promise<void> {
-    if (!this.drive) {throw new Error('Drive client not initialized');}
+  async uploadFile(
+    localPath: string,
+    fileName: string,
+    parentId: string,
+    mimeType: string,
+    hash: string,
+  ): Promise<void> {
+    if (!this.drive) {
+      throw new Error('Drive client not initialized');
+    }
 
     // Check if file exists
     const existingFileId = await this.findFile(fileName, parentId);
@@ -119,8 +126,8 @@ export class GoogleDriveService {
       name: fileName,
       parents: existingFileId ? undefined : [parentId], // Only set parent on create
       properties: {
-        localHash: hash
-      }
+        localHash: hash,
+      },
     };
 
     const media = {
@@ -134,7 +141,7 @@ export class GoogleDriveService {
         await this.drive.files.update({
           fileId: existingFileId,
           requestBody: {
-            properties: { localHash: hash } // Update hash
+            properties: { localHash: hash }, // Update hash
           },
           media: media,
         });
@@ -155,7 +162,9 @@ export class GoogleDriveService {
   }
 
   async findFile(name: string, parentId: string): Promise<string | null> {
-    if (!this.drive) {throw new Error('Drive client not initialized');}
+    if (!this.drive) {
+      throw new Error('Drive client not initialized');
+    }
     try {
       // Note: we don't restrict mimeType here, just name and parent
       const query = `name='${name}' and '${parentId}' in parents and trashed=false`;
@@ -177,7 +186,9 @@ export class GoogleDriveService {
    * Gets specific custom property (hash) of a file
    */
   async getFileHash(name: string, parentId: string): Promise<string | null> {
-    if (!this.drive) {throw new Error('Drive client not initialized');}
+    if (!this.drive) {
+      throw new Error('Drive client not initialized');
+    }
     try {
       const query = `name='${name}' and '${parentId}' in parents and trashed=false`;
       const res = await this.drive.files.list({
@@ -197,8 +208,12 @@ export class GoogleDriveService {
   /**
    * Lists contents of a folder for restore purposes
    */
-  async listFolderContents(folderId: string): Promise<{ id: string; name: string; mimeType: string; localHash?: string }[]> {
-    if (!this.drive) {throw new Error('Drive client not initialized');}
+  async listFolderContents(
+    folderId: string,
+  ): Promise<{ id: string; name: string; mimeType: string; localHash?: string }[]> {
+    if (!this.drive) {
+      throw new Error('Drive client not initialized');
+    }
     try {
       const query = `'${folderId}' in parents and trashed=false`;
       const res = await this.drive.files.list({
@@ -210,7 +225,7 @@ export class GoogleDriveService {
         id: f.id!,
         name: f.name!,
         mimeType: f.mimeType!,
-        localHash: f.properties?.localHash
+        localHash: f.properties?.localHash,
       }));
     } catch (error) {
       logger.error(`Error listing folder contents for ${folderId}:`, error);
@@ -222,12 +237,11 @@ export class GoogleDriveService {
    * Downloads a file from Drive to local destination
    */
   async downloadFile(fileId: string, destinationPath: string): Promise<void> {
-    if (!this.drive) {throw new Error('Drive client not initialized');}
+    if (!this.drive) {
+      throw new Error('Drive client not initialized');
+    }
     return new Promise((resolve, reject) => {
-      this.drive!.files.get(
-        { fileId, alt: 'media' },
-        { responseType: 'stream' }
-      )
+      this.drive!.files.get({ fileId, alt: 'media' }, { responseType: 'stream' })
         .then(res => {
           const dest = fs.createWriteStream(destinationPath);
           res.data

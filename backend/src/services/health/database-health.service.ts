@@ -7,7 +7,6 @@ import { logger } from '../../utils/logger';
 
 @injectable()
 export class DatabaseHealthService {
-
   public async getMongoHealth() {
     const connection = mongoose.connection;
     const readyState = connection.readyState;
@@ -17,14 +16,14 @@ export class DatabaseHealthService {
     let message = 'Checking database status...';
 
     if (isConnected && connection.db) {
-       try {
-         await connection.db.command({ ping: 1 });
-         message = 'MongoDB connection is healthy';
-         stats = await this.getDatabaseStats(connection.db);
-       } catch (error) {
-         message = 'MongoDB connection is unstable';
-         logger.error(error, 'MongoDB ping failed');
-       }
+      try {
+        await connection.db.command({ ping: 1 });
+        message = 'MongoDB connection is healthy';
+        stats = await this.getDatabaseStats(connection.db);
+      } catch (error) {
+        message = 'MongoDB connection is unstable';
+        logger.error(error, 'MongoDB ping failed');
+      }
     }
 
     return {
@@ -34,7 +33,7 @@ export class DatabaseHealthService {
       name: connection.name || 'unknown',
       version: (connection as any)?.version || 'unknown',
       message,
-      stats
+      stats,
     };
   }
 
@@ -47,7 +46,7 @@ export class DatabaseHealthService {
     try {
       const [info] = await Promise.all([redisClient.info(), redisClient.ping()]);
       const redisInfo: Record<string, string> = {};
-      info.split('\r\n').forEach((line) => {
+      info.split('\r\n').forEach(line => {
         const [key, value] = line.split(':');
         if (key && value && !key.startsWith('#')) {
           redisInfo[key] = value.trim();
@@ -62,31 +61,33 @@ export class DatabaseHealthService {
         message: 'Redis is healthy',
       };
     } catch (error) {
-      logger.error(error as any, 'Redis health check failed');
+      logger.error(error, 'Redis health check failed');
       return { status: 'error', message: 'Redis connection error' };
     }
   }
 
   public async getRabbitMQHealth() {
-    const timeoutPromise = new Promise<{ status: string; message: string }>((resolve) => {
-        setTimeout(() => resolve({ status: 'disabled', message: 'RabbitMQ timeout' }), 2000);
+    const timeoutPromise = new Promise<{ status: string; message: string }>(resolve => {
+      setTimeout(() => resolve({ status: 'disabled', message: 'RabbitMQ timeout' }), 2000);
     });
 
     const checkPromise = (async () => {
-        try {
-            const channel = await getRabbitMQChannel();
-            if (!channel) {return { status: 'disabled', message: 'RabbitMQ channel not available' };}
-
-            // Simple check
-            const testQueue = `health-check-${Date.now()}`;
-            await channel.assertQueue(testQueue, { durable: false, autoDelete: true });
-            await channel.deleteQueue(testQueue);
-
-            return { status: 'ok', message: 'RabbitMQ is healthy' };
-        } catch (e) {
-            logger.error(e, 'RabbitMQ check check failed');
-            return { status: 'error', message: 'RabbitMQ connection error' };
+      try {
+        const channel = await getRabbitMQChannel();
+        if (!channel) {
+          return { status: 'disabled', message: 'RabbitMQ channel not available' };
         }
+
+        // Simple check
+        const testQueue = `health-check-${Date.now()}`;
+        await channel.assertQueue(testQueue, { durable: false, autoDelete: true });
+        await channel.deleteQueue(testQueue);
+
+        return { status: 'ok', message: 'RabbitMQ is healthy' };
+      } catch (e) {
+        logger.error(e, 'RabbitMQ check check failed');
+        return { status: 'error', message: 'RabbitMQ connection error' };
+      }
     })();
 
     return Promise.race([checkPromise, timeoutPromise]);
@@ -111,7 +112,9 @@ export class DatabaseHealthService {
   }
 
   private formatBytes(bytes: number, decimals = 2): string {
-    if (bytes === 0) {return '0 Bytes';}
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));

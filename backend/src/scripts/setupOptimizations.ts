@@ -53,14 +53,18 @@ async function setupDatabaseIndexes() {
     try {
       // Dynamically import models if they exist
       const userModule = await import('../models/User.js').catch(() => null);
-      if (userModule?.User) {models.User = userModule.User;}
+      if (userModule?.User) {
+        models.User = userModule.User;
+      }
     } catch (e) {
       console.log(chalk.gray('  ℹ️  User model not found, skipping'));
     }
 
     try {
       const projectModule = await import('../models/Project.js').catch(() => null);
-      if (projectModule?.Project) {models.Project = projectModule.Project;}
+      if (projectModule?.Project) {
+        models.Project = projectModule.Project;
+      }
     } catch (e) {
       console.log(chalk.gray('  ℹ️  Project model not found, skipping'));
     }
@@ -127,13 +131,13 @@ function displaySummary(results: Record<string, boolean>) {
     { name: 'Cache Warming', status: results.warming },
   ];
 
-  items.forEach((item) => {
+  items.forEach(item => {
     const icon = item.status ? '✅' : '❌';
     const color = item.status ? chalk.green : chalk.red;
     console.log(color(`  ${icon} ${item.name}`));
   });
 
-  const allSuccess = Object.values(results).every((v) => v);
+  const allSuccess = Object.values(results).every(v => v);
 
   if (allSuccess) {
     console.log(chalk.green.bold('\n🎉 All optimizations applied successfully!\n'));
@@ -167,7 +171,7 @@ async function runOptimizations() {
 
 // Run if called directly
 if (require.main === module) {
-  runOptimizations().catch((error) => {
+  runOptimizations().catch(error => {
     console.error(chalk.red('\n❌ Optimization setup failed:'), error);
     process.exit(1);
   });

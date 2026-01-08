@@ -82,7 +82,7 @@ export class GeminiAnalysisService {
   async analyzeTranscript(
     transcript: string,
     videoTitle: string,
-    videoUrl: string
+    videoUrl: string,
   ): Promise<VideoAnalysis> {
     const model = this.getModel();
 
@@ -324,7 +324,10 @@ ${transcript.substring(0, 5000)}
   /**
    * Genera metadata SEO optimizada para YouTube
    */
-  async generateSEOMetadata(transcript: string, currentTitle: string): Promise<{
+  async generateSEOMetadata(
+    transcript: string,
+    currentTitle: string,
+  ): Promise<{
     title: string;
     description: string;
     tags: string[];
@@ -361,7 +364,7 @@ Reglas:
       const jsonMatch = jsonRegex.exec(text);
 
       if (!jsonMatch) {
-         throw new Error('Formato JSON inválido en respuesta de Gemini');
+        throw new Error('Formato JSON inválido en respuesta de Gemini');
       }
 
       return JSON.parse(jsonMatch[0]);

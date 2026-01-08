@@ -14,6 +14,9 @@ export const enqueue = async (_name: string, _payload: any): Promise<void> => {
   // No operation – placeholder for adding a job to a queue.
 };
 
-export const processQueue = async (_name: string, _handler: (payload: any) => Promise<void>): Promise<void> => {
+export const processQueue = async (
+  _name: string,
+  _handler: (payload: any) => Promise<void>,
+): Promise<void> => {
   // No operation – placeholder for processing a queue.
 };

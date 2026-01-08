@@ -1,7 +1,7 @@
 // src/routes/ai.routes.ts
 import { Router } from 'express';
 
-import { runPrompt } from '../controllers/ai.controller';
+import { runPrompt, streamChat } from '../controllers/ai.controller';
 
 const router = Router();
 
@@ -26,5 +26,8 @@ const router = Router();
  *         description: Prompt response
  */
 router.post('/prompt', runPrompt);
+
+// POST /ai/chat
+router.post('/chat', streamChat);
 
 export default router;

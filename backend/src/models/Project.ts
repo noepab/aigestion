@@ -46,7 +46,7 @@ const ProjectSchema = new Schema<IProject>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Index for faster search

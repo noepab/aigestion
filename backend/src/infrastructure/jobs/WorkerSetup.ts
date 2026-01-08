@@ -22,7 +22,7 @@ export class WorkerSetup {
         // await emailService.send(to, subject, body);
         logger.info(`Email job completed: ${job.id}`);
       },
-      { connection: redisOptions }
+      { connection: redisOptions },
     );
 
     emailWorker.on('failed', (job, err) => {

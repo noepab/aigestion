@@ -19,20 +19,26 @@ const envSchema = z.object({
   PORT: z
     .string()
     .default('5000')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().min(1).max(65535))
     .describe('Server port number'),
 
   // Frontend URL
-  FRONTEND_URL: z.string().url().default('http://localhost:3000').describe('Frontend application URL'),
+  FRONTEND_URL: z
+    .string()
+    .url()
+    .default('http://localhost:3000')
+    .describe('Frontend application URL'),
 
   // CORS Configuration
   CORS_ORIGIN: z
     .string()
     .default('*')
-    .transform((val) => {
-      if (val === '*') { return '*'; }
-      return val.split(',').map((origin) => origin.trim());
+    .transform(val => {
+      if (val === '*') {
+        return '*';
+      }
+      return val.split(',').map(origin => origin.trim());
     })
     .describe('Allowed CORS origins (comma-separated)'),
 
@@ -40,14 +46,14 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW_MS: z
     .string()
     .default('900000') // 15 minutes
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('Rate limit window in milliseconds'),
 
   RATE_LIMIT_MAX: z
     .string()
     .default('100')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('Maximum requests per window'),
 
@@ -55,14 +61,14 @@ const envSchema = z.object({
   AUTH_RATE_LIMIT_WINDOW_MS: z
     .string()
     .default('3600000') // 1 hour
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('Auth rate limit window in milliseconds'),
 
   AUTH_RATE_LIMIT_MAX: z
     .string()
     .default('10')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('Maximum auth requests per window'),
 
@@ -70,14 +76,14 @@ const envSchema = z.object({
   AI_RATE_LIMIT_WINDOW_MS: z
     .string()
     .default('600000') // 10 minutes
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('AI rate limit window in milliseconds'),
 
   AI_RATE_LIMIT_MAX: z
     .string()
     .default('30')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('Maximum AI requests per window'),
 
@@ -92,7 +98,7 @@ const envSchema = z.object({
   JWT_COOKIE_EXPIRES_IN: z
     .string()
     .default('7')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().positive())
     .describe('JWT cookie expiration in days'),
 
@@ -244,7 +250,7 @@ const envSchema = z.object({
   EMAIL_PORT: z
     .string()
     .default('587')
-    .transform((val) => parseInt(val, 10))
+    .transform(val => parseInt(val, 10))
     .pipe(z.number().min(1).max(65535))
     .describe('SMTP server port'),
 
@@ -285,11 +291,11 @@ const envSchema = z.object({
     .string()
     .optional()
     .default('')
-    .transform((val) =>
+    .transform(val =>
       val
         .split(',')
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0)
+        .map(s => s.trim())
+        .filter(s => s.length > 0),
     )
     .describe('Comma‑separated list of additional company Gmail addresses for OAuth2'),
 
@@ -400,7 +406,7 @@ function validateEnv(): Env {
       console.error('❌ Environment validation failed:\n');
       console.error(errorMessages.join('\n'));
       console.error(
-        '\nPlease check your .env file and ensure all required variables are set correctly.\n'
+        '\nPlease check your .env file and ensure all required variables are set correctly.\n',
       );
 
       process.exit(1);

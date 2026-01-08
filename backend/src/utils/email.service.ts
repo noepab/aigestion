@@ -38,7 +38,7 @@ export class EmailService {
       // Verificar que las configuraciones necesarias estén presentes
       if (!env.EMAIL_HOST || !env.EMAIL_PORT) {
         logger.warn(
-          'Configuración de email incompleta. El servicio de email no estará disponible.'
+          'Configuración de email incompleta. El servicio de email no estará disponible.',
         );
         return;
       }
@@ -130,7 +130,7 @@ export class EmailService {
     videoTitle: string,
     videoUrl: string,
     transcript: string,
-    videoId: string
+    videoId: string,
   ): Promise<boolean> {
     const htmlContent = `
       <!DOCTYPE html>

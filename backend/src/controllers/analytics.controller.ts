@@ -79,10 +79,10 @@ export function getSystemUsage(_req: Request, res: Response): void {
 
     const usage = {
       cpu: Array.from({ length: 60 }, () =>
-        parseFloat((loadAvg * 10 + Math.random() * 5).toFixed(1))
+        parseFloat((loadAvg * 10 + Math.random() * 5).toFixed(1)),
       ),
       memory: Array.from({ length: 60 }, () =>
-        parseFloat((((totalMem - freeMem) / totalMem) * 100).toFixed(1))
+        parseFloat((((totalMem - freeMem) / totalMem) * 100).toFixed(1)),
       ),
       network: Array.from({ length: 60 }, () => parseFloat((Math.random() * 10).toFixed(1))),
     };
@@ -122,8 +122,21 @@ export async function getDashboardData(_req: Request, res: Response): Promise<vo
     // For now, we move the logic from the frontend hook to here to centralize it.
 
     // Revenue Data (12 months)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const revenue = months.map((month) => ({
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const revenue = months.map(month => ({
       name: month,
       value: Math.floor(Math.random() * 50000) + 20000 + Math.random() * 10000,
     }));
@@ -131,7 +144,7 @@ export async function getDashboardData(_req: Request, res: Response): Promise<vo
     // User Growth (14 days)
     const days = Array.from({ length: 14 }, (_, i) => `Day ${i + 1}`);
     let previous = 1000;
-    const users = days.map((day) => {
+    const users = days.map(day => {
       previous = Math.floor(previous * (1 + (Math.random() * 0.1 - 0.02)));
       return { name: day, value: previous };
     });
@@ -172,8 +185,8 @@ export async function exportReport(_req: Request, res: Response): Promise<void> 
     // Activity Sample
     csv += 'hour,users,sessions\n';
     for (let i = 0; i < 24; i++) {
-        const users = Math.floor(Math.random() * 1000);
-        csv += `${i}:00,${users},${Math.floor(users * 1.5)}\n`;
+      const users = Math.floor(Math.random() * 1000);
+      csv += `${i}:00,${users},${Math.floor(users * 1.5)}\n`;
     }
 
     res.header('Content-Type', 'text/csv');

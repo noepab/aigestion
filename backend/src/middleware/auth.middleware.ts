@@ -64,7 +64,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
         decoded.fingerprint.userAgent !== currentUserAgent
       ) {
         logger.warn(
-          `UA Mismatch: ${decoded.id}. Token: ${decoded.fingerprint.userAgent} vs Req: ${currentUserAgent}`
+          `UA Mismatch: ${decoded.id}. Token: ${decoded.fingerprint.userAgent} vs Req: ${currentUserAgent}`,
         );
         (res as any).status(401).json({ success: false, message: 'Sesión inválida.' });
         return;

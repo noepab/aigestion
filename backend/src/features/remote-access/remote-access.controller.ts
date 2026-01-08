@@ -131,7 +131,7 @@ export class RemoteAccessController {
       const { userId } = req.params;
 
       const sessions = Array.from(this.activeSessions.values()).filter(
-        (session) => session.fromUserId === userId || session.toUserId === userId
+        session => session.fromUserId === userId || session.toUserId === userId,
       );
 
       (res as any).status(200).json({

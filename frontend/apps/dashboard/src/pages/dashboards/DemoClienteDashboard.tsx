@@ -437,22 +437,22 @@ function SimulacionWorkflow() {
 
 const TOUR_STEPS: TourStep[] = [
   {
-    targetId: 'demo-hero',
+    target: '#demo-hero',
     title: 'Welcome to NEXUS V1',
     content: 'Your all-in-one command center for business growth. Let us show you around!',
   },
   {
-    targetId: 'demo-metrics',
+    target: '#demo-metrics',
     title: 'Real-time Metrics',
     content: 'Track companies, revenue, and automation stats in real-time.',
   },
   {
-    targetId: 'demo-chart',
+    target: '#demo-chart',
     title: 'Growth Analytics',
     content: 'Visualize your year-over-year growth with interactive charts.',
   },
   {
-    targetId: 'demo-nav',
+    target: '#demo-nav',
     title: 'Explore More',
     content: 'Switch between Success Stories and Pricing plans to see how we can help you scale.',
   },
@@ -494,7 +494,6 @@ export default function DemoClienteDashboard() {
       <GuidedTour
         steps={TOUR_STEPS}
         isOpen={isTourOpen}
-        onClose={() => setIsTourOpen(false)}
         onComplete={handleTourComplete}
       />
 
@@ -884,4 +883,3 @@ export default function DemoClienteDashboard() {
     </div>
   );
 }
-

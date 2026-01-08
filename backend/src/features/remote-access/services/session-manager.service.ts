@@ -43,7 +43,7 @@ export class SessionManagerService extends EventEmitter {
           this.emit('requestExpired', request);
         }
       },
-      15 * 60 * 1000
+      15 * 60 * 1000,
     );
 
     logger.info(`Nueva solicitud de acceso creada: ${request.id}`);
@@ -58,7 +58,7 @@ export class SessionManagerService extends EventEmitter {
   respondToRequest(
     requestId: string,
     approve: boolean,
-    userId: string
+    userId: string,
   ): RemoteAccessRequest | null {
     const request = this.pendingRequests.get(requestId);
     if (request?.toUserId !== userId) {
@@ -148,7 +148,7 @@ export class SessionManagerService extends EventEmitter {
   getUserSessions(userId: string): RemoteSession[] {
     const sessionIds = this.userSessions.get(userId) || [];
     return Array.from(sessionIds)
-      .map((id) => this.activeSessions.get(id))
+      .map(id => this.activeSessions.get(id))
       .filter((session): session is RemoteSession => session !== undefined);
   }
 
@@ -192,7 +192,7 @@ export class SessionManagerService extends EventEmitter {
     }
 
     // Configurar manejadores de eventos WebRTC
-    webRTCService.on('signal', (data) => {
+    webRTCService.on('signal', data => {
       if (data.sessionId === sessionId) {
         this.emit('webrtcSignal', {
           ...data,
@@ -205,15 +205,15 @@ export class SessionManagerService extends EventEmitter {
       this.emit('webrtcConnected', { userId, sessionId });
     });
 
-    webRTCService.on('stream', (data) => {
+    webRTCService.on('stream', data => {
       this.emit('webrtcStream', data);
     });
 
-    webRTCService.on('data', (data) => {
+    webRTCService.on('data', data => {
       this.emit('webrtcData', data);
     });
 
-    webRTCService.on('error', (error) => {
+    webRTCService.on('error', error => {
       logger.error(`Error en WebRTC (${sessionId}):`, error);
       this.emit('webrtcError', { userId, sessionId, error });
     });

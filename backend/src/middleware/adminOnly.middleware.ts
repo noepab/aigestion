@@ -14,7 +14,7 @@ export const adminOnly = (req: Request, res: Response, next: NextFunction) => {
         path: (req as any).path,
         method: (req as any).method,
       },
-      'Forbidden: adminOnly middleware blocked access'
+      'Forbidden: adminOnly middleware blocked access',
     );
     (res as any).status(403).json({ success: false, message: 'Forbidden – admin only' });
     return;

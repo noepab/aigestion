@@ -19,8 +19,8 @@ export async function getRecentCommits(req: Request, res: Response): Promise<voi
     const commits = stdout
       .trim()
       .split('\n')
-      .filter((line) => line)
-      .map((line) => {
+      .filter(line => line)
+      .map(line => {
         const [hash, author, date, message] = line.split('|');
         return {
           hash,
@@ -49,7 +49,9 @@ export async function getRecentCommits(req: Request, res: Response): Promise<voi
       return;
     }
 
-    (res as any).status(500).json(buildError('Failed to get status', 'GIT_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to get status', 'GIT_ERROR', 500, (req as any).requestId));
   }
 }
 
@@ -63,8 +65,8 @@ export async function getBranches(_req: Request, res: Response): Promise<void> {
     const branches = stdout
       .trim()
       .split('\n')
-      .map((branch) => branch.trim().replace('* ', ''))
-      .filter((branch) => branch);
+      .map(branch => branch.trim().replace('* ', ''))
+      .filter(branch => branch);
 
     res.json(branches);
   } catch (error) {
@@ -89,7 +91,7 @@ export async function getGitStats(_req: Request, res: Response): Promise<void> {
       contributors: contributors
         .trim()
         .split('\n')
-        .map((line) => {
+        .map(line => {
           const [commits, ...nameParts] = line.trim().split(/\s+/);
           return {
             name: nameParts.join(' '),

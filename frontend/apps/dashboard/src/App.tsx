@@ -1,12 +1,14 @@
-import { domAnimation, LazyMotion, m } from 'framer-motion';
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import MainLayout from './components/layout/MainLayout';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { lazy, Suspense } from 'react';
+import { useNavigate, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+
 import { useRole } from './context/RoleContext';
-import { useNetworkStatus } from './hooks/useNetworkStatus';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
 import { NexusChatWidget } from './components/widgets/NexusChatWidget';
 import { ConnectivityBanner } from './components/common/ConnectivityBanner';
+import { NexusDashboardLayout } from '@shared/design-system/templates/NexusDashboardLayout';
+import { CustomCursor } from './components/ui/CustomCursor';
+import { CommandPalette } from './components/ui/CommandPalette';
 
 const GrowthDashboard = lazy(() => import('./pages/GrowthDashboard'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
@@ -20,27 +22,24 @@ const BriefingPage = lazy(() => import('./pages/BriefingPage'));
 const CredentialsDashboard = lazy(() => import('./pages/CredentialsDashboard'));
 const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'));
 const TranscriptionPage = lazy(() => import('./pages/TranscriptionPage'));
+const ChatPage = lazy(() => import('./pages/ChatPage'));
+
+import { Play } from 'lucide-react';
+import { GuidedTour, useGuidedTour } from './components/shared/GuidedTour';
 
 function App() {
-  const { online, effectiveType, saveData } = useNetworkStatus();
-  const isSlowConnection = effectiveType === '2g' || effectiveType === 'slow-2g' || saveData;
   const { logout } = useRole();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isOpen: isTourOpen, startTour } = useGuidedTour();
 
-  const [activeDashboard, setActiveDashboard] = useState('Dashboard');
-
-  useEffect(() => {
-    const path = location.pathname;
-    if (path.includes('/admin')) setActiveDashboard('Admin');
-    else if (path.includes('/growth')) setActiveDashboard('Growth');
-    else if (path.includes('/docker')) setActiveDashboard('Docker');
-    else if (path.includes('/analytics')) setActiveDashboard('Analytics');
-    else if (path.includes('/settings')) setActiveDashboard('Settings');
-    else if (path.includes('/tutorials')) setActiveDashboard('Tutorials');
-    else if (path.includes('/risk-prevention')) setActiveDashboard('Risk Prevention');
-    else if (path.includes('/briefing')) setActiveDashboard('Briefing');
-    else setActiveDashboard('Dashboard');
-  }, [location.pathname]);
+  const tourSteps = [
+    { target: '#sidebar-logo', title: 'Welcome to Nexus V1', content: 'Our new Atomic Design system provides a unified interface for your AI operations.' },
+    { target: '#nav-dashboard', title: 'Command Center', content: 'Access your main overview and key performance indicators here.' },
+    { target: '#nav-chat', title: 'AI Assistant', content: 'Engage with our cognitive layer to perform complex analysis and codebase exploration.' },
+    { target: '#assistant-widget', title: 'Quick Help', content: 'Always available chat widget for instant answers and context-aware help.' },
+    { target: '#user-profile', title: 'Your Identity', content: 'Manage your pro account and security preferences from the profile section.' },
+  ];
 
   const handleLogout = () => {
     logout();
@@ -53,107 +52,58 @@ function App() {
         <div className="flex items-center justify-center h-screen text-white">Loading...</div>
       }
     >
-      <Routes>
-        <Route path="/" element={<HomeRedirect />} />
-        <Route path="/growth" element={<GrowthDashboard />} />
-        <Route path="/admin/*" element={<AdminPage />} />
-        <Route
-          path="/*"
-          element={
-            <MainLayout>
-              <Routes>
-                <Route path="/dashboard" element={<RoleDashboard />} />
-                <Route path="/docker" element={<DockerPage />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/tutorials" element={<TutorialsPage />} />
-                <Route path="/risk-prevention" element={<RiskPreventionPage />} />
-                <Route path="/briefing" element={<BriefingPage />} />
-                <Route path="/credentials" element={<CredentialsDashboard />} />
-                <Route path="/subscription" element={<SubscriptionPage />} />
-                <Route path="/transcription" element={<TranscriptionPage />} />
-              </Routes>
-            </MainLayout>
-          }
-        />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/growth" element={<GrowthDashboard />} />
+          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/dashboard" element={<RoleDashboard />} />
+          <Route path="/docker" element={<DockerPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/tutorials" element={<TutorialsPage />} />
+          <Route path="/risk-prevention" element={<RiskPreventionPage />} />
+          <Route path="/briefing" element={<BriefingPage />} />
+          <Route path="/credentials" element={<CredentialsDashboard />} />
+          <Route path="/subscription" element={<SubscriptionPage />} />
+          <Route path="/transcription" element={<TranscriptionPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+        </Routes>
+      </AnimatePresence>
     </Suspense>
   );
 
   return (
     <LazyMotion features={domAnimation}>
+      <CustomCursor />
+      <CommandPalette />
       <ConnectivityBanner />
+      <GuidedTour steps={tourSteps} isOpen={isTourOpen} />
 
-      <m.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="min-h-screen bg-[#020617] text-slate-100 flex flex-col font-sans relative overflow-hidden"
+      <NexusDashboardLayout
+        activePath={location.pathname}
+        onNavigate={(path) => navigate(path)}
+        onLogout={handleLogout}
       >
-        {/* Obsidian Background Layer */}
-        <div
-          className="absolute inset-0 z-0 pointer-events-none opacity-40"
-          style={{
-            backgroundImage: 'url("/bg-obsidian.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(40px)',
-          }}
-        />
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="relative"
+        >
+          {renderDashboard()}
+          <WhatsAppFloatingButton />
+          <NexusChatWidget />
 
-        {/* --- Premium Navigation --- */}
-        <nav className="z-10 bg-[#0f172a]/40 backdrop-blur-2xl border-b border-white/5 px-8 py-4 flex justify-between items-center shadow-2xl">
-          <div className="flex items-center gap-4">
-            <div className="p-2 bg-gradient-to-br from-[#38bdf8]/10 to-[#fbbf24]/10 rounded-xl border border-white/10">
-              <img
-                src="/logo-epic.png"
-                alt="NEXUS V1"
-                className="h-8 w-8 object-contain drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]"
-              />
-            </div>
-            <h1 className="text-xl font-bold tracking-tight font-outfit bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-              NEXUS V1{' '}
-              <span className="hidden sm:inline text-[10px] uppercase tracking-[0.3em] font-light text-slate-500 ml-2">
-                Executive Portal
-              </span>
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/5">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
-              <span className="text-xs font-semibold text-slate-300 uppercase tracking-widest">
-                {activeDashboard} Mode
-              </span>
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="group flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-300"
-            >
-              <span className="text-sm font-medium">Cerrar Sesión</span>
-              <div className="p-2 group-hover:bg-red-500/10 rounded-lg transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-              </div>
-            </button>
-          </div>
-        </nav>
-
-        {/* --- Main Dashboard Content --- */}
-        <main className="flex-1 overflow-y-auto z-10 p-8 custom-scrollbar">
-          <div className="max-w-7xl mx-auto">{renderDashboard()}</div>
-        </main>
-
-        <WhatsAppFloatingButton />
-        <NexusChatWidget />
-      </m.div>
+          {/* Debug/Manual Tour Trigger */}
+          <button
+            onClick={startTour}
+            className="fixed bottom-24 right-6 pointer-events-auto flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 backdrop-blur border border-white/10 text-white rounded-full text-[10px] font-bold hover:bg-slate-700 transition-all opacity-40 hover:opacity-100"
+          >
+            <Play size={10} fill="currentColor" /> REPLAY TOUR
+          </button>
+        </m.div>
+      </NexusDashboardLayout>
     </LazyMotion>
   );
 }

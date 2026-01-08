@@ -26,12 +26,17 @@ mcpRouter.get('/health', async (_req: Request, res: Response) => {
   try {
     const response = await fetch(`${baseUrl}/health`);
     if (!response.ok) {
-      return (res as any).status(502).json({ error: 'MCP server responded with error', status: response.status });
+      return (res as any)
+        .status(502)
+        .json({ error: 'MCP server responded with error', status: response.status });
     }
     const data = await response.json();
     return (res as any).status(200).json({ status: 'ok', mcp: data });
   } catch (err) {
-    return (res as any).status(502).json({ error: 'Failed to reach MCP server', details: err instanceof Error ? err.message : String(err) });
+    return (res as any).status(502).json({
+      error: 'Failed to reach MCP server',
+      details: err instanceof Error ? err.message : String(err),
+    });
   }
 });
 

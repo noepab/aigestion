@@ -1,5 +1,4 @@
-import React from 'react';
-import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
+import { List, RowComponentProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 interface VirtualListProps<T> {
@@ -17,18 +16,23 @@ export function VirtualList<T>({
   renderItem,
   className,
 }: VirtualListProps<T>) {
-  const Row = ({ index, style }: ListChildComponentProps) => {
+  const Row = ({ index, style }: RowComponentProps) => {
     const item = items[index];
-    return renderItem(item, index, style);
+    // Need to cast the results of renderItem because Row expects ReactElement but renderItem returns ReactNode
+    return renderItem(item, index, style) as React.ReactElement;
   };
 
   return (
     <div style={{ height, width: '100%' }} className={className}>
       <AutoSizer>
-        {({ height: autoHeight, width: autoWidth }) => (
-          <List height={autoHeight} itemCount={items.length} itemSize={itemSize} width={autoWidth}>
-            {Row}
-          </List>
+        {({ height: autoHeight, width: autoWidth }: { height: number; width: number }) => (
+          <List
+            rowCount={items.length}
+            rowHeight={itemSize}
+            rowComponent={Row}
+            rowProps={{}}
+            style={{ height: autoHeight, width: autoWidth }}
+          />
         )}
       </AutoSizer>
     </div>

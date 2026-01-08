@@ -5,7 +5,7 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import { requestContext } from './context';
 
 // Define a custom format that adds requestId from AsyncLocalStorage if present
-const requestIdFormat = winston.format((info) => {
+const requestIdFormat = winston.format(info => {
   const store = requestContext.getStore?.();
   if (store) {
     info.requestId = store.get('requestId');
@@ -18,14 +18,11 @@ const winstonLogger = winston.createLogger({
   format: winston.format.combine(
     requestIdFormat(),
     winston.format.timestamp(),
-    winston.format.json()
+    winston.format.json(),
   ),
   transports: [
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
+      format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
     }),
     new DailyRotateFile({
       filename: 'logs/application-%DATE%.log',

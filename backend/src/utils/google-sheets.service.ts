@@ -1,7 +1,7 @@
 import { google, sheets_v4 } from 'googleapis';
 
 import { env } from '../config/env.schema';
-import type { CellValue,SpreadsheetInfo } from '../types/google-cloud.types';
+import type { CellValue, SpreadsheetInfo } from '../types/google-cloud.types';
 import { logger } from './logger';
 
 /**
@@ -31,7 +31,9 @@ export class GoogleSheetsService {
    * Crea o devuelve un cliente de Sheets autenticado (Cached)
    */
   private async getSheetsClient(): Promise<sheets_v4.Sheets> {
-    if (this.sheets) {return this.sheets;}
+    if (this.sheets) {
+      return this.sheets;
+    }
 
     // Si hay credenciales de cuenta de servicio, priorizarlas
     if (env.GOOGLE_APPLICATION_CREDENTIALS) {
@@ -78,7 +80,7 @@ export class GoogleSheetsService {
    */
   async findOrCreateSpreadsheet(
     title: string,
-    sheetTitles: string[] = ['Videos']
+    sheetTitles: string[] = ['Videos'],
   ): Promise<string> {
     try {
       // Necesitamos Drive API para buscar por nombre de archivo si no tenemos el ID
@@ -104,7 +106,7 @@ export class GoogleSheetsService {
       const response = await sheets.spreadsheets.create({
         requestBody: {
           properties: { title },
-          sheets: sheetTitles.map((sheetTitle) => ({
+          sheets: sheetTitles.map(sheetTitle => ({
             properties: { title: sheetTitle },
           })),
         },
@@ -132,7 +134,7 @@ export class GoogleSheetsService {
         spreadsheetId,
         title: response.data.properties?.title || '',
         sheets:
-          response.data.sheets?.map((sheet) => ({
+          response.data.sheets?.map(sheet => ({
             sheetId: sheet.properties?.sheetId || 0,
             title: sheet.properties?.title || '',
             index: sheet.properties?.index || 0,
@@ -172,7 +174,7 @@ export class GoogleSheetsService {
     spreadsheetId: string,
     range: string,
     values: CellValue[][],
-    valueInputOption: 'RAW' | 'USER_ENTERED' = 'USER_ENTERED'
+    valueInputOption: 'RAW' | 'USER_ENTERED' = 'USER_ENTERED',
   ): Promise<void> {
     const sheets = await this.getSheetsClient();
 
@@ -198,7 +200,7 @@ export class GoogleSheetsService {
     spreadsheetId: string,
     sheetName: string,
     values: CellValue[][],
-    valueInputOption: 'RAW' | 'USER_ENTERED' = 'USER_ENTERED'
+    valueInputOption: 'RAW' | 'USER_ENTERED' = 'USER_ENTERED',
   ): Promise<void> {
     const sheets = await this.getSheetsClient();
 
@@ -306,7 +308,7 @@ export class GoogleSheetsService {
       fontSize?: number;
       backgroundColor?: { red: number; green: number; blue: number };
       textColor?: { red: number; green: number; blue: number };
-    }
+    },
   ): Promise<void> {
     const sheets = await this.getSheetsClient();
 
@@ -356,7 +358,7 @@ export class GoogleSheetsService {
     spreadsheetId: string,
     find: string,
     replacement: string,
-    sheetId?: number
+    sheetId?: number,
   ): Promise<number> {
     const sheets = await this.getSheetsClient();
 

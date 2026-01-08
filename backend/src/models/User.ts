@@ -115,7 +115,7 @@ const userSchema = new Schema<IUser>(
         return ret;
       },
     },
-  }
+  },
 );
 
 // Método para comparar contraseñas
@@ -127,10 +127,12 @@ userSchema.methods.comparePassword = async function (candidatePassword: string):
 // Middleware para hashear la contraseña antes de guardar
 userSchema.pre('save', async function (next) {
   // Solo hashear la contraseña si ha sido modificada (o es nueva)
-  if (!this.isModified('password')) { return next(); }
+  if (!this.isModified('password')) {
+    return next();
+  }
 
   try {
-    const salt = await require('bcryptjs').genSalt(10);
+    const salt = await require('bcryptjs').genSalt(12);
     this.password = await require('bcryptjs').hash(this.password, salt);
     next();
   } catch (error: any) {

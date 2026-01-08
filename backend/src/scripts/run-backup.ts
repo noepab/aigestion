@@ -22,7 +22,9 @@ async function runBackup() {
     const resolvedPath = path.resolve(process.cwd(), credsPath);
     console.log('DEBUG: Checking credentials at:', resolvedPath);
     if (!fs.existsSync(resolvedPath)) {
-      console.warn(`WARNING: GOOGLE_APPLICATION_CREDENTIALS points to missing file: ${credsPath}. Unsetting to try default ADC.`);
+      console.warn(
+        `WARNING: GOOGLE_APPLICATION_CREDENTIALS points to missing file: ${credsPath}. Unsetting to try default ADC.`,
+      );
       delete process.env.GOOGLE_APPLICATION_CREDENTIALS;
     } else {
       console.log('DEBUG: Credentials file exists.');

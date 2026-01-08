@@ -68,7 +68,9 @@ export class SocialController {
       res.json(response.data);
     } catch (error: any) {
       console.error('❌ Error fetching FB stats:', error.response?.data || error.message);
-      (res as any).status(500).json(buildError('Failed to get stats', 'SOCIAL_ERROR', 500, (_req as any).requestId));
+      (res as any)
+        .status(500)
+        .json(buildError('Failed to get stats', 'SOCIAL_ERROR', 500, (_req as any).requestId));
     }
   }
 

@@ -68,7 +68,7 @@ const handleReconnection = async (): Promise<void> => {
   reconnectAttempts++;
 
   logger.warn(
-    `Attempting to reconnect to RabbitMQ (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) in ${delay}ms`
+    `Attempting to reconnect to RabbitMQ (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) in ${delay}ms`,
   );
 
   setTimeout(async () => {
@@ -119,13 +119,13 @@ const initializeChannelPool = async (): Promise<void> => {
 
   // Clear existing channels
   await Promise.all(
-    channelPool.map(async (poolItem) => {
+    channelPool.map(async poolItem => {
       try {
         await poolItem.channel.close();
       } catch (error) {
         logger.warn(error, 'Error closing channel during pool initialization:');
       }
-    })
+    }),
   );
 
   channelPool.length = 0; // Clear the array
@@ -165,7 +165,7 @@ export const getRabbitMQChannel = async (): Promise<amqp.Channel | null> => {
   }
 
   // Try to find an available channel
-  const poolItem = channelPool.find((item) => !item.inUse);
+  const poolItem = channelPool.find(item => !item.inUse);
 
   if (poolItem) {
     poolItem.inUse = true;
@@ -178,12 +178,11 @@ export const getRabbitMQChannel = async (): Promise<amqp.Channel | null> => {
   return null;
 };
 
-
 /**
  * Releases a channel back to the pool
  */
 export const releaseChannel = (channel: amqp.Channel): void => {
-  const poolItem = channelPool.find((item) => item.channel === channel);
+  const poolItem = channelPool.find(item => item.channel === channel);
   if (poolItem) {
     poolItem.inUse = false;
     poolItem.lastUsed = Date.now();
@@ -198,13 +197,13 @@ export const closeRabbitMQ = async (): Promise<void> => {
 
   // Close all channels
   await Promise.all(
-    channelPool.map(async (poolItem) => {
+    channelPool.map(async poolItem => {
       try {
         await poolItem.channel.close();
       } catch (error) {
         logger.warn(error, 'Error closing channel during shutdown:');
       }
-    })
+    }),
   );
 
   channelPool.length = 0;
@@ -238,8 +237,8 @@ process.on('SIGTERM', handleShutdown);
     connection = await createConnection();
     await initializeChannelPool();
   } catch (error) {
-      logger.warn('Failed to initialize RabbitMQ (Docker might be down). Running in fallback mode.');
-      // Do NOT call handleReconnection() loop to avoid log spam if docker is dead
-      connection = null;
-    }
+    logger.warn('Failed to initialize RabbitMQ (Docker might be down). Running in fallback mode.');
+    // Do NOT call handleReconnection() loop to avoid log spam if docker is dead
+    connection = null;
+  }
 })();

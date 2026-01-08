@@ -47,14 +47,22 @@ export const errorHandler = (err: any, req: Request, res: Response, _next: NextF
 
   // JWT Errors
   if (err.name === 'JsonWebTokenError') {
-    error = new AppError('Invalid token. Please log in again!', HttpStatusCode.UNAUTHORIZED, 'INVALID_TOKEN');
+    error = new AppError(
+      'Invalid token. Please log in again!',
+      HttpStatusCode.UNAUTHORIZED,
+      'INVALID_TOKEN',
+    );
   }
   if (err.name === 'TokenExpiredError') {
-    error = new AppError('Your token has expired! Please log in again.', HttpStatusCode.UNAUTHORIZED, 'TOKEN_EXPIRED');
+    error = new AppError(
+      'Your token has expired! Please log in again.',
+      HttpStatusCode.UNAUTHORIZED,
+      'TOKEN_EXPIRED',
+    );
   }
 
   // 2. Final Error Response
-  const statusCode = error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
+  const statusCode = err.status || error.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
   const isDevelopment = process.env.NODE_ENV === 'development';
   const requestId = (req as any).requestId || '';
 
@@ -72,12 +80,12 @@ export const errorHandler = (err: any, req: Request, res: Response, _next: NextF
     error.code || 'INTERNAL_ERROR',
     statusCode,
     requestId,
-    error.details
+    error.details,
   );
 
   // Add stack trace in development
   if (isDevelopment && !error.isOperational) {
-    (response as any).error.stack = err.stack;
+    response.error.stack = err.stack;
   }
 
   res.status(statusCode).json(response);

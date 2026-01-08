@@ -34,7 +34,7 @@ export const connectToDatabase = async (): Promise<void> => {
       logger.info('MongoDB connected');
     });
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', err => {
       logger.error(err, 'MongoDB connection error:');
     });
 

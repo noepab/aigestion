@@ -101,7 +101,7 @@ export async function getNetworkStats(_req: Request, res: Response) {
     const networkInterfaces = os.networkInterfaces();
     const interfaces = Object.entries(networkInterfaces).map(([name, addrs]) => ({
       name,
-      addresses: addrs?.map((addr) => ({
+      addresses: addrs?.map(addr => ({
         address: addr.address,
         family: addr.family,
         internal: addr.internal,

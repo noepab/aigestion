@@ -13,14 +13,12 @@ import apiV1Routes from './api-v1.routes';
 // import whatsappRoutes from './whatsapp.routes';
 // import marketingRoutes from './marketing.routes';
 
-
 // import simaRoutes from './sima.routes';
 // import labsRoutes from './labs.routes';
 // import cloudRoutes from './cloud.routes';
 
 const router = Router();
 console.log('DEBUG: Index router loaded');
-
 
 // Health Check
 // router.get('/health', healthCheck);
@@ -39,8 +37,6 @@ router.use('/', apiV1Routes);
 
 // Marketing & Identity Routes
 // router.use('/marketing', marketingRoutes);
-
-
 
 // Legacy routes (deprecated - use /api/v1 instead)
 // router.use('/system', systemRoutes);

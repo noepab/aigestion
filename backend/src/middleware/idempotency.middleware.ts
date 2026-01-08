@@ -32,7 +32,7 @@ export const idempotencyMiddleware = async (req: Request, res: Response, next: N
     // 2. Interceptar res.json para guardar la respuesta antes de enviarla
     const originalJson = res.json;
 
-    res.json = function(body: any): Response {
+    res.json = function (body: any): Response {
       // Restauramos el método original
       res.json = originalJson;
 
@@ -40,12 +40,18 @@ export const idempotencyMiddleware = async (req: Request, res: Response, next: N
       // Evitamos cachear errores de servidor (5xx) para permitir reintentos inmediatos
       if (res.statusCode < 500) {
         // TTL de 24 horas por defecto para llaves de idempotencia
-        cache.set(cacheKey, {
-          status: res.statusCode,
-          body
-        }, { ttl: 86400 }).catch(err => {
-          logger.error({ err, cacheKey }, 'Error al guardar respuesta de idempotencia');
-        });
+        cache
+          .set(
+            cacheKey,
+            {
+              status: res.statusCode,
+              body,
+            },
+            { ttl: 86400 },
+          )
+          .catch(err => {
+            logger.error({ err, cacheKey }, 'Error al guardar respuesta de idempotencia');
+          });
       }
 
       return originalJson.call(this, body);

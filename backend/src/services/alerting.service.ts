@@ -1,4 +1,4 @@
-import { inject,injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import { TYPES } from '../types';
 import { logger } from '../utils/logger';
@@ -15,8 +15,8 @@ export class AlertingService {
 
   constructor(
     @inject(TYPES.SystemMetricsService) private metricsService: SystemMetricsService,
-    @inject(TYPES.TelegramService) private telegramService: TelegramService
-  ) { }
+    @inject(TYPES.TelegramService) private telegramService: TelegramService,
+  ) {}
 
   /**
    * Check system health and trigger alerts if thresholds are exceeded

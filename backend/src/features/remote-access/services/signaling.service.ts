@@ -170,7 +170,9 @@ export class SignalingService {
 
   public endSession(sessionId: string): boolean {
     const session = this.activeSessions.get(sessionId);
-    if (!session) {return false;}
+    if (!session) {
+      return false;
+    }
 
     session.status = 'ended';
     session.endedAt = new Date();

@@ -95,9 +95,8 @@ export const checkRedisHealth = async () => {
   try {
     const [info] = await Promise.all([redisClient.info(), redisClient.ping()]);
 
-
     const redisInfo: Record<string, string> = {};
-    info.split('\r\n').forEach((line) => {
+    info.split('\r\n').forEach(line => {
       const [key, value] = line.split(':');
       if (key && value && !key.startsWith('#')) {
         redisInfo[key] = value.trim();
@@ -113,7 +112,7 @@ export const checkRedisHealth = async () => {
       message: 'Redis is healthy',
     };
   } catch (error) {
-    logger.error(error as any, 'Redis health check failed:');
+    logger.error(error, 'Redis health check failed:');
     return {
       status: 'error',
       message: error instanceof Error ? error.message : 'Redis connection error',
@@ -123,7 +122,7 @@ export const checkRedisHealth = async () => {
 
 const checkRabbitMQHealth = async () => {
   // Add timeout to prevent blocking indefinitely
-  const timeoutPromise = new Promise<{ status: string; message: string }>((resolve) => {
+  const timeoutPromise = new Promise<{ status: string; message: string }>(resolve => {
     setTimeout(() => {
       resolve({
         status: 'disabled',
@@ -158,7 +157,7 @@ const checkRabbitMQHealth = async () => {
         channels: 1,
       };
     } catch (error) {
-      logger.error(error as any, 'RabbitMQ health check failed:');
+      logger.error(error, 'RabbitMQ health check failed:');
       return {
         status: 'error',
         message: error instanceof Error ? error.message : 'RabbitMQ connection error',
@@ -184,13 +183,15 @@ const getDatabaseStats = async (db: any) => {
       storageSize: formatBytes(dbStats.storageSize || 0),
     };
   } catch (error) {
-    logger.error(error as any, 'Failed to get database stats:');
+    logger.error(error, 'Failed to get database stats:');
     return null;
   }
 };
 
 const formatBytes = (bytes: number, decimals = 2): string => {
-  if (bytes === 0) {return '0 Bytes';}
+  if (bytes === 0) {
+    return '0 Bytes';
+  }
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
@@ -224,8 +225,8 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
     memoryUsage: process.memoryUsage(),
     nodeVersion: process.version,
     dependencies: {
-      redis: (require('redis/package.json')).version,
-      mongoose: (require('mongoose/package.json')).version,
+      redis: require('redis/package.json').version,
+      mongoose: require('mongoose/package.json').version,
       node_mongodb_native: (mongoose.mongo as any).version || 'unknown',
     },
     metrics: {
@@ -272,13 +273,13 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
               response.database.stats = stats;
             }
           } catch (statsError) {
-            logger.warn(statsError as any, 'Could not get detailed database stats:');
+            logger.warn(statsError, 'Could not get detailed database stats:');
           }
         } catch (error) {
           response.status = 'error';
           response.database.status = 'error';
           response.database.message = 'MongoDB connection is unstable';
-          logger.error(error as any, 'MongoDB ping failed:');
+          logger.error(error, 'MongoDB ping failed:');
         }
       } else {
         // Treat disconnected DB as an error for test expectations
@@ -298,7 +299,7 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
         response.status = 'degraded';
       }
     } catch (error) {
-      logger.error(error as any, 'Redis health check error:');
+      logger.error(error, 'Redis health check error:');
       response.redis = {
         status: 'error',
         message: error instanceof Error ? error.message : 'Redis check failed',
@@ -317,7 +318,7 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
         response.status = 'degraded';
       }
     } catch (error) {
-      logger.error(error as any, 'RabbitMQ health check error:');
+      logger.error(error, 'RabbitMQ health check error:');
       response.rabbitmq = {
         status: 'error',
         message: error instanceof Error ? error.message : 'RabbitMQ check failed',
@@ -330,8 +331,8 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
     // Add version info for dependencies
     try {
       const [redisPkg, amqpPkg] = await Promise.all([
-        (require('redis/package.json')).version,
-        (require('amqplib/package.json')).version,
+        require('redis/package.json').version,
+        require('amqplib/package.json').version,
       ]);
 
       response.dependencies = {
@@ -340,7 +341,7 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
         amqplib: amqpPkg,
       };
     } catch (error) {
-      logger.warn(error as any, 'Could not load all dependency versions:');
+      logger.warn(error, 'Could not load all dependency versions:');
     }
 
     // Calculate request processing time (event loop lag)
@@ -365,7 +366,7 @@ export const healthCheck = async (_req: Request, res: Response): Promise<void> =
       dbState: 'unknown',
       message: error instanceof Error ? error.message : 'Unknown error during health check',
     };
-    logger.error(error as any, 'Health check failed:');
+    logger.error(error, 'Health check failed:');
   }
 
   // Log the health check with more detailed information

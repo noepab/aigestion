@@ -1,4 +1,3 @@
-
 import { tavily } from '@tavily/core';
 import { z } from 'zod';
 
@@ -15,8 +14,7 @@ export class SearchWebTool extends BaseTool<{ query: string }> {
   name = 'search_web';
 
   /** Description used by the AI agent */
-  description =
-    'Performs a web search to retrieve up‑to‑date information on a given topic.';
+  description = 'Performs a web search to retrieve up‑to‑date information on a given topic.';
 
   /** Zod schema for input validation */
   schema = z.object({
@@ -55,7 +53,7 @@ export class SearchWebTool extends BaseTool<{ query: string }> {
 
       return {
         answer: response.answer,
-        results: response.results.map((r) => ({
+        results: response.results.map(r => ({
           title: r.title,
           url: r.url,
           content: r.content,

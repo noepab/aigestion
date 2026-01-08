@@ -35,10 +35,19 @@ const container = new Container();
 
 container.bind<HistoryService>(TYPES.HistoryService).to(HistoryService).inSingletonScope();
 container.bind<TelegramService>(TYPES.TelegramService).to(TelegramService).inSingletonScope();
-container.bind<SystemMetricsService>(TYPES.SystemMetricsService).to(SystemMetricsService).inSingletonScope();
+container
+  .bind<SystemMetricsService>(TYPES.SystemMetricsService)
+  .to(SystemMetricsService)
+  .inSingletonScope();
 container.bind<AlertingService>(TYPES.AlertingService).to(AlertingService).inSingletonScope();
-container.bind<GoogleSecretManagerService>(TYPES.GoogleSecretManagerService).to(GoogleSecretManagerService).inSingletonScope();
-container.bind<CredentialManagerService>(TYPES.CredentialManagerService).to(CredentialManagerService).inSingletonScope();
+container
+  .bind<GoogleSecretManagerService>(TYPES.GoogleSecretManagerService)
+  .to(GoogleSecretManagerService)
+  .inSingletonScope();
+container
+  .bind<CredentialManagerService>(TYPES.CredentialManagerService)
+  .to(CredentialManagerService)
+  .inSingletonScope();
 container.bind('Container').toConstantValue(container);
 
 import { CommandBus } from '../shared/cqrs/CommandBus';
@@ -69,14 +78,19 @@ container.bind<SearchService>(TYPES.SearchService).to(SearchService).inSingleton
 container.bind<UsageService>(TYPES.UsageService).to(UsageService).inSingletonScope();
 container.bind<GoogleDriveService>(GoogleDriveService).toSelf().inSingletonScope();
 container.bind<BackupService>(TYPES.BackupService).to(BackupService).inSingletonScope();
-container.bind<BackupSchedulerService>(TYPES.BackupSchedulerService).to(BackupSchedulerService).inSingletonScope();
+container
+  .bind<BackupSchedulerService>(TYPES.BackupSchedulerService)
+  .to(BackupSchedulerService)
+  .inSingletonScope();
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
-container.bind<RegisterUserUseCase>(TYPES.RegisterUserUseCase).to(RegisterUserUseCase).inSingletonScope();
+container
+  .bind<RegisterUserUseCase>(TYPES.RegisterUserUseCase)
+  .to(RegisterUserUseCase)
+  .inSingletonScope();
 container.bind<LoginUserUseCase>(TYPES.LoginUserUseCase).to(LoginUserUseCase).inSingletonScope();
 container.bind<UserService>(TYPES.UserService).to(UserService).inSingletonScope();
 
 import { JobQueue } from '../infrastructure/jobs/JobQueue';
 container.bind<JobQueue>(TYPES.JobQueue).to(JobQueue).inSingletonScope();
-
 
 export { container, TYPES };

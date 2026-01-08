@@ -45,10 +45,10 @@ export class WebRTCService extends EventEmitter {
     // Manejar eventos del peer
     peer.on('signal', (data: any) => {
       logger.debug(
-        `Señal de ${initiator ? 'iniciador' : 'receptor'} generada para sesión ${sessionId}`
+        `Señal de ${initiator ? 'iniciador' : 'receptor'} generada para sesión ${sessionId}`,
       );
       this.emit('signal', {
-        type: (initiator ? 'offer' : 'answer'),
+        type: initiator ? 'offer' : 'answer',
         sdp: data,
         userId,
         sessionId,

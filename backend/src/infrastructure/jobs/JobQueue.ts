@@ -9,7 +9,7 @@ export class JobQueue {
   private redisOptions: any;
 
   constructor() {
-     this.redisOptions = {
+    this.redisOptions = {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379'),
       password: process.env.REDIS_PASSWORD || undefined,
@@ -18,7 +18,7 @@ export class JobQueue {
   }
 
   private initializeQueues() {
-    Object.values(JobName).forEach((name) => {
+    Object.values(JobName).forEach(name => {
       const queue = new Queue(name, {
         connection: this.redisOptions,
       });
@@ -29,7 +29,7 @@ export class JobQueue {
   public async addJob<T extends JobName>(
     name: T,
     data: IJobPayloads[T],
-    opts?: any
+    opts?: any,
   ): Promise<void> {
     const queue = this.queues.get(name as string);
     if (!queue) {

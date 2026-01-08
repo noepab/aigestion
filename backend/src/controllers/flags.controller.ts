@@ -1,8 +1,8 @@
 // Feature Flags controller
 import type { Request, Response } from 'express-serve-static-core';
 
-import { buildError,buildResponse } from '../common/response-builder';
-import { defaultFeatureFlags,FeatureFlags } from '../utils/featureFlags';
+import { buildError, buildResponse } from '../common/response-builder';
+import { defaultFeatureFlags, FeatureFlags } from '../utils/featureFlags';
 import { logger } from '../utils/logger';
 
 /** GET /api/v1/flags – returns the flags attached by middleware */
@@ -18,7 +18,9 @@ export const setFeatureFlag = (req: Request, res: Response): void => {
 
   // Validate flag name exists
   if (!(flagName in defaultFeatureFlags)) {
-    (res as any).status(500).json(buildError('Failed to set flag', 'FLAG_ERROR', 500, (req as any).requestId));
+    (res as any)
+      .status(500)
+      .json(buildError('Failed to set flag', 'FLAG_ERROR', 500, (req as any).requestId));
     return;
   }
 

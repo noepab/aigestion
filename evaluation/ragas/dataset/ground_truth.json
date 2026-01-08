@@ -1,0 +1,254 @@
+{
+  "samples": [
+    {
+      "question": "What is the core tech stack of NEXUS V1?",
+      "ground_truth": "NEXUS V1 is a monorepo using Turborepo and pnpm. The backend is built with Node.js/Express and TypeScript, the frontend with React/Vite, and the AI engine with Python. Databases include MongoDB for primary storage and Redis for caching.",
+      "category": "architecture"
+    },
+    {
+      "question": "Which port does the Backend API run on in development?",
+      "ground_truth": "The Backend API runs on port 5000 according to the architecture documentation and Docker configuration.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "What is the role of Redis in the system?",
+      "ground_truth": "Redis is used for caching, session management, and rate limiting (using rate-limit-redis in the backend).",
+      "category": "infrastructure"
+    },
+    {
+      "question": "How is the monorepo managed?",
+      "ground_truth": "The monorepo is managed by Turborepo with pnpm as the package manager, facilitating efficient parallel execution of tasks across packages like frontend and nexus-core-nestjs.",
+      "category": "tooling"
+    },
+    {
+      "question": "What authentication mechanism is used in the backend?",
+      "ground_truth": "The backend uses JWT (JSON Web Tokens) for authentication, with a rotation mechanism for refresh tokens to enhance security. Passwords are hashed using bcryptjs.",
+      "category": "security"
+    },
+    {
+      "question": "What is the purpose of the RagService in the backend?",
+      "ground_truth": "The RagService in the backend (src/services/rag.service.ts) is responsible for scanning the codebase, generating an ASCII tree of the project structure, and performing a hybrid search (keyword + structural) to provide relevant code context to the AI model.",
+      "category": "ai"
+    },
+    {
+      "question": "Does NEXUS V1 support infrastructure as code?",
+      "ground_truth": "Yes, NEXUS V1 uses Terraform for infrastructure as code, with modules for networking and storage, and a remote GCS backend for state persistence in the dev environment.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "What is the observability stack for NEXUS V1?",
+      "ground_truth": "The observability stack includes Winston/Loki for logging, Prometheus/Grafana for metrics, and OpenTelemetry with Jaeger for distributed tracing.",
+      "category": "devops"
+    },
+    {
+      "question": "How does the AI router handle different model tiers?",
+      "ground_truth": "The AIModelRouter (in src/utils/aiRouter.ts) categorizes prompts and routes them to different tiers (STANDARD, ECONOMY, PREMIUM) based on complexity, selecting between Gemini, OpenAI, or Anthropic providers.",
+      "category": "ai"
+    },
+    {
+      "question": "What tool is used for container orchestration?",
+      "ground_truth": "NEXUS V1 is designed for deployment on Kubernetes (K8s) for container orchestration, following a containerized structure defined in Docker Compose for local development.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "How are the AI model tiers defined in the system?",
+      "ground_truth": "The system defines three tiers in AIModelTier enum: ECONOMY (Gemini 1.5 Flash 8b), STANDARD (Gemini 3.0 Flash), and PREMIUM (Claude 3.5 Sonnet).",
+      "category": "ai"
+    },
+    {
+      "question": "What are the heuristics for routing a prompt to the PREMIUM tier?",
+      "ground_truth": "A prompt is routed to the PREMIUM tier if its length exceeds 500 characters or it contains complex keywords like 'analiza', 'arquitectura', 'optimiza', or 'explica a fondo'.",
+      "category": "ai"
+    },
+    {
+      "question": "Which model is used for the ECONOMY tier and why?",
+      "ground_truth": "Gemini 1.5 Flash 8b is used for the ECONOMY tier because it is the most cost-effective ('cheapest') model for simple tasks like 'hola' or queries under 50 characters.",
+      "category": "ai"
+    },
+    {
+      "question": "What tools can the AI assistant use in AIService?",
+      "ground_truth": "The AIService provides tools for revenue analytics, user growth trends (last 14 days), web searching (SearchWebTool), codebase context (RagService), and subscription management (StripeTool).",
+      "category": "ai"
+    },
+    {
+      "question": "How does AIService handle multi-provider streaming?",
+      "ground_truth": "AIService standardizes streaming outputs using Server-Sent Events (SSE). It supports OpenAI's completion stream, Anthropic's message stream, and Gemini's sendMessageStream, with tool call handling currently integrated for Gemini.",
+      "category": "ai"
+    },
+    {
+      "question": "Describe the layered caching strategy implementation.",
+      "ground_truth": "The system uses a dual-layer strategy in cacheManager.ts: L1 is an in-memory Map with a 60s TTL for fast access, and L2 is Redis. Hits on L2 automatically populate L1.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "What happens when a cache key is requested in CacheManager?",
+      "ground_truth": "The manager checks L1 first. If it's a miss or expired, it checks L2 (Redis). If L2 hits, it populates L1 with the value and a fresh TTL before returning it.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "How is metered billing reported to Stripe?",
+      "ground_truth": "Metered billing usage is reported via the `reportUsage` method in StripeService, which calls Stripe's `subscriptionItems.createUsageRecord` API with an 'increment' action and the current timestamp.",
+      "category": "billing"
+    },
+    {
+      "question": "What resilience patterns are used when interacting with Stripe?",
+      "ground_truth": "The StripeService uses the Opossum-based CircuitBreakerFactory to wrap customer creation, session generation, and portal sessions, protecting the system from cascading failures if Stripe's API is slow or down.",
+      "category": "billing"
+    },
+    {
+      "question": "Which Stripe API version is hardcoded in StripeService?",
+      "ground_truth": "StripeService uses API version '2022-11-15' for deterministic behavior, as defined in its lazy-loading initialization block.",
+      "category": "billing"
+    },
+    {
+      "question": "What are the core technical components of the NexusDashboardLayout?",
+      "ground_truth": "NexusDashboardLayout uses Framer Motion for entry transitions, Lenis for smooth scrolling, and orchestrates the NexusSidebar within a flexbox layout featuring decorative blurred backgrounds.",
+      "category": "frontend"
+    },
+    {
+      "question": "How is the Atomic Design System structured in the shared package?",
+      "ground_truth": "The system is organized into atoms (simple components like NexusInput), molecules (combined atoms like NexusChatBubble), and organisms (complex patterns like ChatInterface), following Atomic Design methodology.",
+      "category": "frontend"
+    },
+    {
+      "question": "What variants does the NexusInput atom support?",
+      "ground_truth": "NexusInput supports three variants: 'default' (slate background with border), 'glass' (frosted backdrop-blur), and 'ghost' (transparent/no-border).",
+      "category": "frontend"
+    },
+    {
+      "question": "Describe the NexusChatBubble molecule's functionality.",
+      "ground_truth": "NexusChatBubble handles message rendering for users and assistants, displaying avatars (Bot/User), timestamps, and a typing indicator. It uses different color schemes for different roles (Blue for user, Violet/Glass for assistant).",
+      "category": "frontend"
+    },
+    {
+      "question": "What is the 'Monorepo Transitive Dependency Protocol' mentioned in the logs?",
+      "ground_truth": "It is a protocol established to handle library gaps across workspace boundaries by ensuring dependencies like tailwind-merge and zustand are correctly aligned or installed in consuming applications.",
+      "category": "tooling"
+    },
+    {
+      "question": "How are environment variables validated in the backend?",
+      "ground_truth": "Variables are validated using a centralized Zod schema (env.schema.ts), ensuring the application crashes early if critical keys (like STRIPE_SECRET_KEY or REDIS_URL) are missing or invalid.",
+      "category": "security"
+    },
+    {
+      "question": "What is the purpose of the 'nonce' in JWT refresh tokens?",
+      "ground_truth": "A unique 'nonce' is added to the refresh token payload to ensure that tokens generated in the same second are byte-unique, preventing reuse detection failures in high-speed integration tests.",
+      "category": "security"
+    },
+    {
+      "question": "What Terraform modules are currently available in the project?",
+      "ground_truth": "The project includes Terraform modules for 'network' (VPC/Subnets), 'secrets' (GCP Secret Manager with versioning), and 'storage' (GCS buckets for state and assets).",
+      "category": "infrastructure"
+    },
+    {
+      "question": "How is the Terraform state managed in the dev environment?",
+      "ground_truth": "Terraform state for 'dev' is managed using a GCS backend in a bucket named 'gs://aigestion-v1-tfstate-848dd', enabling collaboration and state locking.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "Describe the purpose of the 'secrets' Terraform module.",
+      "ground_truth": "The 'secrets' module codifies the creation of Google Secret Manager secrets with automated replication, allowing for secure storage of API keys and DB credentials outside of source code.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "How are Zod schema validation errors handled globally in the backend?",
+      "ground_truth": "Validation errors are intercepted by a global errorHandler middleware, which formats them into a consistent ApiResponse envelope (standardizing 400 Bad Request responses).",
+      "category": "architecture"
+    },
+    {
+      "question": "What is the 'Instance Paradox' mentioned in backend logs?",
+      "ground_truth": "It refers to an issue where multiple instances of the 'graphql' library in the monorepo caused schema mismatch errors, resolved by pinning the instance via Jest's moduleNameMapper.",
+      "category": "architecture"
+    },
+    {
+      "question": "Describe the 'A2UI' protocol in the context of streaming.",
+      "ground_truth": "A2UI (Agent-to-UI) is a protocol where the AI sends JSON data via SSE (e.g., type: 'a2ui', component: 'chart') to trigger the dynamic rendering of interactive components in the frontend dashboard.",
+      "category": "ai"
+    },
+    {
+      "question": "What happens when a 'search_web' tool call is handled?",
+      "ground_truth": "The AIService pushes a status message to the stream, executes the SearchWebTool with the provided query, and streams the results back to the user as text context.",
+      "category": "ai"
+    },
+    {
+      "question": "What is the 'Zero Loose Files' policy?",
+      "ground_truth": "A monorepo hygiene policy that ensures all files are categorized within standard directories and that temporary, backup, or legacy assets are pruned or excluded from source control and linting.",
+      "category": "tooling"
+    },
+    {
+      "question": "How are tests organized in the backend?",
+      "ground_truth": "Tests are organized into unit tests (often next to the service) and integration tests located in 'backend/src/__tests__', covering middleware, services, and API v1 endpoints.",
+      "category": "tooling"
+    },
+    {
+      "question": "What is the significance of the Vitest-to-Jest migration?",
+      "ground_truth": "The migration was performed to consolidate the backend testing library, avoiding CJS/ESM interop issues and 'vi vs jest' name conflicts that caused runtime reference errors.",
+      "category": "tooling"
+    },
+    {
+      "question": "How does the backend protect against JWT rotation race conditions?",
+      "ground_truth": "By shifting cleanup logic to beforeAll/afterAll in tests (instead of beforeEach) and ensuring sequential test execution for token rotation families.",
+      "category": "security"
+    },
+    {
+      "question": "What is the 'Cyberpunk Executive' aesthetic reference point?",
+      "ground_truth": "It describes the Nexus V1 visual identity, combining high-tech glassmorphism and blurred neon gradients (blue/violet) with clean, professional typography suitable for agents.",
+      "category": "frontend"
+    },
+    {
+      "question": "What technical stack is used for 'Virtual Scrolling' in the dashboard?",
+      "ground_truth": "Virtual scrolling is implemented using `react-window` and `react-virtualized-auto-sizer`, with custom types to handle signature mismatches in the v2.x version.",
+      "category": "frontend"
+    },
+    {
+      "question": "How does the system ensure 'Mobile Awareness'?",
+      "ground_truth": "Via network status hooks and Service Workers that cache critical shell assets, allowing the UI to react gracefully to network drops with ConnectivityBanners.",
+      "category": "frontend"
+    },
+    {
+      "question": "What is the purpose of the 'usage.service.ts'?",
+      "ground_truth": "It tracks AI token consumption (using gpt-tokenizer) per user and model, which is then synchronized with Stripe Metered Billing for accurate consumption-based charging.",
+      "category": "billing"
+    },
+    {
+      "question": "Describe the 'Repository Pattern' used for DockerService.",
+      "ground_truth": "The DockerService was extracted into a dedicated logic layer to decouple container management commands from API controllers, following clean architecture principles.",
+      "category": "architecture"
+    },
+    {
+      "question": "How is the 'God Mode' dashboard secured?",
+      "ground_truth": "It is restricted via the `useRole` hook and RoleContext, which only permits access to users with the 'admin' role, redirecting others to the standard client dashboard.",
+      "category": "security"
+    },
+    {
+      "question": "Specify the Redis caching types available in the system.",
+      "ground_truth": "The system supports standard K/V caching for data, session store for users, and distributed rate limiting to protect AI and Auth endpoints.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "What is the 'Administrative Bug Registry'?",
+      "ground_truth": "A knowledge artifact used to track persistent architectural blockers like ESLint flat-config conflicts or library instance paradoxes to ensure cognitive continuity across agents.",
+      "category": "tooling"
+    },
+    {
+      "question": "How are 'Service Mesh' implementations planned in the roadmap?",
+      "ground_truth": "The roadmap (Q1-Q2) includes a transition to Istio or Linkerd for the GKE cluster to enable mTLS and advanced traffic management for microservices.",
+      "category": "infrastructure"
+    },
+    {
+      "question": "What is 'RAGAS' used for in the AIGestion pipeline?",
+      "ground_truth": "RAGAS (Retrieval-Augmented Generation Assessment) is used to calculate metrics like 'Faithfulness' and 'Context Recall' to quantitatively evaluate the quality of AI responses.",
+      "category": "ai"
+    },
+    {
+      "question": "Describe the 'Interactive Onboarding' vision for Q1 2026.",
+      "ground_truth": "An AI-guided tour system where the 'Nexus Assistant' can trigger UI highlights (GuidedTour) and walk users through complex dashboard features based on intent.",
+      "category": "frontend"
+    },
+    {
+      "question": "Which framework is used for the 'nexus-core-nestjs' package?",
+      "ground_truth": "It uses NestJS (v10+) as a pilot microservice to establish a highly structured, standard modular architecture for the next phase of the backend evolution.",
+      "category": "architecture"
+    }
+  ]
+}

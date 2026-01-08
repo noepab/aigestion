@@ -13,3 +13,11 @@ module "storage" {
   region      = var.region
   bucket_name = "nexus-assets-${var.environment}-${var.project_id}"
 }
+
+module "secrets" {
+  source = "../../modules/secrets"
+
+  project_id  = var.project_id
+  secret_id   = "nexus-api-key-${var.environment}"
+  secret_data = "dummy-secret-value-for-provisioning"
+}

@@ -1,11 +1,11 @@
 import DataLoader from 'dataloader';
 
-import { IProject,Project } from '../models/Project';
+import { IProject, Project } from '../models/Project';
 /**
  * User DataLoader
  * Evita N+1 queries al cargar usuarios
  */
-import { IUser,User } from '../models/User';
+import { IUser, User } from '../models/User';
 
 /**
  * User DataLoader
@@ -15,10 +15,10 @@ export class UserDataLoader {
   private loader: DataLoader<string, IUser | null>;
 
   constructor() {
-    this.loader = new DataLoader(async (userIds) => {
+    this.loader = new DataLoader(async userIds => {
       const users = await User.find({ _id: { $in: userIds } });
-      const userMap = new Map(users.map((u) => [u.id, u]));
-      return userIds.map((id) => userMap.get(id) || null);
+      const userMap = new Map(users.map(u => [u.id, u]));
+      return userIds.map(id => userMap.get(id) || null);
     });
   }
 
@@ -46,10 +46,10 @@ export class ProjectDataLoader {
   private loader: DataLoader<string, IProject | null>;
 
   constructor() {
-    this.loader = new DataLoader(async (projectIds) => {
+    this.loader = new DataLoader(async projectIds => {
       const projects = await Project.find({ _id: { $in: projectIds } });
-      const projectMap = new Map(projects.map((p) => [p.id, p]));
-      return projectIds.map((id) => projectMap.get(id) || null);
+      const projectMap = new Map(projects.map(p => [p.id, p]));
+      return projectIds.map(id => projectMap.get(id) || null);
     });
   }
 

@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { IMetricSnapshot,MetricSnapshot } from '../models/metric-snapshot.model';
+import { IMetricSnapshot, MetricSnapshot } from '../models/metric-snapshot.model';
 
 @injectable()
 export class HistoryService {

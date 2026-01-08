@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 
-import { drive_v3,google } from 'googleapis';
+import { drive_v3, google } from 'googleapis';
 
 import { env } from '../config/env.schema';
 import type { DriveFile, DriveUploadOptions } from '../types/google-cloud.types';
@@ -33,7 +33,9 @@ export class GoogleDriveService {
    * Crea o devuelve un cliente de Drive autenticado (Cached)
    */
   private async getDriveClient(): Promise<drive_v3.Drive> {
-    if (this.drive) {return this.drive;}
+    if (this.drive) {
+      return this.drive;
+    }
 
     // Si hay credenciales de cuenta de servicio, priorizarlas para procesos de sistema
     if (env.GOOGLE_APPLICATION_CREDENTIALS && fs.existsSync(env.GOOGLE_APPLICATION_CREDENTIALS)) {
@@ -55,7 +57,7 @@ export class GoogleDriveService {
     }
 
     throw new Error(
-      'No se encontraron credenciales válidas para Google Drive (Service Account o OAuth2)'
+      'No se encontraron credenciales válidas para Google Drive (Service Account o OAuth2)',
     );
   }
 
@@ -334,7 +336,7 @@ export class GoogleDriveService {
   async shareFile(
     fileId: string,
     emailAddress: string,
-    role: 'reader' | 'writer' | 'commenter' = 'reader'
+    role: 'reader' | 'writer' | 'commenter' = 'reader',
   ): Promise<void> {
     const drive = await this.getDriveClient();
 

@@ -45,7 +45,7 @@ export class TikTokService {
             Authorization: `Bearer ${env.TIKTOK_ACCESS_TOKEN}`,
             'Content-Type': 'application/json; charset=UTF-8',
           },
-        }
+        },
       );
 
       logger.info('TikTok video upload initialized');

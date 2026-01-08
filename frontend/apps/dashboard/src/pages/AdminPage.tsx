@@ -1,5 +1,4 @@
-﻿import MainLayout from '@/components/layout/MainLayout';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AdminLandingDashboard from './AdminLandingDashboard';
@@ -283,8 +282,7 @@ export default function AdminPage() {
   const currentView = views.find((v) => location.pathname.startsWith(v.path)) ?? views[0];
 
   return (
-    <MainLayout>
-      <div className="p-6 bg-cyber-dark text-cyber-blue min-h-screen">
+    <div className="p-6 bg-cyber-dark text-cyber-blue min-h-screen">
         <nav className="flex gap-4 mb-6 border-b border-cyber-blue/30 pb-2">
           {views.map((view) => (
             <Link
@@ -309,8 +307,6 @@ export default function AdminPage() {
         >
           {currentView?.component}
         </motion.div>
-      </div>
-    </MainLayout>
+    </div>
   );
 }
-

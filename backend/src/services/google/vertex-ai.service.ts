@@ -1,5 +1,5 @@
 // Importing as any to avoid TS2709 errors
-import { GenerativeModel,VertexAI } from '@google-cloud/vertexai';
+import { GenerativeModel, VertexAI } from '@google-cloud/vertexai';
 
 import { logger } from '../../utils/logger';
 type VertexAI = any;

@@ -26,24 +26,24 @@ export const useAgentStore = create<AgentState>()(
       messages: [],
       isLoading: false,
       isConnected: false,
-      addMessage: (message) =>
-        set((state) => ({ messages: [...state.messages, message] })),
-      updateLastMessage: (updater) =>
-        set((state) => {
+      addMessage: (message: AgentMessage) =>
+        set((state: AgentState) => ({ messages: [...state.messages, message] })),
+      updateLastMessage: (updater: (msg: AgentMessage) => AgentMessage) =>
+        set((state: AgentState) => {
           const newMessages = [...state.messages];
           if (newMessages.length > 0) {
             newMessages[newMessages.length - 1] = updater(newMessages[newMessages.length - 1]);
           }
           return { messages: newMessages };
         }),
-      setLoading: (loading) => set({ isLoading: loading }),
-      setConnected: (connected) => set({ isConnected: connected }),
+      setLoading: (loading: boolean) => set({ isLoading: loading }),
+      setConnected: (connected: boolean) => set({ isConnected: connected }),
       clearHistory: () => set({ messages: [] }),
     }),
     {
       name: 'nexus-agent-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ messages: state.messages }), // Only persist message history
+      partialize: (state: AgentState) => ({ messages: state.messages }), // Only persist message history
     }
   )
 );

@@ -31,9 +31,9 @@ interface ClientToServerEvents {
   joinRoom: (room: string) => void;
   leaveRoom: (room: string) => void;
 }
-interface ServerToClientEvents { }
-interface InterServerEvents { }
-interface SocketData { }
+interface ServerToClientEvents {}
+interface InterServerEvents {}
+interface SocketData {}
 
 // Initialize Socket.IO
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(
@@ -44,7 +44,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
       methods: ['GET', 'POST'],
       credentials: true,
     },
-  }
+  },
 );
 
 // Socket.IO connection handling
@@ -66,7 +66,7 @@ io.on(
     socket.on('disconnect', () => {
       logger.info('Client disconnected');
     });
-  }
+  },
 );
 
 // Reset RPS every second
@@ -172,16 +172,19 @@ const startServer = async () => {
       // const alertingService = container.get<AlertingService>(TYPES.AlertingService);
       const telegramService = container.get<TelegramService>(TYPES.TelegramService);
 
-      credManager.verifyAll().then(async (report: any[]) => {
-        const failures = report.filter((r: any) => r.status !== 'valid');
-        if (failures.length > 0) {
-          const message = `🚨 *Credential Audit Failed*:\n${failures.map((f: any) => `• ${f.provider}: ${f.status} (${f.message || 'No details'})`).join('\n')}`;
-          await telegramService.sendMessage(message);
-          logger.error('Credential audit failed, alert sent.');
-        } else {
-          logger.info('✅ All critical credentials verified successfully.');
-        }
-      }).catch((err: any) => logger.error('Credential audit system error:', err));
+      credManager
+        .verifyAll()
+        .then(async (report: any[]) => {
+          const failures = report.filter((r: any) => r.status !== 'valid');
+          if (failures.length > 0) {
+            const message = `🚨 *Credential Audit Failed*:\n${failures.map((f: any) => `• ${f.provider}: ${f.status} (${f.message || 'No details'})`).join('\n')}`;
+            await telegramService.sendMessage(message);
+            logger.error('Credential audit failed, alert sent.');
+          } else {
+            logger.info('✅ All critical credentials verified successfully.');
+          }
+        })
+        .catch((err: any) => logger.error('Credential audit system error:', err));
 
       // Start Backup Scheduler
       try {
@@ -265,7 +268,8 @@ import { WorkerSetup } from './infrastructure/jobs/WorkerSetup';
  */
 const initializeAndStart = async () => {
   const shouldLoadSecrets =
-    process.env.NODE_ENV === 'production' || (!!process.env.GOOGLE_CLOUD_PROJECT_ID && !process.env.SKIP_SECRETS);
+    process.env.NODE_ENV === 'production' ||
+    (!!process.env.GOOGLE_CLOUD_PROJECT_ID && !process.env.SKIP_SECRETS);
 
   if (shouldLoadSecrets) {
     // Skipping secret loading to avoid slowdown; secrets can be loaded via Google Secret Manager when needed.

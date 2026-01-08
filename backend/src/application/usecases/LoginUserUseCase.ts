@@ -10,9 +10,7 @@ import { User } from '../../models/User';
 
 @injectable()
 export class LoginUserUseCase {
-  constructor(
-    @inject(TYPES.UserRepository) private userRepository: IUserRepository
-  ) {}
+  constructor(@inject(TYPES.UserRepository) private userRepository: IUserRepository) {}
 
   async execute(data: { email: string; password: string; ip?: string; userAgent?: string }) {
     const { email, password, ip, userAgent } = data;
@@ -46,7 +44,7 @@ export class LoginUserUseCase {
       familyId: crypto.randomUUID(),
       ip: ip || 'unknown',
       userAgent: userAgent || 'unknown',
-      createdAt: new Date()
+      createdAt: new Date(),
     });
     if (user.refreshTokens.length > 10) {
       user.refreshTokens = user.refreshTokens.slice(-10);
@@ -58,7 +56,10 @@ export class LoginUserUseCase {
   private generateToken(user: any, fingerprint?: { ip?: string; userAgent?: string }): string {
     const payload: any = { id: user._id, email: user.email, role: user.role };
     if (fingerprint) {
-      payload.fingerprint = { ip: fingerprint.ip || 'unknown', userAgent: fingerprint.userAgent || 'unknown' };
+      payload.fingerprint = {
+        ip: fingerprint.ip || 'unknown',
+        userAgent: fingerprint.userAgent || 'unknown',
+      };
     }
     return jwt.sign(payload, config.jwt.secret, { expiresIn: config.jwt.expiresIn as any });
   }

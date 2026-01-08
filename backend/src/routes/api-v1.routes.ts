@@ -12,6 +12,7 @@ import { CredentialManagerService } from '../services/credential-manager.service
 import { HistoryService } from '../services/history.service';
 import { TYPES } from '../types';
 import aiRouter from './ai.routes';
+import ragRoutes from './rag.routes';
 // import gmailRoutes from './gmail.routes';
 // import bigqueryRoutes from './bigquery.routes';
 // import cloudMonitoringRoutes from './cloudMonitoring.routes';
@@ -54,13 +55,13 @@ apiV1Router.use('/docker', dockerRouter);
  *         description: Internal server error
  */
 apiV1Router.post('/system/credentials/verify', async (req: any, res: any) => {
-  const requestId = (req as any).requestId;
+  const requestId = req.requestId;
   try {
     const credManager = container.get<CredentialManagerService>(TYPES.CredentialManagerService);
     const report = await credManager.verifyAll();
     res.json(buildResponse(report, 200, requestId));
   } catch (err) {
-    const requestId = (req as any).requestId;
+    const requestId = req.requestId;
     res.status(500).json(buildError('Verification failed', 'VERIFICATION_ERROR', 500, requestId));
   }
 });
@@ -85,20 +86,19 @@ apiV1Router.post('/system/credentials/verify', async (req: any, res: any) => {
  *         description: Internal server error
  */
 apiV1Router.get('/system/history/:metric', async (req: any, res: any) => {
-  const requestId = (req as any).requestId;
+  const requestId = req.requestId;
   try {
     const { metric } = req.params;
     const historyService = container.get<HistoryService>(TYPES.HistoryService);
     const history = await historyService.getHistory(metric);
     res.json(buildResponse(history, 200, requestId));
   } catch (err) {
-    const requestId = (req as any).requestId;
+    const requestId = req.requestId;
     res.status(500).json(buildError('Internal server error', 'INTERNAL_ERROR', 500, requestId));
   }
 });
 
 // Standard API Routes
-
 
 // Users (Prueba poniéndolo arriba)
 apiV1Router.use('/users', usersRouter);
@@ -107,11 +107,17 @@ apiV1Router.use('/users', usersRouter);
 apiV1Router.get('/health', (req: Request, res: Response) => {
   console.log('DEBUG: Health handler hit');
   const { requestId } = req as any;
-  return res.status(200).json(buildResponse({
-    status: 'healthy',
-    uptime: process.uptime(),
-    version: '1.0.0'
-  }, 200, requestId));
+  return res.status(200).json(
+    buildResponse(
+      {
+        status: 'healthy',
+        uptime: process.uptime(),
+        version: '1.0.0',
+      },
+      200,
+      requestId,
+    ),
+  );
 });
 
 // Other services
@@ -168,6 +174,7 @@ import { dynamicRateLimiter } from '../middleware/rate-limit.middleware';
  *         description: Successful response
  */
 apiV1Router.use('/ai', dynamicRateLimiter, aiRouter);
+apiV1Router.use('/rag', ragRoutes);
 /**
  * @openapi
  * /exit-templates:

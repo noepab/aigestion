@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import apiService from '../services/api';
-import MainLayout from '../components/layout/MainLayout';
 import { useRole } from '../context/RoleContext';
 
 export default function TranscriptionPage() {
@@ -29,8 +28,7 @@ export default function TranscriptionPage() {
   };
 
   return (
-    <MainLayout>
-      <div className="max-w-2xl mx-auto p-8">
+    <div className="max-w-2xl mx-auto p-8">
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
@@ -112,7 +110,6 @@ export default function TranscriptionPage() {
             )}
           </form>
         </motion.div>
-      </div>
-    </MainLayout>
+    </div>
   );
 }

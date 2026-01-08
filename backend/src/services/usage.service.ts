@@ -8,9 +8,7 @@ import { logger } from '../utils/logger';
 
 @injectable()
 export class UsageService {
-  constructor(
-    @inject(TYPES.StripeService) private stripeService: StripeService
-  ) {}
+  constructor(@inject(TYPES.StripeService) private stripeService: StripeService) {}
 
   /**
    * Calculates token count for a text
@@ -64,7 +62,9 @@ export class UsageService {
         }
       }
 
-      logger.info(`[UsageService] Tracked ${totalTokens} tokens for user ${params.userId} (${params.modelId})`);
+      logger.info(
+        `[UsageService] Tracked ${totalTokens} tokens for user ${params.userId} (${params.modelId})`,
+      );
     } catch (error) {
       logger.error(error, `[UsageService] Failed to track usage for user ${params.userId}`);
     }
@@ -81,6 +81,6 @@ export class UsageService {
     };
 
     const rate = rates[modelId] || rates['gemini-3.0-flash'];
-    return (promptTokens * rate.prompt) + (completionTokens * rate.completion);
+    return promptTokens * rate.prompt + completionTokens * rate.completion;
   }
 }

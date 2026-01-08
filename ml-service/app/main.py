@@ -14,7 +14,9 @@ rag_engine = None
 @app.on_event("startup")
 async def startup_event():
     global rag_engine
-    rag_engine = RAGEngine()
+    # Use the shared data directory for persistence
+    # Assuming running from 'ml-service' root, data is in '../data'
+    rag_engine = RAGEngine(persist_directory="../data/chromadb")
 
 class ArchiveRequest(BaseModel):
     content: str

@@ -48,7 +48,7 @@ export class EmailService {
     to: string,
     subject: string,
     html: string,
-    attachments?: { filename: string; path?: string; content?: string }[]
+    attachments?: { filename: string; path?: string; content?: string }[],
   ): Promise<void> {
     try {
       const info = await this.transporter.sendMail({

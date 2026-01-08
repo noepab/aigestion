@@ -10,9 +10,7 @@ import { User } from '../../models/User';
 
 @injectable()
 export class RegisterUserUseCase {
-  constructor(
-    @inject(TYPES.UserRepository) private userRepository: IUserRepository
-  ) {}
+  constructor(@inject(TYPES.UserRepository) private userRepository: IUserRepository) {}
 
   async execute(data: { name: string; email: string; password: string }) {
     const { name, email, password } = data;
@@ -26,14 +24,16 @@ export class RegisterUserUseCase {
     await this.userRepository.create(user);
     const token = this.generateToken(user);
     const refreshToken = this.generateRefreshTokenString(user);
-    user.refreshTokens = [{
-      token: refreshToken,
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      familyId: crypto.randomUUID(),
-      ip: '127.0.0.1',
-      userAgent: 'unknown',
-      createdAt: new Date()
-    }];
+    user.refreshTokens = [
+      {
+        token: refreshToken,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        familyId: crypto.randomUUID(),
+        ip: '127.0.0.1',
+        userAgent: 'unknown',
+        createdAt: new Date(),
+      },
+    ];
     await user.save();
     return { user, token, refreshToken };
   }
@@ -41,7 +41,10 @@ export class RegisterUserUseCase {
   private generateToken(user: any, fingerprint?: { ip?: string; userAgent?: string }): string {
     const payload: any = { id: user._id, email: user.email, role: user.role };
     if (fingerprint) {
-      payload.fingerprint = { ip: fingerprint.ip || 'unknown', userAgent: fingerprint.userAgent || 'unknown' };
+      payload.fingerprint = {
+        ip: fingerprint.ip || 'unknown',
+        userAgent: fingerprint.userAgent || 'unknown',
+      };
     }
     return jwt.sign(payload, config.jwt.secret, { expiresIn: config.jwt.expiresIn as any });
   }

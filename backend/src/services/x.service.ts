@@ -29,7 +29,7 @@ export class XService {
             Authorization: `Bearer ${env.X_ACCESS_TOKEN}`, // Assuming OAuth2 Bearer Token for User Context
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
       logger.info(`Tweet posted: ${response.data.data?.id}`);

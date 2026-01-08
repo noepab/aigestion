@@ -16,7 +16,7 @@ export const getRedisClient = (): RedisClientType => {
     redisClient = redis.createClient({
       url,
       socket: {
-        reconnectStrategy: (retries) => {
+        reconnectStrategy: retries => {
           if (retries > 5) {
             logger.error('Max Redis reconnection attempts reached');
             return new Error('Max reconnection attempts reached');
@@ -31,18 +31,20 @@ export const getRedisClient = (): RedisClientType => {
     });
 
     // Connect in the background
-    (async () => {
-      try {
-        await redisClient.connect();
-        logger.info('Connected to Redis');
-      } catch (err) {
-        logger.error(err, 'Failed to connect to Redis:');
-      }
-    })();
+    const isTest = process.env.NODE_ENV === 'test' || !!process.env.JEST_WORKER_ID;
+    if (!isTest) {
+      (async () => {
+        try {
+          await redisClient.connect();
+          logger.info('Connected to Redis');
+        } catch (err) {
+          logger.error(err, 'Failed to connect to Redis:');
+        }
+      })();
+    }
   }
   return redisClient;
 };
-
 
 // Utility function to safely close the Redis connection
 export const closeRedis = async (): Promise<void> => {
@@ -52,9 +54,8 @@ export const closeRedis = async (): Promise<void> => {
   }
 };
 
-
 // In-memory L1 cache
-const l1Cache = new Map<string, { value: any, expiry: number }>();
+const l1Cache = new Map<string, { value: any; expiry: number }>();
 const MAX_L1_SIZE = 1000;
 
 /**
@@ -84,7 +85,7 @@ export const getCache = async (key: string): Promise<any> => {
         // For simplicity, we use a 5-minute local L1 mirror of the L2 data.
         l1Cache.set(key, {
           value: parsed,
-          expiry: Date.now() + (5 * 60 * 1000)
+          expiry: Date.now() + 5 * 60 * 1000,
         });
 
         logger.debug({ key }, 'L2 Cache Hit (Mirroring to L1)');
@@ -102,22 +103,20 @@ export const getCache = async (key: string): Promise<any> => {
  * Set value in layered cache
  * Sets both L1 and L2
  */
-export const setCache = async (
-  key: string,
-  value: any,
-  ttlSeconds = 3600
-): Promise<boolean> => {
+export const setCache = async (key: string, value: any, ttlSeconds = 3600): Promise<boolean> => {
   // Set L1
   l1Cache.set(key, {
     value,
-    expiry: Date.now() + (ttlSeconds * 1000)
+    expiry: Date.now() + ttlSeconds * 1000,
   });
 
   // Simple L1 GC
   if (l1Cache.size > MAX_L1_SIZE) {
     const now = Date.now();
     for (const [k, v] of l1Cache) {
-      if (v.expiry < now) { l1Cache.delete(k); }
+      if (v.expiry < now) {
+        l1Cache.delete(k);
+      }
     }
   }
 

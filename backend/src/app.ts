@@ -25,8 +25,6 @@ import { logger } from './utils/logger';
 import { buildResponse } from './common/response-builder';
 const app = express();
 
-
-
 // Request Traceability
 app.use(requestIdMiddleware);
 
@@ -42,11 +40,14 @@ app.use(
         connectSrc: ["'self'", 'ws:', 'wss:'],
       },
     },
-  })
+  }),
 );
 app.use(
   cors({
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void,
+    ) => {
       const allowedOrigins = config.cors.origin;
       const isAllowed =
         !origin ||
@@ -60,7 +61,7 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 // Redis client for rate limiting store
@@ -75,8 +76,8 @@ const apiLimiter = rateLimit({
   store: isTest
     ? undefined // Use default MemoryStore for tests
     : new RateLimitRedisStore({
-      sendCommand: (...args) => redisClient.sendCommand(args),
-    }),
+        sendCommand: (...args) => redisClient.sendCommand(args),
+      }),
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
@@ -97,7 +98,7 @@ app.use(
   compression({
     level: 6, // Equilibrium between speed and compression
     threshold: 1024, // Only compress responses above 1KB
-  })
+  }),
 );
 
 // Logging Middleware
@@ -107,7 +108,7 @@ app.use(
       write: (message: string) => logger.info(message.trim()),
     },
     skip: (req: Request) => req.url === '/api/v1/health',
-  })
+  }),
 );
 
 // Request Parsing
@@ -119,7 +120,7 @@ app.use(
         req.rawBody = buf;
       }
     },
-  })
+  }),
 );
 app.use(cookieParser());
 
@@ -128,14 +129,17 @@ setupSwagger(app);
 
 app.get('/api/v1/health', (req: Request, res: Response) => {
   const requestId = (req as any).requestId;
-  const response = buildResponse({ status: 'healthy', uptime: process.uptime(), version: '1.0.0' }, 200, requestId);
+  const response = buildResponse(
+    { status: 'healthy', uptime: process.uptime(), version: '1.0.0' },
+    200,
+    requestId,
+  );
   console.log('DEBUG: App.ts /health response:', JSON.stringify(response, null, 2));
   res.json(response);
 });
 app.use('/api/v1', routes);
 app.use('/mcp', mcpRouter);
-app.use(createGraphQLRouter());
-
+app.use('/graphql', createGraphQLRouter());
 
 // Error handling
 app.use(notFoundHandler);

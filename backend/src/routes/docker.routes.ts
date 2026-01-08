@@ -34,7 +34,7 @@ router.get('/containers', async (req: Request, res: Response) => {
     const containers = await dockerService.getContainers();
     res.json({ data: containers });
   } catch (err) {
-    res.status(500).json({ error: (err as any).message ?? 'Docker error' });
+    res.status(500).json({ error: err.message ?? 'Docker error' });
   }
 });
 
@@ -64,7 +64,7 @@ router.get('/containers/:id/stats', async (req: Request, res: Response) => {
     const stats = await dockerService.getContainerStats(id);
     res.json({ data: stats });
   } catch (err) {
-    res.status(500).json({ error: (err as any).message ?? 'Docker error' });
+    res.status(500).json({ error: err.message ?? 'Docker error' });
   }
 });
 
@@ -94,7 +94,7 @@ router.post('/containers/:id/start', async (req: Request, res: Response) => {
     await dockerService.startContainer(id);
     res.json({ message: `Container ${id} started` });
   } catch (err) {
-    res.status(500).json({ error: (err as any).message ?? 'Docker error' });
+    res.status(500).json({ error: err.message ?? 'Docker error' });
   }
 });
 
@@ -124,7 +124,7 @@ router.post('/containers/:id/stop', async (req: Request, res: Response) => {
     await dockerService.stopContainer(id);
     res.json({ message: `Container ${id} stopped` });
   } catch (err) {
-    res.status(500).json({ error: (err as any).message ?? 'Docker error' });
+    res.status(500).json({ error: err.message ?? 'Docker error' });
   }
 });
 

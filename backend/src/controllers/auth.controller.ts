@@ -19,7 +19,7 @@ const setRefreshTokenCookie = (res: Response, token: string) => {
     httpOnly: true,
     secure: config.env === 'production',
     sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
 
@@ -37,7 +37,9 @@ export const register = [
 
       setRefreshTokenCookie(res, refreshToken);
 
-      res.status(201).json(buildResponse({ user: userResponse, token }, 201, (req as any).requestId));
+      res
+        .status(201)
+        .json(buildResponse({ user: userResponse, token }, 201, (req as any).requestId));
     } catch (error) {
       next(error);
     }
@@ -53,7 +55,12 @@ export const login = [
       const ip = req.ip;
       const userAgent = req.headers['user-agent'];
 
-      const { user, token, refreshToken } = await authService.login({ email, password, ip, userAgent });
+      const { user, token, refreshToken } = await authService.login({
+        email,
+        password,
+        ip,
+        userAgent,
+      });
 
       const userResponse: any = user.toObject();
       delete userResponse.password;
@@ -61,7 +68,9 @@ export const login = [
 
       setRefreshTokenCookie(res, refreshToken);
 
-      res.status(200).json(buildResponse({ user: userResponse, token }, 200, (req as any).requestId));
+      res
+        .status(200)
+        .json(buildResponse({ user: userResponse, token }, 200, (req as any).requestId));
     } catch (error) {
       next(error);
     }
@@ -79,7 +88,11 @@ export const refresh = async (req: Request, res: Response, next: NextFunction): 
     const ip = req.ip || 'unknown';
     const userAgent = req.headers['user-agent'] || 'unknown';
 
-    const { user, accessToken, refreshToken: newRefreshToken } = await authService.refreshToken(refreshToken, ip, userAgent);
+    const {
+      user,
+      accessToken,
+      refreshToken: newRefreshToken,
+    } = await authService.refreshToken(refreshToken, ip, userAgent);
 
     setRefreshTokenCookie(res, newRefreshToken);
 
@@ -101,7 +114,9 @@ export const logout = async (req: Request, res: Response, next: NextFunction): P
     }
 
     res.clearCookie('refresh_token');
-    res.status(200).json(buildResponse({ message: 'Logged out successfully' }, 200, (req as any).requestId));
+    res
+      .status(200)
+      .json(buildResponse({ message: 'Logged out successfully' }, 200, (req as any).requestId));
   } catch (error) {
     next(error);
   }

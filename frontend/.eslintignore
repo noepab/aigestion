@@ -1,0 +1,3 @@
+# Exclude legacy assets from frontend workspace
+../_legacy_assets_build/**
+node_modules/**

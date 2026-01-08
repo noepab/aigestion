@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { buildError,buildResponse } from '../common/response-builder';
+import { buildError, buildResponse } from '../common/response-builder';
 import { User } from '../models/User';
 import { stripeService } from '../services/stripe.service';
 import { logger } from '../utils/logger';
@@ -47,7 +47,7 @@ const stripeRouter = Router();
  *         description: Server error
  */
 stripeRouter.post('/checkout', async (req: any, res: any) => {
-  const requestId = (req).requestId;
+  const requestId = req.requestId;
   try {
     const { priceId, successUrl, cancelUrl, userId } = req.body;
     // In a real app, userId comes from auth middleware: (req as any).user.id
@@ -83,7 +83,7 @@ stripeRouter.post('/checkout', async (req: any, res: any) => {
       customerId,
       priceId,
       successUrl,
-      cancelUrl
+      cancelUrl,
     );
 
     return res.json(buildResponse({ sessionId: session.id, url: session.url }, 200, requestId));
@@ -113,7 +113,7 @@ stripeRouter.post('/checkout', async (req: any, res: any) => {
  */
 stripeRouter.post('/webhook', async (req: any, res: any) => {
   const sig = req.headers['stripe-signature'];
-  const rawBody = (req).rawBody;
+  const rawBody = req.rawBody;
 
   if (!sig || !rawBody) {
     return res.status(400).send('Webhook Error: Missing signature or body');

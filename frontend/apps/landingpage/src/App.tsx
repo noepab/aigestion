@@ -1,13 +1,45 @@
-﻿import { motion } from 'framer-motion';
+﻿import { motion, useScroll, useSpring } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import EmailTrick from './components/EmailTrick';
 import MarketingBroadcast from './components/MarketingBroadcast';
 import SunoGenerator from './components/SunoGenerator';
 
 export default function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (saved) {
+      setTheme(saved);
+      document.documentElement.classList.toggle('dark', saved === 'dark');
+    } else if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
+  };
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
     <div className="min-h-screen font-sans selection:bg-blue-500/30">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-slate-950/50 backdrop-blur-xl">
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--nexus-primary)] origin-left"
+          style={{ scaleX }}
+        />
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg shadow-blue-500/20" />
@@ -30,6 +62,8 @@ export default function App() {
             </a>
           </div>
         </div>
+              </div>
+        <button id="theme-toggle" className="px-4 py-2 rounded bg-gray-800 text-white hover:bg-gray-700 transition" onClick={toggleTheme}>Toggle Dark Mode</button>
       </nav>
 
       {/* Hero Section */}
@@ -41,21 +75,29 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-8 leading-[1.1]">
+            <h1 className="text-[var(--nexus-font-3xl)] font-extrabold tracking-tight text-white mb-8 leading-[1.1]">
               Scale your business with <span className="text-blue-500">Intelligent</span>{' '}
               Automation.
             </h1>
-            <p className="text-xl text-white/50 mb-10 leading-relaxed max-w-2xl">
+            <p className="text-[var(--nexus-font-base)] text-white/50 mb-10 leading-relaxed max-w-2xl">
               AIGestion Nexus V1 is the premium suite for forward-thinking enterprises. Transform
               your data into actionable insights and automate complex workflows with ease.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 rounded-xl bg-blue-500 text-white font-semibold hover:bg-blue-400 shadow-lg shadow-blue-500/20 transition-all">
+              <motion.button
+                whileHover={{ scale: 1.05, backgroundColor: 'var(--nexus-primary-hover)' }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 rounded-xl bg-[var(--nexus-primary)] text-white font-semibold shadow-lg shadow-blue-500/20 transition-all"
+              >
                 Get Started Now
-              </button>
-              <button className="px-8 py-4 rounded-xl bg-white/5 text-white font-semibold border border-white/10 hover:bg-white/10 transition-all">
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 rounded-xl bg-white/5 text-white font-semibold border border-white/10 transition-all"
+              >
                 View Architecture
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         </div>
@@ -85,8 +127,8 @@ export default function App() {
             ].map((f, i) => (
               <motion.div
                 key={f.title}
-                whileHover={{ y: -5 }}
-                className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all"
+                whileHover={{ y: -5, borderColor: 'rgba(59, 130, 246, 0.5)' }}
+                className="p-8 nexus-glass transition-all"
               >
                 <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
                   {i + 1}
@@ -115,28 +157,32 @@ export default function App() {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 text-balance">
             Ready to lead the next generation of business management?
           </h2>
-          <div className="p-8 rounded-3xl bg-slate-900 border border-white/10">
+          <div className="p-8 nexus-glass">
             <form className="grid gap-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="First Name"
-                  className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-blue-500 outline-none"
+                  className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[var(--nexus-primary)] outline-none"
                 />
                 <input
                   type="email"
                   placeholder="Business Email"
-                  className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-blue-500 outline-none"
+                  className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[var(--nexus-primary)] outline-none"
                 />
               </div>
               <textarea
                 placeholder="Tell us about your requirements"
                 rows={4}
-                className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-blue-500 outline-none"
+                className="p-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[var(--nexus-primary)] outline-none"
               />
-              <button className="w-full py-4 rounded-xl bg-blue-500 text-white font-bold hover:bg-blue-400 transition-all">
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: 'var(--nexus-primary-hover)' }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full py-4 rounded-xl bg-[var(--nexus-primary)] text-white font-bold transition-all"
+              >
                 Submit Request
-              </button>
+              </motion.button>
             </form>
           </div>
         </div>

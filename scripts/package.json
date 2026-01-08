@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "docs-automation",
   "version": "1.0.0",
   "description": "Sistema automatizado de organizacion de documentacion para NEXUS V1",
@@ -18,3 +18,4 @@
   "author": "NEXUS V1 Team",
   "license": "MIT"
 }
+

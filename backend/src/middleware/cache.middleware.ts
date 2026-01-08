@@ -36,7 +36,7 @@ export const cacheMiddleware = (ttl = 300) => {
 
         // Cache the response asynchronously if successful
         if (res.statusCode === 200) {
-          cache.set(key, body, { ttl }).catch((err) => {
+          cache.set(key, body, { ttl }).catch(err => {
             logger.error(err, 'Error caching response:');
           });
         }

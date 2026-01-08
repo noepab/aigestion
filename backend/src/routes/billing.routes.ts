@@ -32,7 +32,7 @@ router.post('/checkout', requireAuth, async (req: any, res: any) => {
       customerId,
       priceId,
       `${env.FRONTEND_URL}/billing?success=true`,
-      `${env.FRONTEND_URL}/billing?canceled=true`
+      `${env.FRONTEND_URL}/billing?canceled=true`,
     );
 
     res.json({ sessionId: session.id, url: session.url });
@@ -51,7 +51,7 @@ router.post('/portal', requireAuth, async (req: any, res: any) => {
 
     const session = await stripeService.createPortalSession(
       user.stripeCustomerId,
-      `${env.FRONTEND_URL}/billing`
+      `${env.FRONTEND_URL}/billing`,
     );
 
     res.json({ url: session.url });

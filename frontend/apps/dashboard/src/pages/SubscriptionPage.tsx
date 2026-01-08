@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import apiService from '../services/api';
-import MainLayout from '../components/layout/MainLayout';
 
 const PLANS = [
   {
@@ -43,8 +42,7 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <MainLayout>
-      <div className="p-8">
+    <div className="p-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 mb-4">
             Upgrade Your Experience
@@ -97,7 +95,6 @@ export default function SubscriptionPage() {
             </motion.div>
           ))}
         </div>
-      </div>
-    </MainLayout>
+    </div>
   );
 }

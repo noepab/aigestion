@@ -26,12 +26,14 @@ export class YoutubeTranscriptionQueue {
 
   /** Connects to RabbitMQ (or mock) and asserts the queue. */
   private async ensureConnection(): Promise<void> {
-    if (this.channel && this.connection) {return;}
+    if (this.channel && this.connection) {
+      return;
+    }
     try {
       this.connection = (await amqplib.connect(
-        process.env.RABBITMQ_URL || 'amqp://localhost'
+        process.env.RABBITMQ_URL || 'amqp://localhost',
       )) as any;
-      this.channel = (await this.connection.createChannel());
+      this.channel = await this.connection.createChannel();
       await this.channel.assertQueue(this.queueName, { durable: true });
       logger.info('YoutubeTranscriptionQueue connected and queue asserted');
     } catch (err) {
@@ -68,7 +70,9 @@ export class YoutubeTranscriptionQueue {
     await this.channel.consume(
       this.queueName,
       async (msg: ConsumeMessage | null) => {
-        if (!msg) {return;}
+        if (!msg) {
+          return;
+        }
         try {
           const job: TranscriptionJob = JSON.parse(msg.content.toString());
           await handler(job);
@@ -78,7 +82,7 @@ export class YoutubeTranscriptionQueue {
           this.channel.nack(msg, false, false); // discard bad message
         }
       },
-      { noAck: false }
+      { noAck: false },
     );
     logger.info('YoutubeTranscriptionQueue consumer started');
   }

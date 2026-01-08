@@ -9,7 +9,7 @@ import { logger } from '../utils/logger';
 
 @controller('/api/v1/stripe/webhook')
 export class StripeWebhookController {
-  constructor(@inject(StripeService) private stripeService: StripeService) { }
+  constructor(@inject(StripeService) private stripeService: StripeService) {}
 
   @httpPost('/')
   async handleWebhook(@request() req: Request, @response() res: Response) {
@@ -24,7 +24,9 @@ export class StripeWebhookController {
     try {
       const rawBody = (req as any).rawBody;
       if (!rawBody) {
-        logger.error('Webhook Error: Missing rawBody. parsing middleware configuration might be incorrect.');
+        logger.error(
+          'Webhook Error: Missing rawBody. parsing middleware configuration might be incorrect.',
+        );
         return (res as any).status(400).send('Webhook Error: Missing rawBody');
       }
 
@@ -60,7 +62,9 @@ export class StripeWebhookController {
   }
 
   private async handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
-    if (!session.customer || !session.subscription) {return;}
+    if (!session.customer || !session.subscription) {
+      return;
+    }
 
     const user = await User.findOne({ email: session.customer_details?.email });
     if (user) {

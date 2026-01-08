@@ -1,5 +1,3 @@
-
-
 /**
  * Base Response Builder
  * Estandariza todas las respuestas de la API
@@ -22,11 +20,7 @@ export interface ApiError {
   };
 }
 
-export function buildResponse<T>(
-  data: T,
-  statusCode = 200,
-  requestId: string
-): ApiResponse<T> {
+export function buildResponse<T>(data: T, statusCode = 200, requestId: string): ApiResponse<T> {
   return {
     status: statusCode,
     data,
@@ -43,7 +37,7 @@ export function buildError(
   code: string,
   statusCode = 400,
   requestId: string,
-  details?: Record<string, any>
+  details?: Record<string, any>,
 ): ApiError {
   return {
     status: statusCode,

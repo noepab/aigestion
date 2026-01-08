@@ -2,7 +2,7 @@ export class ExampleEntity {
   constructor(
     public readonly id: string,
     public name: string,
-    public readonly createdAt: Date
+    public readonly createdAt: Date,
   ) {}
 
   updateName(newName: string): void {
